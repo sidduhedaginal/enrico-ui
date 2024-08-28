@@ -1,0 +1,40 @@
+::ng-deep .mat-ink-bar {
+    background-color:#008ecf !important;
+  }
+  ::ng-deep .mat-tab-header {
+   border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+  }
+.remove-border-bottom .mat-tab-header {
+    border-bottom: none;
+}
+.main-list{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid #ccc;
+    padding:5px
+}
+.left-list{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.createaop{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #008ecf;
+}
+.align
+{
+    display:flex;
+    align-items: center;
+}
+.plan{
+    display:flex;
+    align-items:center;
+   justify-content: space-between;
+}
+.scrollable-dialog {
+    overflow-y: auto;
+  }

@@ -1,0 +1,14 @@
+.title {
+  padding-left: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+ 
+.title p {
+  margin: 0;
+}
+.header-items{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

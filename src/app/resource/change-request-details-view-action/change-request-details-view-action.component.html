@@ -1,0 +1,573 @@
+<div *ngIf="showLoading">
+  <app-resource-loader-ui></app-resource-loader-ui>
+ </div>
+<div class="row">
+    <div class="col-md-4 col-sm">
+      <h3 class="title-head">
+      
+        {{requestCRid || bindDataByEmpNumber.employeeNumber}} - {{getElementData.employeeName || bindDataByEmpNumber.employeeName}}   
+        
+        <span class="ssp1"  *ngIf="getElementData.status=='Approved'">Change Request Approved</span>
+        <span class="ssp1"  *ngIf="getElementData.status=='Withdrawn'" style="color:orange"> Change Request Withdrawn</span>
+      </h3>
+    </div>
+    <div class="col-md-8 col-sm" style="text-align:right;" 
+    *ngIf="((userDetailsRoles=='/EnricoUsers') &&  (permissionsBehaviorSubjectChangeManagement?.delegatePermission || permissionsBehaviorSubjectChangeManagement?.rejectPermission || permissionsBehaviorSubjectChangeManagement?.approvePermission ) &&
+       (((getElementData.status=='Initiated') || ( getElementData.status=='ReSubmitted') || (getElementData.status== 'First Approval') || (getElementData.status=='Submit') || (getElementData.status=='FirstApprove') )  
+    || ( getElementData.module=='Change Request' && (getElementData.status=='Submit' || getElementData?.status=='ReSubmit')) 
+    || (getElementData.status!='Approved' && (getElementData.status !='Sent Back') && (getElementData.status !='Withdrawn')) 
+  ))">
+     
+      <button *ngIf="(permissionsBehaviorSubjectChangeManagement?.delegatePermission ) && (( (getElementData.status =='Initiated' || getElementData.status =='ReSubmitted' ) && getElementData.firstApprover== userDetails.employeeNumber)   || ( getElementData.module=='Change Request' && (getElementData.status=='Submit' ||getElementData?.status=='ReSubmit'))) && (checkDelegateOneTime?.isFirstLevel==false || checkDelegateArray?.length==0)" mat-stroked-button class="m-2 actionBtn"  id="delegateBtnID" (click)="onActionClick('Delegate')" [ngClass]="{ selectedBtn: 'delegate' == selectedItem }"><img src="./assets/img/arrow-right-frame.png" class="gapSpace"/>Delegate</button>
+
+      <button *ngIf="(permissionsBehaviorSubjectChangeManagement?.delegatePermission ) && ( (getElementData.status =='First Approval' && getElementData.secondApprover== userDetails.employeeNumber) || ( getElementData.module=='Change Request' && getElementData.status=='FirstApprove'))  && (checkDelegateOneTime?.isSecondLevel==false || checkDelegateArray?.length==0)" mat-stroked-button class="m-2 actionBtn"  id="delegateBtnID" (click)="onActionClick('Delegate')" [ngClass]="{ selectedBtn: 'delegate' == selectedItem }"><img src="./assets/img/arrow-right-frame.png" class="gapSpace"/>Delegate</button>
+
+   
+        <button *ngIf="(permissionsBehaviorSubjectChangeManagement?.rejectPermission) && (( (getElementData.status =='Initiated' || getElementData.status =='ReSubmitted' ) && getElementData.firstApprover== userDetails.employeeNumber)  || (getElementData.status =='First Approval' && getElementData.secondApprover== userDetails.employeeNumber)  || ( getElementData.module=='Change Request' && (getElementData.status=='Submit' ||getElementData?.status=='ReSubmit')) || ( getElementData.module=='Change Request' && getElementData.status=='FirstApprove'))" mat-stroked-button class="m-2 actionBtn"  id="sendBackBtnID" (click)="onActionClick('Reject')" [ngClass]="{ selectedBtn: 'reject' == selectedItem }">
+        <img src="./assets/img/back-menu.png" class="gapSpace"/> Send Back</button>
+
+        <button *ngIf="permissionsBehaviorSubjectChangeManagement?.approvePermission  &&  (( (getElementData.status =='Initiated' || getElementData.status =='ReSubmitted' ) && getElementData.firstApprover== userDetails.employeeNumber)  || 
+        (getElementData.status =='First Approval' && getElementData.secondApprover== userDetails.employeeNumber)   
+        || ( getElementData.module=='Change Request' && (getElementData.status=='Submit' ||getElementData?.status=='ReSubmit')) || ( getElementData.module=='Change Request' && getElementData.status=='FirstApprove') )" mat-stroked-button id="approveBtnID"  class="m-2 actionBtn selectedDefaultItem" (click)="onActionClick('Approve')"><img src="./assets/img/checkmark-frame.png" class="gapSpace"/>
+          Approve</button>
+       
+      </div>
+
+      <div class="col-md-8 col-sm" style="text-align:right;" *ngIf="(getElementData.status=='Approved') && !ischeckEffectiveDate5WDBefore">
+        <button *ngIf="((userDetailsRoles=='/EnricoUsers')  && permissionsBehaviorSubjectChangeManagement?.editPermission)" mat-stroked-button style="width:auto;display: none;" class="m-2 actionBtn" (click)="onActionClick('Change Effective Date')">        
+        <mat-icon class="gapSpaceIcon">calendar_month</mat-icon> Change Effective Date </button>
+
+        <button *ngIf="(userDetailsRoles=='/Vendors')" mat-stroked-button style="width:auto" class="m-2 actionBtn" (click)="onActionClick('Cancel Request')">        
+         <img src="./assets/img/subtract-frame.png" class="gapSpace"/> Widthdraw Request </button>
+        </div>
+
+
+
+        
+        <div class="col-md-8 col-sm" style="text-align:right;" *ngIf="(getElementData.status=='Rejected' || getElementData.status=='Sent Back')">
+          <button *ngIf="(userDetailsRoles=='/Vendors')" mat-stroked-button style="width:auto" class="m-2 actionBtn" (click)="onActionClick('Withdraw')">    <img src="./assets/img/subtract-frame.png" class="gapSpace"/> Withdraw</button>
+         
+            <button *ngIf=" (userDetailsRoles=='/Vendors')" mat-stroked-button style="width:auto" class="m-2 actionBtn selectedDefaultItem" (click)="onReSubmitClick('Re-Submit')">        
+              <img src="./assets/img/resubmit-frame.png" class="gapSpace"/>  Edit </button>  
+              <!-- Re-Submit        -->
+        </div>
+  
+  </div>
+
+  <div class="status-details" *ngIf="!showLoading" [ngStyle]="{color:getStatusTopColor(getElementData.status)}" style="display: none;">
+    <div> Change Request Status : {{getElementData.status  || '--'}}</div>
+    <div> First Level Approver : {{getFirstLevelApproverName() +' (' + getElementData?.firstApproverNtid + ')'   | titlecase}} </div>
+    <div> Second Level Approver : {{getSecondLevelApproverName() +' (' + getElementData?.secondApproverNtid + ')'   | titlecase}} </div>
+  </div>
+
+
+
+
+<!--Start progress line-->
+<div *ngIf="getElementData.status=='Initiated' || (getElementData.module=='Change Request' && getElementData.status=='Submit')" class="mb-4">    
+  <div class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Submitted  </span></div>
+    <div class="md-step-action-by">{{bindDataByEmpNumber?.vendorName  || '--'}} </div>
+    <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span>Yet to Approve</span></div>       
+    <div class="md-step-action-by"> {{getFirstLevelApproverName()  | titlecase}} </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done in-active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span> Yet to Approve</span></div>
+    <div class="md-step-action-by">{{getSecondLevelApproverName()   | titlecase}} </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+<div *ngIf="getElementData.status=='ReSubmitted'" class="mb-4">    
+  <div class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Submitted </span></div>
+    <!-- resubmitted -->
+    <div class="md-step-action-by">{{bindDataByEmpNumber.vendorName || '--'}} </div>
+    <div class="md-step-action-on">{{getDateResubmittedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span>Yet to Approve</span></div>       
+    <div class="md-step-action-by"> {{getFirstLevelApproverName()    | titlecase}} </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done in-active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span> Yet to Approve</span></div>
+    <div class="md-step-action-by">{{getSecondLevelApproverName()  | titlecase}} </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+<div *ngIf="getElementData.status=='First Approval' || getElementData.status=='FirstApprove'">    
+  <div class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Submitted  </span></div>
+    <div class="md-step-action-by">{{bindDataByEmpNumber.vendorName  || '--'}} </div>
+    <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step first-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span>Approved</span></div>       
+    <div class="md-step-action-by">{{getFirstLevelApproverName()   | titlecase}}</div>
+      <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span>Yet to Approve</span></div>       
+    <div class="md-step-action-by">{{getSecondLevelApproverName()  | titlecase}} </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+
+<div *ngIf="getElementData.status=='Approved'">    
+  <div class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Submitted </span></div>
+    <div class="md-step-action-by">{{bindDataByEmpNumber.vendorName  || '--'}} </div>
+    <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step first-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span>Approved</span></div>       
+    <div class="md-step-action-by">{{getFirstLevelApproverName()    | titlecase}}</div>
+      <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step first-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span> Approved</span></div>
+    <div class="md-step-action-by">{{getSecondLevelApproverName()    | titlecase}} </div>
+      <div class="md-step-action-on">{{getDateSecondApprovedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+
+<div *ngIf="getElementData.status=='Sent Back' && newBindDataBycr?.isFirstLevelApproved==false"  class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Yet to Submit</span></div>
+    <div class="md-step-action-by">{{bindDataByEmpNumber.vendorName || '--'}} </div>
+    <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+
+  <div class="md-step in-active sent-back">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title sent-back">Sent Back</div>
+    <div class="md-step-action-by-active">
+      <div class="md-step-action-by">{{getFirstLevelApproverName() | titlecase}}</div>
+      <div class="md-step-action-on">{{getDateFirstSendBackDate|date:'dd-MMM-yyyy'}} </div>
+    </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done in-active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span> Yet to Approve</span></div>
+    <div class="md-step-action-by">{{getSecondLevelApproverName()   | titlecase}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+
+</div>
+
+
+<div
+  class="md-stepper-horizontal" *ngIf="getElementData.status=='Sent Back' && newBindDataBycr?.isFirstLevelApproved==true">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Yet to Submit </span></div>
+    <div class="md-step-action-by">{{bindDataByEmpNumber.vendorName || '--'}} </div>
+    <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span>Approved</span></div>       
+    <div class="md-step-action-by">{{getFirstLevelApproverName()    | titlecase}}</div>
+    <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step in-active sent-back">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title sent-back">Sent Back</div>
+    <div class="md-step-action-by">{{getSecondLevelApproverName()    | titlecase}} </div>
+    <div class="md-step-action-on">{{getDateSecondApprovedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div>
+
+
+<div class="md-stepper-horizontal"  *ngIf="(getElementData.status =='Withdrawn' ||getElementData.status == 'Withdraw') && newBindDataBycr?.isFirstLevelApproved==false">
+  <div class="md-step md-step3 active reject-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title reject">Withdrawn</div>
+    <div class="md-step-action-by">{{bindDataByEmpNumber.vendorName || '--'}}</div>
+    <div class="md-step-action-on">    {{filterWithdrawRemarks?.createdOn|date:'dd-MMM-yyyy'}}  </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step md-step3 in-active sent-back">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title sent-back">Sent back</div>
+    <div class="md-step-action-by">
+      <div class="md-step-action-by"> {{getFirstLevelApproverName() | titlecase}}</div>
+      <div class="md-step-action-on">{{getDateFirstSendBackDate|date:'dd-MMM-yyyy'}}</div>
+    </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  </div>
+
+
+  <div
+class="md-stepper-horizontal" *ngIf="(getElementData.status =='Withdrawn' ||getElementData.status == 'Withdraw') && newBindDataBycr?.isFirstLevelApproved==true">
+<div class="md-step md-step3 active reject-done">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title reject">Withdrawn</div>
+  <div class="md-step-action-by">{{bindDataByEmpNumber.vendorName || '--'}}</div>
+  <div class="md-step-action-on">    {{filterWithdrawRemarks?.createdOn|date:'dd-MMM-yyyy'}}  </div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+<div class="md-step md-step3 in-active first-done">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title tgrin"><span>Approved</span></div>       
+  <div class="md-step-action-by">{{getFirstLevelApproverName()    | titlecase}}</div>
+  <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+<div class="md-step md-step3 in-active sent-back">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title sent-back">Sent Back</div>
+  <div class="md-step-action-by">{{getSecondLevelApproverName()    | titlecase}} </div>
+  <div class="md-step-action-on">{{getDateSecondApprovedDate|date:'dd-MMM-yyyy'}}</div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+</div>
+<!--End progress line-->
+
+
+
+
+
+
+
+  <h3>Resource Details</h3>
+  <div class="bgClr">
+    <div class="row mt-1">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Employee Number </span>
+        <span class="spanText">{{bindDataByEmpNumber.employeeNumber || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel"> Employee Name</span>
+        <span class="spanText">{{bindDataByEmpNumber.employeeName  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Email ID</span>
+        <span class="spanText">{{bindDataByEmpNumber.emailID  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">NT ID</span>
+        <span class="spanText">{{bindDataByEmpNumber.ntid  || '--'}} </span>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Company</span>
+        <span class="spanText">{{bindDataByEmpNumber.company  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel"> Personnel Sub-Area</span>
+        <span class="spanText">{{bindDataByEmpNumber.personnelSubarea  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Date of Joining</span>
+        <span class="spanText">{{bindDataByEmpNumber.dateOfJoining   | date: 'dd-MMM-yyyy'|| '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Contract End Date</span>
+        <span class="spanText">{{bindDataByEmpNumber.contractEnd   |  date: 'dd-MMM-yyyy'  || '--'}} </span>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Delivery Manager</span>
+        <span class="spanText">{{bindDataByEmpNumber.deliveryManagerName  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Section SPOC</span>
+        <span class="spanText">{{bindDataByEmpNumber.sectionSpocNtID  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Employment Status</span>
+        <span class="spanText">{{bindDataByEmpNumber.employmentStatus  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Change Request Status</span>
+        <span class="spanText" *ngIf="getElementData.status=='Initiated' || getElementData.status=='ReSubmitted'">Submitted </span>
+        
+        <span class="spanText" *ngIf=" getElementData.status !='Initiated' && getElementData.status !='ReSubmitted'">{{getElementData.status  || '--'}} </span>
+      </div>
+    </div>
+  </div>
+  <div class="hrLine">&nbsp;</div>
+  <h3>Vendor Details</h3>
+  <div class="bgClr">
+    <div class="row mt-1">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Vendor ID </span>
+        <span class="spanText">{{bindDataByEmpNumber?.vendorID  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel"> Vendor Name</span>
+        <span class="spanText">{{bindDataByEmpNumber?.vendorName  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Contact Name</span>
+        <span class="spanText">{{bindDataByEmpNumber?.vendorEmail  || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Vendor Email ID</span>
+        <span class="spanText">{{bindDataByEmpNumber?.vendorEmail  || '--'}}</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="hrLine">&nbsp;</div>
+  <h3>Change Request</h3>
+
+
+  <div class="row mt-1">
+    <div class="col-md-5 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill">
+        <mat-label>Select Change</mat-label>
+        <mat-select [(ngModel)]="ddlChangeModel" (selectionChange)="selectChangeDropdown($event.value)" disabled>
+          <mat-option value="SOW JD">SOW JD </mat-option>
+          <mat-option value="Billable/Non-Billable"> Billable/Non-Billable</mat-option>
+          <mat-option value="Personal Sub-Area"> Personal Sub-Area</mat-option>
+          <mat-option value="Purchase Order"> Purchase Order</mat-option> 
+          <mat-option value="Grade"> Grade</mat-option> 
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill" >
+        <mat-label>Effective From <span class="colorStart">*</span></mat-label>
+        <input [value]="newBindDataBycr.validityStart"
+          matInput
+          [matDatepicker]="pickerLastWorkingDate"
+          placeholder="Choose a date"
+          readonly
+          (click)="pickerLastWorkingDate.open()" disabled
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerLastWorkingDate"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerLastWorkingDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    </div>
+<!--start for  sowjd-->
+<div *ngIf="isShowSowJD">  
+  <div *ngFor="let v of listDDl;let i=index;" class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">{{ v.labelValue }}</span>
+        <span class="spanText">{{ v.subLebelText }}</span>
+      </div>
+      <div class="col-md-7 col-sm">
+        <mat-form-field class="full-width gMFFSelect brNone" style="top: 6px;" >
+          <mat-label>New {{ v.labelText }}</mat-label>
+          <mat-select [(ngModel)]="v.newChangesDDl[0]" disabled>
+            <mat-option *ngFor="let v1 of v.newChangesDDl" [value]="v1">{{
+              v1.labelText
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end for sowjd-->
+
+<!--start for  Billable/Non-Billable-->
+<div *ngIf="isShowBillable">  
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0 pb-2">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel"> Billable</span>
+        <span *ngIf="(getSowInfoData?.billable=='True')||(getSowInfoData?.billable==true)" class="spanText">Yes</span>
+        <span  *ngIf="(getSowInfoData?.billable=='False')||(getSowInfoData?.billable==false)" class="spanText">No</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">New Billable</span>
+        <span class="spanText">{{billableModel}}</span>
+       
+      </div>
+    </div>
+  </div>
+</div>
+<!--end for  Billable/Non-Billable-->
+
+<!--start for personal sub area-->
+<div *ngIf="isShowPersonalSubArea">  
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0 pb-2">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Personal Sub-Area</span>
+        <span class="spanText">{{getSowInfoData?.personalSubArea}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">New Personal Sub-Area</span>
+        <span class="spanText">{{personalSubAreaModel}}</span>
+       
+      </div>
+    </div>
+  </div>
+</div>
+<!--end for personal sub area-->
+
+
+
+<!--start for Purchase Order-->
+<div *ngIf="isShowPurchaseOrder">  
+  <div class="divChangeCS pb-2">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Purchase Order</span>
+        <span class="spanText">{{getSowInfoData?.purchaseOrder }}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">New Purchase Order</span>
+        <span class="spanText">{{newBindDataBycr?.poNumber }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="divChangeCS pb-2">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">PO Line Item</span>
+        <span class="spanText">{{getSowInfoData?.poLineItem}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">New PO Line Item</span>
+        <span class="spanText">{{newBindDataBycr?.lineitem }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--end for Purchase Order-->
+
+<!--start for Grade-->
+<div *ngIf="isShowGrade">  
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0 pb-2">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Skillset</span>
+        <span class="spanText">{{getSowInfoData?.skillSet }}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">New Skillset</span>
+        <span class="spanText">{{getSowInfoData?.skillSet }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="divChangeCS pb-2">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Grade</span>
+        <span class="spanText">{{getSowInfoData?.grade }}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">New Grade</span>
+        <span class="spanText">{{newBindDataBycr?.grade }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--end for Grade-->
+
+
+
+
+
+
+
+
+
+
+<div class="hrLine">&nbsp;</div>
+  <!-- <h3 class="mt-2">Remarks</h3> -->
+  <mat-accordion>   
+    <mat-expansion-panel class="remarksColapse" >
+      <mat-expansion-panel-header>
+        <mat-panel-title>        
+        <h3 class="m-0">Remarks</h3>
+        </mat-panel-title>    
+      </mat-expansion-panel-header>
+  <div class="bgClr mb-2" *ngFor="let v of remarksList">
+    <div class="row mt-1">
+      <div class="col-md-9 col-sm">
+        <span class="spanLabel">{{v.createdBy || 'User'}} </span>
+        <span class="spanText">{{v.createdOn || '--'}} </span>
+      </div>
+      <div class="col-md-3 col-sm" style="text-align:right">
+        <span class="spanLabel" [ngClass]="{'text-green':  v.statusDescription=='Submit' || v.statusDescription=='ReSubmit' || v.statusDescription=='Approved'|| v.statusDescription=='FirstApprove'|| v.statusDescription=='SecondApprove' ,'text-red': v.statusDescription=='SendBack', 'text-orange':  v.statusDescription== 'Withdrawn'|| v.statusDescription== 'Withdraw','text-blue': v.statusDescription=='Delegate'}">{{v.statusDescription ||'--'}}</span>
+      </div>
+    </div>  
+    <div class="row mt-4">
+      <div class="col-md-12 col-sm">
+        <span class="spanText">{{v.remarks || 'Remarks not found'}}</span
+        >
+      </div>
+    </div>
+  </div>
+</mat-expansion-panel>
+</mat-accordion>
+  <br /><br /><br /><br /><br />
+  

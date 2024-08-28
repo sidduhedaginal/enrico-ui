@@ -1,0 +1,18 @@
+:host ::ng-deep.mat-form-field-infix {
+  width: 125px !important;
+  background-color: #dddbdb !important;
+  padding-left: 5px !important;
+}
+
+input {
+  padding: 1px;
+  margin: 1px;
+  width: 100px;
+}
+.ag-input-wrapper {
+  border: 1px solid;
+}
+
+.ag-cell-value.ag-cell.ag-cell-normal-height.ag-cell-inline-editing.ag-cell-focus {
+  width: 120px !important;
+}

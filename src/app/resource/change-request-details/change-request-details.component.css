@@ -1,0 +1,82 @@
+.title-head {
+  font-size: 18px;
+  font-weight: 500;
+}
+.actionBtn {
+  border-radius: 0;
+  width: 130px;
+  color: #007BC0;
+  border: 1px solid #007BC0;
+  font-size: 14px;
+  text-align: center;
+  background-color: #fff;
+}
+.selectedBtn {
+  
+  background-color: #004975;
+  color: #fff;
+}
+
+.selectedBtn img{
+  filter: invert(143%) sepia(237%) saturate(37%) hue-rotate(0deg) brightness(248%) contrast(291%);
+}
+.selectedDefaultItem{
+ 
+  background-color: #008ECF;
+  color: #fff;
+}
+.gapSpace {
+  margin-right: 0.7rem !important;
+  width: 18px;
+}
+.gapSpace2{
+  margin-right: 0.3rem !important;
+  width: 24px;
+
+}
+.spanLabel {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+}
+.spanText {
+  font-weight: normal;
+  font-size: 13px;
+  word-wrap: break-word;
+}
+.bgClr {
+  background-color: #f0f0f0;
+  padding: 8px 15px;
+}
+.hrLine {
+  border-bottom: 1px solid #c7c7c7;
+  margin-bottom: 15px;
+}
+.backArrow {
+  cursor: pointer;
+  vertical-align: sub;
+  color: #004975;
+}
+.desrc{
+  width: 170px;
+}
+.curp{
+  cursor: pointer;
+}
+.colorStart {
+  color: red;
+}
+
+.divChangeCS {
+  background: #e6e6e6;
+  padding: 10px;
+  margin: 16px 0px;
+}
+h3{
+  font-weight: 600;
+  font-family: Bosch Sans;
+}
+.gapSpaceIcon{
+  margin-right: 0.2rem !important;
+  width: 24px;
+}

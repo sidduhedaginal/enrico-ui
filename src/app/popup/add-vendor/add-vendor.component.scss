@@ -1,0 +1,78 @@
+.add-resource-page {
+  font-family: Bosch Sans !important;
+}
+.row {
+  display: flex;
+  gap: 30px;
+}
+.buttons {
+  display: flex;
+  justify-content: end;
+  gap: 30px;
+}
+.savebutton {
+  background-color: dodgerblue;
+  color: white;
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+}
+.savebutton:disabled {
+  background-color: gray;
+  color: white;
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.cancelbutton {
+  border: 2px solid dodgerblue;
+  color: dodgerblue;
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+}
+
+::ng-deep.mat-form-field-appearance-fill .mat-form-field-flex {
+  height: 50px;
+  background-color: #e0e2e5;
+  font-family: Bosch Sans !important;
+  border-radius: 0 !important;
+}
+:host::ng-deep.mat-form-field-subscript-wrapper {
+  margin-top: 0 !important;
+}
+:host::ng-deep.mat-form-field-appearance-fill
+  .mat-form-field-subscript-wrapper {
+  padding: 0px !important;
+}
+.text-box {
+  width: 350px;
+}
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.header {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+}
+.close-btn {
+  display: flex;
+  mat-icon {
+    cursor: pointer;
+  }
+}
+.buttons {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+.btn-align {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+}

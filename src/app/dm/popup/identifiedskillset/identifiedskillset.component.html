@@ -1,0 +1,178 @@
+<div>
+  <div class="header">
+    <div class="title">Identified SkillSet</div>
+    <div class="close-btn">
+      <mat-icon matTooltip="Close" (click)="onClose()">close</mat-icon>
+    </div>
+  </div>
+  <div class="remarks-red py-2">{{ errorMessage }}</div>
+  <form [formGroup]="myForm" (ngSubmit)="addNewSkillSet()" class="action-form">
+    <div class="row">
+      <div class="col">
+        <app-search-bar-skillset
+          (selectionChangeEvent)="changedEventValue($event)"
+          [labelValue]="'SkillSet'"
+          [isRequired]="true"
+          [searchPlaceholder]="'skillSetName'"
+          [searchPlaceholderId]="'id'"
+        ></app-search-bar-skillset>
+      </div>
+      <div class="col">
+        <mat-form-field class="form">
+          <mat-label>Grade </mat-label>
+          <mat-select formControlName="GradeId">
+            <mat-option *ngFor="let type of gradeDetails" [value]="type.id">{{
+              type.grade
+            }}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              myForm.controls['GradeId'].invalid &&
+              myForm.controls['GradeId'].touched
+            "
+          >
+            Please choose Grade
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width form">
+          <mat-label>No of Resource</mat-label>
+          <input
+            matInput
+            placeholder="No of Resource"
+            formControlName="quantity"
+            type="number"
+            min="1"
+            onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+          />
+          <mat-error
+            *ngIf="
+              myForm.controls['quantity'].invalid &&
+              myForm.controls['quantity'].touched
+            "
+          >
+            Please enter quantity
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field required class="example-full-width form">
+          <mat-label>Quantity</mat-label>
+          <input
+            matInput
+            placeholder="Quantity"
+            formControlName="duration"
+            type="number"
+            min="1"
+            onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+          />
+          <mat-error
+            *ngIf="
+              myForm.controls['duration'].invalid &&
+              myForm.controls['duration'].touched
+            "
+          >
+            Please enter duration
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Unit of Measurement</mat-label>
+          <div
+            *ngIf="
+              data.sowJdTypeCode === 'NRC' &&
+                data.outsourcingTypeCode === 'TAM';
+              then content;
+              else otherContent
+            "
+          ></div>
+          <ng-template #content>
+            <mat-select formControlName="unitOfMeasurement">
+              <mat-option
+                *ngFor="let unit of unitOfMeasurement"
+                [value]="unit"
+                >{{ unit }}</mat-option
+              >
+            </mat-select>
+          </ng-template>
+          <ng-template #otherContent>
+            <input
+              matInput
+              placeholder=""
+              formControlName="unitOfMeasurement"
+              readonly
+            />
+          </ng-template>
+          <mat-error
+            *ngIf="
+              myForm.controls['unitOfMeasurement'].invalid &&
+              myForm.controls['unitOfMeasurement'].touched
+            "
+          >
+            Please enter unit Of Measurement
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="matform">
+          <mat-label>Resource Onboarding Date</mat-label>
+          <input
+            class="inputmat"
+            [matDatepickerFilter]="weekendsDatesFilter"
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Resource Onboarding Date"
+            formControlName="resourceOnboardingDate"
+            [min]="minDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="
+              myForm.controls['resourceOnboardingDate'].touched &&
+              myForm.controls['resourceOnboardingDate'].invalid
+            "
+          >
+            Please select Resource Onboarding Date
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="button-wrappper">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose()"
+      >
+        <div class="btn-wrapper">
+          <!-- <div class="icon">
+            <span class="cancel-icon"></span>
+          </div> -->
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="myForm.invalid"
+      >
+        <div class="btn-wrapper">
+          <!-- <div class="icon">
+            <span class="save-white-icon"></span>
+          </div> -->
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

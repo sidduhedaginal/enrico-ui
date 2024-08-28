@@ -1,0 +1,29 @@
+<app-odc-addchildform [rowData]="rowData"></app-odc-addchildform>
+
+<div>
+  <div class="contact-container">
+    <div class="contact-header">
+      <div class="contact-title">ODC Details</div>
+      <div class="action-btn">
+
+        <button mat-raised-button color="primary" class="add-contact" (click)="onAddContact()">Add New Child</button>
+         
+      </div>
+    </div>
+   
+    <div [ngStyle]="style">
+      <ag-grid-angular
+        [ngStyle]="style"
+        class="ag-theme-alpine"
+        [rowData]="rowData"
+        [defaultColDef]="defaultColDef"
+        [columnDefs]="columnDefs"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+        (cellClicked)="onCellClicked_OdcChild($event)"
+        [frameworkComponents]="frameworkComponents"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

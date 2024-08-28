@@ -1,0 +1,63 @@
+:host ::ng-deep .mat-form-field {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    width: 270px;
+    margin-left:-13px;
+}
+.sowjd__row1{
+    display:flex;
+    align-items:center;
+   justify-content: space-between;
+    margin: 0px 18px 0px 14px;
+    margin-top: 20px;
+    font-size:12px;
+    height:40px;
+    
+
+}
+.department__title{
+    margin-left:0px;
+    margin-top:5px;
+    font-weight:900;
+    font-style:bold;
+    color:black;
+    font-size: 14px;
+
+}
+.divBackShadow {
+    border: 1px solid #bfbfbf;
+    background-color: white;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.034), 0 1px 1px rgba(0, 0, 0, 0.086),
+      0 2px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 20;
+    right: 0;
+    background-color: white;
+    border: 1px solid lightgray;
+  }
+  .mat-icon {
+    vertical-align: middle;
+  }
+  .icon-text {
+    display: flex;
+    align-items: center;
+  }
+  .extra{
+    width: 33.33%;float: left;
+  }
+  .remarks{
+    width:98.7%;margin-left: 0px;
+  }
+  .grid{
+    width: 98%; height: 55vh; margin-top: 5px;margin-left:3px;margin-right:14px
+  }
+  .link{
+    text-decoration: underline;margin-left:3px
+  }
+  .body{
+    margin: 15px
+  }

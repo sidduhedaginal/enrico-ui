@@ -1,0 +1,80 @@
+<mat-toolbar>
+  <button (click)="toggleMenu()" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="project-title">ENRICO DIGITAL</span>
+
+  <span class="menu-spacer"></span>
+
+  <div class="profile-container">
+    <!-- <form class="example-form">
+      <mat-form-field class="example-full-width" [floatLabel]="'never'">
+        <input
+          matInput
+          placeholder="Search"
+          name="search"
+          [(ngModel)]="search"
+        />
+        <button
+          mat-button
+          mat-icon-button
+          matSuffix
+          (click)="clearSearch()"
+          *ngIf="search"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        <button matSuffix mat-button><mat-icon>search</mat-icon></button>
+      </mat-form-field>
+    </form> -->
+    <span class="header-icon" matBadgeColor="warn">
+      <ng-container *ngIf="notificationCount !== 0">
+          <span
+          (click)="toggleNotifications()"
+          matBadgeSize="small"
+          matBadge="{{ notificationCount }}"
+          class="profile notifications pointer"
+        ></span>
+      </ng-container>
+
+      <ng-container *ngIf="notificationCount === 0">
+        <span
+        (click)="toggleNotifications()"
+        matBadgeSize="small"
+        class="profile notifications pointer"
+      ></span>
+    </ng-container>
+
+      
+      <div class="notification" *ngIf="isOpenNotification">
+        <app-notification
+          [unReadNotification]="unReadNotification" 
+          (updateunReadNotification)="updateunReadNotification($event)"
+          (closeModal)="closeNotification($event)"
+          (scrollEndReached)="checkScrollEndReached($event)"
+          [notifications]="notificationsList"
+        ></app-notification>
+      </div>
+    </span>
+
+    <span title="Message" class="message profile pointer"></span>
+
+    <span
+      title="System Admin"
+      *ngIf="isSystemAdmin"
+      (click)="systemAdmin()"
+      class="systemAdmin profile pointer"
+    ></span>
+    <span
+      title="Entity Admin"
+      *ngIf="isEntityAdmin"
+      (click)="entityAdmin()"
+      class="entitAdmin profile pointer"
+    ></span>
+    <span
+      title="Logout"
+      class="logout profile pointer"
+      (click)="logoutUser()"
+    ></span>
+  </div>
+</mat-toolbar>

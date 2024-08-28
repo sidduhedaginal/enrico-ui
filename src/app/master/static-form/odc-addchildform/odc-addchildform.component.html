@@ -1,0 +1,120 @@
+<div class="spinner" *ngIf="showLoading">
+    <lib-spinner></lib-spinner>
+  </div>
+  <div class="erroMessageTag" *ngIf="showErroMessage"> <span>{{errorMessage}}</span> </div>
+  <div class="header-items">
+    <div class="title">
+     </div>
+  </div>
+  
+  <div *ngIf="readOnly" class="dynamicForm scrollable-content">
+    <ng-container *ngFor="let field of formFields">
+      <div style="padding-top:15px;" *ngIf="field.isVisible">
+        <div class="view-lables">
+          <span class="label" >
+            {{field.label}}
+          </span>
+          <div class="value" *ngIf="getValue(field).length >= 28" title="{{getValue(field)}}">
+            {{getValue(field).substring(0, 28)}}...
+          </div>
+          <div class="value" *ngIf="getValue(field).length < 28" title="{{getValue(field)}}">
+            {{getValue(field)}}
+          </div>
+        </div>
+      </div>
+  
+    </ng-container>
+  </div>
+  
+  <form class="dynamicForm" [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+    <ng-container *ngIf="!readOnly">
+  
+      <ng-container *ngFor="let field of formFields">
+        <ng-container *ngIf="field.isVisible">
+          <mat-form-field [formGroup]="dynamicMatForm">
+            <mat-label class="form-label">{{ field.label }}</mat-label>
+            <ng-container [ngSwitch]="field.validationType">
+              <input *ngSwitchCase="'text'" matInput [formControlName]="field.name" [value]="field?.value" [readonly]="field.readOnly" (keydown)="space($event)">
+
+              <input *ngSwitchCase="'number'" (keypress)="limitDecimalPlaces($event, 3)" matInput (keydown)="space($event)"
+                     [formControlName]="field.name" [value]="field?.value" [readonly]="field.readOnly">
+
+               <input *ngSwitchCase="'mobilenumber'" maxLength="15" (keypress)="limitDecimalPlaces($event, 3)" matInput (keydown)="space($event)"
+                     [formControlName]="field.name" [value]="field?.value" [readonly]="field.readOnly" >
+
+              <input *ngSwitchCase="'decimal'"  matInput (keypress)="limitDecimalPlaces($event, 3)" [formControlName]="field.name" [value]="field?.value" [readonly]="field.readOnly" (keydown)="space($event)">
+
+              <input *ngSwitchCase="'alphanumeric'" matInput [formControlName]="field.name" [value]="field?.value" [readonly]="field.readOnly" (keydown)="space($event)">
+
+              <input *ngSwitchCase="'email'" matInput [formControlName]="field.name" [value]="field?.value" [readonly]="field.readOnly" (keydown)="space($event)">
+
+              <input *ngSwitchCase="'alphanumericWithSpecialChar'" matInput [formControlName]="field.name"
+                     [value]="field?.value" [readonly]="field.readOnly" (keydown)="space($event)">
+
+              <textarea *ngSwitchCase="'textArea'" matInput [formControlName]="field.name"
+                        [value]="field?.value" (keydown)="space($event)"></textarea>
+
+              <mat-select *ngSwitchCase="'dropdown'" [formControlName]="field.name" [value]="field?.value" (selectionChange)="OnContactTypeChange($event,field)"
+                          [disabled]="field.readOnly">
+                <mat-option *ngFor="let option of field.dropdownList" [value]="option.id">
+                  {{
+                    option.name
+                  }}
+                </mat-option>
+              </mat-select>
+
+              <mat-select *ngSwitchCase="'dropdownWithSearch'" [formControlName]="field.name" [value]="field?.value">
+                <input *ngIf="operation == 'create'" class="inputsearch" type="text" autocomplete="on" matInput
+                    placeholder="Search" (keydown)="handleInput($event)"
+                    (input)="OnEmploySearch($event, field.name)" />
+                <mat-option>Select</mat-option>
+                <mat-option *ngFor="let option of field.dropdownList" [value]="option.id">{{
+                    option.name }}</mat-option>
+            </mat-select>
+            <ng-container *ngIf="field.name === 'validityEnd'">
+
+              <input class="formdatepicker" *ngSwitchCase="'date'" matInput [matDatepicker]="picker"
+              [formControlName]="field.name" [disabled]="field.readOnly" 
+              [min]=" field.name === 'validityEnd'
+                  ?  minStartValidityEndDate
+                  : null " />
+              <mat-datepicker-toggle class="datepicker" matSuffix *ngIf="field.validationType === 'date'"
+                  [for]="picker"></mat-datepicker-toggle>
+
+              <mat-datepicker #picker></mat-datepicker>
+            </ng-container>
+            <ng-container *ngIf="field.name === 'validityStart'">
+
+              <input class="formdatepicker" *ngSwitchCase="'date'" matInput [matDatepicker]="picker"
+              [formControlName]="field.name" [disabled]="field.readOnly" 
+              [min]="field.name === 'validityStart'
+                  ? minStartValidityStartDate : null" />
+              <mat-datepicker-toggle class="datepicker" matSuffix *ngIf="field.validationType === 'date'"
+                  [for]="picker"></mat-datepicker-toggle>
+
+              <mat-datepicker #picker></mat-datepicker>
+            </ng-container>
+
+            </ng-container>
+            <mat-error *ngIf="dynamicMatForm.get(field.name)?.errors?.['minlength']">
+              Input should have a minimum length of {{field.minLength}} characters.
+            </mat-error>
+            <mat-error *ngIf="dynamicMatForm.get(field.name)?.invalid && (dynamicMatForm.get(field.name)?.dirty || dynamicMatForm.get(field.name)?.touched)">
+              <span *ngIf="dynamicMatForm.get(field.name)?.errors?.['required']">This field is required.</span>
+              <span *ngIf="dynamicMatForm.get(field.name)?.errors?.['pattern']">Invalid value.</span>
+            </mat-error>
+          </mat-form-field>
+  
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <div [ngClass]="component == 'ODCchild' ? 'action-btn' : 'action-btn-new'">
+      <button *ngIf="readOnly" class="save-btn" mat-raised-button color="primary" (click)="editModeOn()">Edit</button>
+      <ng-container>
+        <button *ngIf="!readOnly" class="save-btn" [disabled]="dynamicMatForm.invalid" mat-raised-button color="primary" type="submit">Save</button>
+      </ng-container>
+      <button class="cancel-btn" mat-raised-button color="primary" type="submit" (click)="onClose($event)">Cancel</button>
+  
+    </div>
+  </form>
+  

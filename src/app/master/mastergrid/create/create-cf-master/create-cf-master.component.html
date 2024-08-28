@@ -1,0 +1,158 @@
+<div class="main_block">
+
+    <div class="grid_header">
+      <div class="left_title">
+        <h1 class="grid_title">{{title}}</h1>
+      </div>
+      <div class="right_buttons">
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-secondary"
+          (click)="cancel()"
+        >
+        Cancel
+
+        </button>
+
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-primary"
+          (click) = "saveMaster()"
+        >
+        Save
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="errorMessage.length>0">
+    <div class="grid_header">
+      <span style="color:red">{{ errorMessage}}</span>
+
+    </div>
+  </div>
+
+
+    <!-- row1 -->
+    <div class="row">
+
+        <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+            <mat-label>Id</mat-label>
+            <input
+    
+              matInput
+              placeholder="Id"
+              [(ngModel)]="id"
+    
+            />
+        </mat-form-field>
+    
+        <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+            <mat-label>Name</mat-label>
+            <input
+    
+              matInput
+              placeholder="Name"
+              [(ngModel)]="name"
+    
+            />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+            <mat-label>CompanyCode</mat-label>
+            <input
+    
+              matInput
+              placeholder="CompanyCode"
+              [(ngModel)]="companyCode"
+            />
+        </mat-form-field>
+    
+    </div>
+
+      <!-- row2 -->
+  <div class="row">
+
+
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>Source</mat-label>
+        <input
+
+          matInput
+          placeholder="Source"
+          [(ngModel)]="source"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>IsActive</mat-label>
+        <input
+
+          matInput
+          placeholder="IsActive"
+          [(ngModel)]="isActive"
+
+        />
+    </mat-form-field>
+
+
+
+    <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Created Date</mat-label>
+
+        <input matInput [matDatepicker]="CreatedDatePicker" placeholder="CreatedDate" [(ngModel)]="createdDate">
+        <mat-datepicker-toggle matSuffix [for]="CreatedDatePicker">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #CreatedDatePicker></mat-datepicker>
+      </mat-form-field>
+
+</div>
+
+
+  <!-- row3 -->
+<div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>CreatedBy</mat-label>
+        <input
+
+          matInput
+          placeholder="CreatedBy"
+          [(ngModel)]="createdBy"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>UpdatedDate</mat-label>
+
+        <input matInput [matDatepicker]="UpdatedDatePicker" placeholder="UpdatedDate" [(ngModel)]="updatedDate">
+        <mat-datepicker-toggle matSuffix [for]="UpdatedDatePicker">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #UpdatedDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>UpdatedBy</mat-label>
+        <input
+
+          matInput
+          placeholder="UpdatedBy"
+          [(ngModel)]="updatedBy"
+
+        />
+    </mat-form-field>
+
+</div>

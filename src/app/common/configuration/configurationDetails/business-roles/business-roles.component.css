@@ -1,0 +1,26 @@
+.button-secondary {
+    color: #007bc0;
+    font-family: Bosch-Sans;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    line-height: 24px;
+    cursor: pointer;
+    width: 120px;
+    border-width: 1px;
+    border-color: #007bc0;
+    border-style: solid;
+    border-radius: 0;
+    padding: 5px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+  }
+
+  .addbutton{
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom:10px;
+  }

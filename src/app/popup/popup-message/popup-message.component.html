@@ -1,0 +1,30 @@
+<div>
+  <div class="header">
+    <div class="title">{{ title }}</div>
+    <div class="close-btn">
+      <mat-icon matTooltip="Close" (click)="onClose()">close</mat-icon>
+    </div>
+  </div>
+</div>
+<mat-dialog-content>
+  <div class="approval-section">
+    {{ message }}
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="button-wrappper">
+    <button
+      mat-button
+      class="btn-hover-primary arrow space"
+      (click)="onClose()"
+      type="button"
+    >
+      <div class="btn-wrapper">
+        <div class="icon">
+          <span class="cancel-icon-white"></span>
+        </div>
+        <div class="btn-name">Close</div>
+      </div>
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,89 @@
+.notification-container {
+  width: 500px;
+  position: absolute;
+  right: 0;
+  top: 60px;
+  z-index: 100;
+  box-shadow: -5px 4px 7px 1px rgba(34, 35, 58, 0.5);
+  background: #fff;
+
+  .view-all {
+    text-align: end;
+  }
+  .notification-count {
+    padding: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .notification-count img {
+    width: 20px;
+    height: 20px;
+    float: right;
+    cursor: pointer;
+  }
+
+  .space {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .model-container {
+    padding: 10px;
+    background-color: #f2f2f2;
+  }
+  mat-card.mat-card {
+    background-color: white;
+    font-size: 14px;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .dot {
+      img {
+        width: 15px;
+      }
+    }
+
+    .date {
+      color: #007bc0;
+      padding-left: 124px;
+    }
+
+    .content {
+      padding-left: 16px;
+      display: flex;
+      line-height: 24px;
+      overflow-x: hidden;
+     
+      .description {
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor :pointer;
+      }
+    }
+  }
+
+  .no-notification {
+    text-align: center;
+    font-size: 14px;
+  }
+}
+
+.list-custom{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 300px;
+}
+
+.mat-card {
+  width: 95%;
+  text-overflow: ellipsis;
+}
+
+.tooltip{
+  background-color: black;
+}

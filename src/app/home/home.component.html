@@ -1,0 +1,10 @@
+<div class="home-card">
+  <app-card
+    *ngFor="let homecard of homeCards"
+    [bgImg]="homecard.backgroundImg"
+    [title]="homecard.title"
+    [icon]="homecard.icon"
+    [contentDescription]="homecard.contentDescription"
+    [path]="homecard.path"
+  ></app-card>
+</div>

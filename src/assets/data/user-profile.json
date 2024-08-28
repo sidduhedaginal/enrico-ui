@@ -1,0 +1,18 @@
+{
+  "status": 0,
+  "statusStr": "string",
+  "actionDate": "2023-05-23T07:42:13.433Z",
+  "data": [
+    {
+      "profilePicture": "",
+      "profileName": "Siddappa Hedaginal P",
+      "profileGroup": "BD/XSE3",
+      "company": "BD",
+      "group": "XSE3",
+      "department": "XSE",
+      "section": "XSE",
+      "roles": ["Delivery Manager", "Department Head"]
+    }
+  ],
+  "requestToken": "string"
+}

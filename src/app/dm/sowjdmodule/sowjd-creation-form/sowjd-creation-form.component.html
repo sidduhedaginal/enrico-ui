@@ -1,0 +1,1270 @@
+<div class="sowform_title">
+  <h4 class="title"></h4>
+  <div class="upper">{{ SowJdNumber }}</div>
+</div>
+<ng-container [ngSwitch]="stepperOrientation | async">
+  <div *ngSwitchCase="'horizontal'"></div>
+  <div *ngSwitchCase="'vertical'"></div>
+</ng-container>
+
+<mat-stepper
+  labelPosition="bottom"
+  class="example-stepper"
+  [orientation]="(stepperOrientation | async)!"
+>
+  <form [formGroup]="myForm">
+    <mat-step [completed]="false" [stepControl]="projectInfo">
+      <div formGroupName="projInfo">
+        <ng-template matStepLabel="1">Project Info</ng-template>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>SoW JD Type</mat-label>
+              <mat-select matNativeControl formControlName="sowJdTypeId">
+                <mat-option
+                  *ngFor="let item of sowjdmasterdata.sowJdTypeDetails"
+                  [value]="item.id"
+                >
+                  {{ item.sowJdType }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['sowJdTypeId'].touched &&
+                  projectInfo.controls['sowJdTypeId'].invalid
+                "
+              >
+                Please choose SoW JD Type
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>SoW JD Status</mat-label>
+              <input
+                class="inputmat"
+                matInput
+                placeholder="status"
+                [value]="inputstatus"
+                disabled
+                (input)="onstatusChange($event)"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>Description</mat-label>
+              <input
+                formControlName="description"
+                class="inputmat"
+                matInput
+                (keydown)="sowjdService.space($event)"
+                placeholder="description"
+              />
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['description'].touched &&
+                  projectInfo.controls['description'].invalid
+                "
+              >
+                Please add description
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>Company</mat-label>
+              <mat-select
+                formControlName="companyId"
+                (selectionChange)="onCompanyChange($event.value)"
+              >
+                <mat-option
+                  *ngFor="let company of CompanyDetail"
+                  [value]="company.id"
+                >
+                  {{
+                    company.companyCode + " (" + company.companyShortName + ")"
+                  }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['companyId'].invalid &&
+                  projectInfo.controls['companyId'].touched
+                "
+              >
+                Please choose Company
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>Currency</mat-label>
+              <input
+                matInput
+                [value]="currencyList[0]?.currencyName"
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <ng-container>
+              <div *ngIf="companyId; else nonLocation">
+                <app-search-bar-location-plant
+                  (selectionChangeEvent)="changedLocationPlantEvent($event)"
+                  [labelValue]="'Location/Plant'"
+                  [isRequired]="true"
+                  [resetClicked]="isLocationPlantDropDownReset"
+                  (resetEmitter)="resetLocationPlantDropdown($event)"
+                  [companyId]="companyId"
+                  [searchPlaceholder]="'plantCode'"
+                  [searchPlaceholderId]="'id'"
+                  [selectedId]="projectInfo.controls['plantId'].value"
+                ></app-search-bar-location-plant>
+              </div>
+              <ng-template #nonLocation>
+                <app-search-bar-location-plant
+                  (selectionChangeEvent)="changedLocationPlantEvent($event)"
+                  [labelValue]="'Location/Plant'"
+                  [isRequired]="true"
+                  [resetClicked]="isLocationPlantDropDownReset"
+                  (resetEmitter)="resetLocationPlantDropdown($event)"
+                  [companyId]="companyId"
+                  [searchPlaceholder]="'plantCode'"
+                  [searchPlaceholderId]="'id'"
+                  [selectedId]="projectInfo.controls['plantId'].value"
+                ></app-search-bar-location-plant>
+              </ng-template>
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['plantId'].touched &&
+                  projectInfo.controls['plantId'].invalid
+                "
+              >
+                Please select Location/Plant
+              </mat-error>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <ng-container>
+              <div *ngIf="companyId; else nonWBS">
+                <app-search-bar-wbs
+                  (selectionChangeEvent)="changedEventWBSValue($event)"
+                  [labelValue]="'WBS'"
+                  [companyId]="companyId"
+                  [resetClicked]="isWBSDropDownReset"
+                  (resetEmitter)="resetDropdown($event)"
+                  [isRequired]="false"
+                  [searchPlaceholder]="'wbselement'"
+                  [searchPlaceholderId]="'id'"
+                  [selectedId]="projectInfo.controls['wbsId'].value"
+                ></app-search-bar-wbs>
+              </div>
+              <ng-template #nonWBS>
+                <app-search-bar-wbs
+                  (selectionChangeEvent)="changedEventWBSValue($event)"
+                  [labelValue]="'WBS'"
+                  [companyId]="companyId"
+                  [resetClicked]="isWBSDropDownReset"
+                  (resetEmitter)="resetDropdown($event)"
+                  [isRequired]="false"
+                  [searchPlaceholder]="'wbselement'"
+                  [searchPlaceholderId]="'id'"
+                  [selectedId]="projectInfo.controls['wbsId'].value"
+                ></app-search-bar-wbs>
+              </ng-template>
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['wbsId'].invalid &&
+                  projectInfo.controls['wbsId'].touched
+                "
+              >
+                Please choose WBS
+              </mat-error>
+            </ng-container>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>Name of the Customer</mat-label>
+              <input
+                formControlName="customerName"
+                class="inputmat"
+                matInput
+                (keydown)="sowjdService.space($event)"
+                placeholder="CustomerName"
+              />
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['customerName'].touched &&
+                  projectInfo.controls['customerName'].invalid
+                "
+              >
+                Please add Customer
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>Internal Resource check done? </mat-label>
+              <mat-select
+                matNativeControl
+                formControlName="internalResourceCheckdone"
+              >
+                <mat-option
+                  *ngFor="let app of masterInternalResourceCheckDone"
+                  [value]="app.id"
+                >
+                  {{ app.internalResourceCheckDone }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['internalResourceCheckdone'].touched &&
+                  projectInfo.controls['internalResourceCheckdone'].invalid
+                "
+              >
+                Please choose Internal Resource check done
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label
+                >Customer Approval Available for using outsourcing?</mat-label
+              >
+              <mat-select
+                matNativeControl
+                formControlName="isCustomerApprovalAvailable"
+              >
+                <mat-option
+                  *ngFor="let app of masterCustomerApprovalAvailable"
+                  [value]="app.id"
+                >
+                  {{ app.customerApprovalAvailable }}
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['isCustomerApprovalAvailable'].touched &&
+                  projectInfo.controls['isCustomerApprovalAvailable'].invalid
+                "
+              >
+                Please choose Customer Approval Available
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>Customer Type</mat-label>
+              <mat-select
+                matNativeControl
+                formControlName="customerTypeId"
+                (selectionChange)="onGdprChange()"
+              >
+                <mat-option
+                  *ngFor="let type of customerTypeDetails"
+                  [value]="type.id"
+                >
+                  {{ type.customerType }}
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['customerTypeId'].touched &&
+                  projectInfo.controls['customerTypeId'].invalid
+                "
+              >
+                Please choose Customer Type
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>Is the project GDPR relevant?</mat-label>
+              <mat-select
+                matNativeControl
+                formControlName="isprojectGDPRRelevant"
+                (selectionChange)="onGdprChange()"
+              >
+                <mat-option
+                  *ngFor="let app of masterIsTheProjectGDPRRelevant"
+                  [value]="app.id"
+                >
+                  {{ app.isTheProjectGDPRRelevant }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['isprojectGDPRRelevant'].touched &&
+                  projectInfo.controls['isprojectGDPRRelevant'].invalid
+                "
+              >
+                Please choose project GDPR
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4" *ngIf="isBoschCustomer">
+            <mat-form-field class="matform1">
+              <mat-label
+                >Is it clarified if the standard GPA is sufficient?</mat-label
+              >
+              <mat-select
+                matNativeControl
+                formControlName="isStandardGPAIsSufficient"
+              >
+                <mat-option
+                  *ngFor="let app of masterIsTheStandardGPAClarified"
+                  [value]="app.id"
+                >
+                  {{ app.isTheStandardGPAClarified }}
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['isStandardGPAIsSufficient'].touched &&
+                  projectInfo.controls['isStandardGPAIsSufficient'].invalid
+                "
+              >
+                Please choose Standard GPA
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row" *ngIf="isGlobalCustomer">
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>C2P agreement?</mat-label>
+              <mat-select matNativeControl formControlName="c2PAgreement">
+                <mat-option
+                  *ngFor="let app of masterC2PAgreement"
+                  [value]="app.id"
+                >
+                  {{ app.c2PAgreement }}
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['c2PAgreement'].touched &&
+                  projectInfo.controls['c2PAgreement'].invalid
+                "
+              >
+                Please choose c2P Agreement
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label
+                >Does "Resource Augmentation" need extension of C2P?</mat-label
+              >
+              <mat-select
+                matNativeControl
+                formControlName="isResourceAugmentationNeedExtensionOfC2P"
+              >
+                <mat-option
+                  *ngFor="let app of masterResourceAugmentationOfC2P"
+                  [value]="app.id"
+                >
+                  {{ app.resourceAugmentationOfC2P }}
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  projectInfo.controls[
+                    'isResourceAugmentationNeedExtensionOfC2P'
+                  ].touched &&
+                  projectInfo.controls[
+                    'isResourceAugmentationNeedExtensionOfC2P'
+                  ].invalid
+                "
+              >
+                Please choose Resource Augmentation
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform1">
+              <mat-label>C2P document prepared?</mat-label>
+              <mat-select
+                matNativeControl
+                formControlName="c2PDocumentPrepared"
+              >
+                <mat-option
+                  *ngFor="let app of masterC2PDocumentPrepared"
+                  [value]="app.id"
+                >
+                  {{ app.c2PDocumentPrepared }}
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  projectInfo.controls['c2PDocumentPrepared'].touched &&
+                  projectInfo.controls['c2PDocumentPrepared'].invalid
+                "
+              >
+                Please choose c2P Document Prepared
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="approval-section-heading">
+          <div class="approval-content-heading">Outsourcing Type</div>
+          <div class="approval-section-withaout-background">
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="matform1">
+                  <mat-label>Location Mode </mat-label>
+                  <mat-select
+                    matNativeControl
+                    formControlName="resourceLocationId"
+                  >
+                    <mat-option
+                      *ngFor="let plant of locationModeDetails"
+                      [value]="plant.id"
+                    >
+                      {{ plant.locationMode }}
+                    </mat-option>
+                  </mat-select>
+
+                  <mat-error
+                    *ngIf="
+                      projectInfo.controls['resourceLocationId'].touched &&
+                      projectInfo.controls['resourceLocationId'].invalid
+                    "
+                  >
+                    Please choose location Mode
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="matform1">
+                  <mat-label>Outsourcing type </mat-label>
+                  <mat-select
+                    matNativeControl
+                    formControlName="outsourcingTypeId"
+                  >
+                    <mat-option
+                      *ngFor="let item of outSourcingTypeDetails"
+                      [value]="item.id"
+                    >
+                      {{ item.outSourcingType }}
+                    </mat-option>
+                  </mat-select>
+
+                  <mat-error
+                    *ngIf="
+                      projectInfo.controls['outsourcingTypeId'].touched &&
+                      projectInfo.controls['outsourcingTypeId'].invalid
+                    "
+                  >
+                    Please choose outsourcing Type
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col"></div>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div class="approval-section-withaout-background">
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="matform1">
+                <mat-label>Is this is a repeat outsourcing? </mat-label>
+                <mat-select
+                  matNativeControl
+                  formControlName="isRepeatOutsourcing"
+                  (selectionChange)="onRepeatOutsourcing()"
+                >
+                  <mat-option
+                    *ngFor="let app of repeatOutsourcing"
+                    [value]="app"
+                  >
+                    {{ app }}
+                  </mat-option>
+                </mat-select>
+
+                <mat-error
+                  *ngIf="
+                    projectInfo.controls['isRepeatOutsourcing'].touched &&
+                    projectInfo.controls['isRepeatOutsourcing'].invalid
+                  "
+                >
+                  Please choose Repeat Outsourcing
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <ng-container *ngIf="checkReferrence">
+                <app-search-bar-reference
+                  (selectionChangeEvent)="changedEventReferenceValue($event)"
+                  [labelValue]="'SoW JD Reference No.'"
+                  [isRequired]="true"
+                  [companyId]="companyId"
+                  [resetClicked]="isReferenceDropDownReset"
+                  (resetEmitter)="resetReferenceDropdown($event)"
+                  [searchPlaceholder]="'sowJdNumber'"
+                  [searchPlaceholderId]="'id'"
+                  [selectedId]="projectInfo.get('sowjdReference').value"
+                ></app-search-bar-reference>
+              </ng-container>
+            </div>
+            <div class="col"></div>
+          </div>
+          <hr />
+        </div>
+
+        <div class="approval-section-heading">
+          <div class="approval-content-heading">SoW JD Documents</div>
+          <div class="approval-section-withaout-background">
+            <div class="row">
+              <div>
+                <div
+                  class="document-template document"
+                  title="Download template"
+                  (click)="downloadTemplate()"
+                ></div>
+              </div>
+              <div class="imgstyle2">
+                <div class="ImgContainer imgstyle" (click)="fileInput.click()">
+                  <span>
+                    <input
+                      id="inputTag"
+                      type="file"
+                      #fileInput
+                      hidden
+                      (change)="uploadFile($event)"
+                    />
+                  </span>
+                </div>
+              </div>
+
+              <div class="deldiv">
+                <div
+                  class="delicon"
+                  *ngIf="sowjdDocumentdata.length === 0 && File.length === 0"
+                >
+                  <span>No Documents Founds</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="approval-section-heading" *ngIf="docRowdata.length !== 0">
+          <div class="approval-section">
+            <div>
+              <div class="container-fluid">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">File Name</th>
+                      <th scope="col">Documents</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let doc of docRowdata; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        {{ doc.documentName }}
+                      </td>
+                      <td>
+                        <div style="display: flex">
+                          <a
+                            class="cloud-download"
+                            href="{{ doc.documentUrl }}{{
+                              sowjdDocumentdata.sasToken
+                            }}"
+                            ><div class="cloud-download"></div
+                          ></a>
+                        </div>
+                      </td>
+                      <td>
+                        <div style="display: flex">
+                          <a (click)="deleteDocument(doc, i)"
+                            ><div class="deleteblue"></div>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="button-wrappper">
+        <div></div>
+        <div class="form-btn-align">
+          <button
+            mat-button
+            class="btn-hover arrow space"
+            (click)="SaveForm('projectinfo')"
+            [disabled]="
+              projectInfo.controls['sowJdTypeId'].invalid ||
+              projectInfo.controls['companyId'].invalid ||
+              projectInfo.controls['resourceLocationId'].invalid ||
+              projectInfo.controls['outsourcingTypeId'].invalid
+            "
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="save-icon"></span>
+              </div>
+              <div class="btn-name">Save as draft</div>
+            </div>
+          </button>
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            matStepperNext
+            (click)="SaveForm('projectinfo')"
+            [disabled]="
+              projectInfo.controls['sowJdTypeId'].invalid ||
+              projectInfo.controls['companyId'].invalid ||
+              projectInfo.controls['resourceLocationId'].invalid ||
+              projectInfo.controls['outsourcingTypeId'].invalid ||
+              projectInfo.controls['customerTypeId'].invalid
+            "
+          >
+            <div class="btn-wrapper">
+              <div class="btn-name">Next</div>
+              <div class="icon">
+                <span class="next-icon"></span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step [completed]="false" [stepControl]="departmentDetails">
+      <div formGroupName="deptDetails">
+        <ng-template matStepLabel>Project Organization</ng-template>
+        <div class="row">
+          <div class="col-4">
+            <ng-container *ngIf="companyId">
+              <app-search-bar-group
+                (selectionChangeEvent)="changedEventValue($event)"
+                [labelValue]="'Group'"
+                [isRequired]="true"
+                [isDisabled]="isDisabled"
+                [resetClicked]="isGroupDropDownReset"
+                (resetEmitter)="resetGroupDropdown($event)"
+                [companyId]="companyId"
+                [searchPlaceholder]="'groupCode'"
+                [selectedId]="departmentDetails.get('group').value"
+              ></app-search-bar-group>
+              <mat-error
+                *ngIf="
+                  departmentDetails.controls['group'].invalid &&
+                  departmentDetails.controls['group'].touched
+                "
+              >
+                Please choose Group
+              </mat-error>
+              <mat-error *ngIf="!isDHorSpocExist">
+                {{ deptMessage }}
+              </mat-error>
+            </ng-container>
+          </div>
+        </div>
+        <div class="approval-section dept-pad">
+          <div>
+            <div>
+              <div class="row">
+                <div class="col colbackgrounddesign">
+                  <div class="headerstyle">Department</div>
+                  <div>{{ groupdepartment }}</div>
+                </div>
+                <div class="col colbackgrounddesign">
+                  <div class="headerstyle">Section</div>
+                  <div>{{ groupsection }}</div>
+                </div>
+                <div class="col colbackgrounddesign">
+                  <div class="headerstyle">BU</div>
+                  <div>{{ groupbu }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="approval-section-heading">
+          <div class="approval-content-heading">User Department Details</div>
+          <div class="approval-section-border">
+            <ag-grid-angular
+              class="ag-theme-alpine"
+              [columnDefs]="userdetailscolumnDefs"
+              [defaultColDef]="defaultColDef"
+              [rowData]="departmentusrdetails"
+              [paginationPageSize]="5"
+              [paginationAutoPageSize]="false"
+              [paginateChildRows]="true"
+              [animateRows]="true"
+              [pagination]="true"
+              [suppressAggFuncInHeader]="true"
+              (gridReady)="MyUserDetails($event)"
+            ></ag-grid-angular>
+          </div>
+        </div>
+      </div>
+      <div class="button-wrappper pt-4">
+        <button
+          mat-button
+          class="btn-hover arrow space"
+          type="button"
+          (click)="SaveForm('userdetail')"
+          matStepperPrevious
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="previous-icon"></span>
+            </div>
+            <div class="btn-name">Previous</div>
+          </div>
+        </button>
+        <div class="form-btn-align">
+          <button
+            mat-button
+            class="btn-hover arrow space"
+            (click)="SaveForm('userdetail')"
+            [disabled]="
+              departmentDetails.controls['group'].invalid || !isDHorSpocExist
+            "
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="save-icon"></span>
+              </div>
+              <div class="btn-name">Save as draft</div>
+            </div>
+          </button>
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            matStepperNext
+            (click)="SaveForm('userdetail')"
+            [disabled]="
+              departmentDetails.controls['group'].invalid || !isDHorSpocExist
+            "
+          >
+            <div class="btn-wrapper">
+              <div class="btn-name">Next</div>
+              <div class="icon">
+                <span class="next-icon"></span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step [completed]="false" [stepControl]="purchaseOrder">
+      <div formGroupName="PO">
+        <ng-template matStepLabel>Fund Info</ng-template>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="matform">
+              <mat-label>Project Start</mat-label>
+              <input
+                class="inputmat"
+                [matDatepickerFilter]="weekendsDatesFilter"
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Project Start Date"
+                formControlName="startDate"
+                [min]="projectStartDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker">
+                <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+              <mat-error
+                *ngIf="
+                  purchaseOrder.controls['startDate'].touched &&
+                  purchaseOrder.controls['startDate'].invalid
+                "
+              >
+                Please select Project Start
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform">
+              <mat-label>Project End</mat-label>
+              <input
+                class="inputmat"
+                [matDatepickerFilter]="weekendsDatesFilter"
+                matInput
+                [matDatepicker]="picker1"
+                placeholder="Project End Date"
+                formControlName="endDate"
+                [min]="getValidityEndMinDate()"
+                [max]="getValidityEndMaxDate()"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+
+              <mat-error
+                *ngIf="
+                  purchaseOrder.controls['endDate'].touched &&
+                  purchaseOrder.controls['endDate'].invalid
+                "
+              >
+                Please select Project End
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform">
+              <mat-label>Budget Code</mat-label>
+              <mat-select matNativeControl formControlName="budgetCodeId">
+                <mat-option
+                  [disabled]="true"
+                  *ngFor="let budget of budgetCodeDetails"
+                  [value]="budget.id"
+                  >{{ budget.budgetCode }}</mat-option
+                >
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  purchaseOrder.controls['budgetCodeId'].touched &&
+                  purchaseOrder.controls['budgetCodeId'].invalid
+                "
+              >
+                Please select Budget Code
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <ng-container>
+              <app-search-bar-costcenter
+                *ngIf="SOWJDID"
+                (selectionChangeEvent)="changedEventCostcenterValue($event)"
+                [labelValue]="'Cost Center'"
+                [isRequired]="true"
+                [resetClicked]="isCostCenterDropDownReset"
+                (resetEmitter)="resetCostCenterDropdown($event)"
+                [searchPlaceholder]="'costCenter'"
+                [searchPlaceholderId]="'id'"
+                [selectedId]="purchaseOrder.get('costCenter').value"
+              ></app-search-bar-costcenter>
+            </ng-container>
+            <mat-error
+              *ngIf="
+                purchaseOrder.controls['costCenter'].touched &&
+                purchaseOrder.controls['costCenter'].invalid
+              "
+            >
+              Please select Cost Center
+            </mat-error>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform">
+              <mat-label>Material Group</mat-label>
+
+              <mat-select matNativeControl formControlName="materialGroupId">
+                <mat-option
+                  *ngFor="let item1 of materialGroupDetails"
+                  [value]="item1.id"
+                  >{{ item1.materialGroup }}</mat-option
+                >
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  purchaseOrder.controls['materialGroupId'].touched &&
+                  purchaseOrder.controls['materialGroupId'].invalid
+                "
+              >
+                Please select Material Group
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="matform">
+              <mat-label>Fund</mat-label>
+              <mat-select matNativeControl formControlName="fundId">
+                <mat-option
+                  *ngFor="let fund of fundCodeDetails"
+                  [value]="fund.id"
+                  >{{ fund.fundCode }}</mat-option
+                >
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  purchaseOrder.controls['fundId'].touched &&
+                  purchaseOrder.controls['fundId'].invalid
+                "
+              >
+                Please select Fund
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <ng-container *ngIf="companyId">
+              <app-search-bar-fund-center
+                (selectionChangeEvent)="changedFundCenterEvent($event)"
+                [labelValue]="'Fund Center Name'"
+                [isRequired]="true"
+                [resetClicked]="isFundCenterDropDownReset"
+                (resetEmitter)="resetFundCenterDropdown($event)"
+                [companyId]="companyId"
+                [searchPlaceholder]="'fundCenter'"
+                [searchPlaceholderId]="'id'"
+                [selectedId]="purchaseOrder.get('fundCenterId').value"
+              ></app-search-bar-fund-center>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="button-wrappper pt-20">
+        <button
+          mat-button
+          class="btn-hover arrow space"
+          type="button"
+          (click)="SaveForm('podetail')"
+          matStepperPrevious
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="previous-icon"></span>
+            </div>
+            <div class="btn-name">Previous</div>
+          </div>
+        </button>
+        <div class="form-btn-align">
+          <button
+            mat-button
+            class="btn-hover arrow space"
+            (click)="SaveForm('podetail')"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="save-icon"></span>
+              </div>
+              <div class="btn-name">Save as draft</div>
+            </div>
+          </button>
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            matStepperNext
+            (click)="SaveForm('podetail')"
+          >
+            <div class="btn-wrapper">
+              <div class="btn-name">Next</div>
+              <div class="icon">
+                <span class="next-icon"></span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step [completed]="false" [stepControl]="costSkillsetVendors">
+      <div formGroupName="costskillset">
+        <ng-template matStepLabel>Skillset and Vendors</ng-template>
+        <div>
+          <div class="approval-section-heading">
+            <div class="approval-content-heading pb-3">Outsourcing Volume</div>
+
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+                      <div>Internal Equivalent Capacity</div>
+                      <div>
+                        {{
+                          internalEquivalentCapacity
+                            | numberFormat
+                              : companyLocale
+                              : companyNumericFormat
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Internal Equivalent PMO</div>
+                      <div>
+                        {{
+                          internalEquivalentPMO
+                            | numberFormat
+                              : companyLocale
+                              : companyNumericFormat
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Guidance Cost</div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+                      <div>Personal Cost</div>
+                      <div>
+                        {{
+                          personalCost
+                            | countryCurrency
+                              : companyCurrencyName
+                              : companyLocale
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>OH Cost</div>
+                      <div>
+                        {{
+                          ohCost
+                            | countryCurrency
+                              : companyCurrencyName
+                              : companyLocale
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Total Cost</div>
+                      <div>
+                        {{
+                          totalCost
+                            | countryCurrency
+                              : companyCurrencyName
+                              : companyLocale
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Target Savings (%)</div>
+                      <div>{{ targetSavings }}</div>
+                    </div>
+                    <div class="col">
+                      <div>Guidance Cost</div>
+                      <div>
+                        {{
+                          guidanceCost
+                            | countryCurrency
+                              : companyCurrencyName
+                              : companyLocale
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="align-btn pb-2">
+              <div class="approval-content-heading">SOW JD Demand</div>
+              <div class="button-wrappper">
+                <button
+                  mat-button
+                  class="btn-hover-primary arrow space"
+                  (click)="addNewSkillSetPopup('params')"
+                >
+                  <div class="btn-wrapper">
+                    <div class="icon">
+                      <span class="add-icon"></span>
+                    </div>
+                    <div class="btn-name">Add</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <div class="approval-section-border">
+              <ag-grid-angular
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefsSkillSet"
+                [defaultColDef]="defaultColDef"
+                [rowData]="rowData"
+                [paginationPageSize]="5"
+                [paginationAutoPageSize]="false"
+                [paginateChildRows]="true"
+                [animateRows]="true"
+                [pagination]="true"
+                [suppressAggFuncInHeader]="true"
+                (gridReady)="onSkillsetGridReady($event)"
+                (cellClicked)="onCellClicked($event)"
+                [autoGroupColumnDef]="autoGroupColumnDef"
+                (firstDataRendered)="onFirstDataRendered($event)"
+                [suppressMenuHide]="true"
+                [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+                (filterChanged)="onFilterChanged($event)"
+                (horizontalScroll)="onHorizontalScroll($event)"
+                (sortChanged)="onSortChanged($event)"
+              ></ag-grid-angular>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="align-btn pb-2">
+              <div class="approval-content-heading">Vendor Suggestions</div>
+              <div class="button-wrappper">
+                <button
+                  mat-button
+                  class="btn-hover-primary arrow space"
+                  (click)="addNewRowVendorPop()"
+                >
+                  <div class="btn-wrapper">
+                    <div class="icon">
+                      <span class="add-icon"></span>
+                    </div>
+                    <div class="btn-name">Add</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <!--Non Rate Card-->
+            <div
+              class="approval-section-border"
+              *ngIf="
+                formValues?.sowJdTypeId ===
+                'c65aaf67-071a-4b0f-95d0-9f6af420fb35'
+              "
+            >
+              <ag-grid-angular
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefsPOVendorNRC"
+                [defaultColDef]="defaultColDef"
+                [rowData]="rowDataPOVendor"
+                [paginationPageSize]="5"
+                [paginationAutoPageSize]="false"
+                [paginateChildRows]="true"
+                [animateRows]="true"
+                [pagination]="true"
+                [suppressAggFuncInHeader]="true"
+                (gridReady)="onGridReadyPOVendor($event)"
+                (cellClicked)="onCellClickedPOVendor($event)"
+                [autoGroupColumnDef]="autoGroupColumnDef"
+                (firstDataRendered)="onFirstDataRendered($event)"
+                [suppressMenuHide]="true"
+                [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+                (filterChanged)="onFilterChanged($event)"
+                (horizontalScroll)="onHorizontalScroll($event)"
+                (sortChanged)="onSortChanged($event)"
+              ></ag-grid-angular>
+            </div>
+
+            <!--Rate Card-->
+            <div
+              class="approval-section-border"
+              *ngIf="
+                formValues?.sowJdTypeId ===
+                'dacd2c78-8fde-4ab8-91c5-fa4b2faa4a71'
+              "
+            >
+              <ag-grid-angular
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefsPOVendor"
+                [defaultColDef]="defaultColDef"
+                [rowData]="rowDataPOVendor"
+                [paginationPageSize]="5"
+                [paginationAutoPageSize]="false"
+                [paginateChildRows]="true"
+                [animateRows]="true"
+                [pagination]="true"
+                [suppressAggFuncInHeader]="true"
+                (gridReady)="onGridReadyPOVendor($event)"
+                (cellClicked)="onCellClickedPOVendor($event)"
+                [autoGroupColumnDef]="autoGroupColumnDef"
+                (firstDataRendered)="onFirstDataRendered($event)"
+                [suppressMenuHide]="true"
+                [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+                (filterChanged)="onFilterChanged($event)"
+                (horizontalScroll)="onHorizontalScroll($event)"
+                (sortChanged)="onSortChanged($event)"
+              ></ag-grid-angular>
+            </div>
+            <hr />
+          </div>
+        </div>
+      </div>
+      <div class="button-wrappper pt-20">
+        <button
+          mat-button
+          class="btn-hover arrow space"
+          type="button"
+          (click)="SaveForm('costdetail')"
+          matStepperPrevious
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="previous-icon"></span>
+            </div>
+            <div class="btn-name">Previous</div>
+          </div>
+        </button>
+        <div class="form-btn-align">
+          <button
+            mat-button
+            class="btn-hover arrow space"
+            (click)="SaveForm('costdetail')"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="save-icon"></span>
+              </div>
+              <div class="btn-name">Save as draft</div>
+            </div>
+          </button>
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            (click)="SubmitSowJdForm()"
+            [disabled]="myForm.invalid"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="checkmark-icon"></span>
+              </div>
+              <div class="btn-name">Submit</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </mat-step>
+  </form>
+</mat-stepper>

@@ -1,0 +1,36 @@
+<div>
+  <div class="header">
+    <div class="title">Confirmation</div>
+    <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose()"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+      <div class="message">Are you sure you want to delete?</div>
+      <div class="button-wrappper button-wrappper-center">
+        <button
+          mat-button
+          class="btn-hover arrow space"
+          (click)="deleteSkillSet()"
+        >
+          <div class="btn-wrapper">
+            <div class="btn-name">Yes</div>
+          </div>
+        </button>
+        <button
+          mat-button
+          class="btn-hover-primary arrow space"
+          (click)="onClose()"
+        >
+          <div class="btn-wrapper">
+            <div class="btn-name">No</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,28 @@
+<div class="header-items">
+    <div class="title">
+        <p mat-dialog-title class="custom-dialog">{{selectedMaster}}</p>
+    </div>
+    <div>
+        <mat-icon matTooltip="Close" class="close-btn" (click)="onClose($event)"
+          >close</mat-icon
+        >
+    </div>
+</div>
+
+<ng-container [ngSwitch]="formType">
+    <ng-container *ngSwitchCase="'dynamic'">
+        <lib-dynamic-form  (isFromSubmitted)="onFormSubmitted($event)"></lib-dynamic-form>
+    </ng-container>
+    <ng-container *ngSwitchCase="'static'">
+        <ng-container>
+            <lib-vendor-master [existingContacts]="existingContacts" (contactDetails)="vendorContactReceived($event)" (isVendorFromSubmitted)="onVendorFormSubmitted($event)"></lib-vendor-master>
+        </ng-container>
+      
+    </ng-container>
+    <ng-container *ngSwitchCase="'ODCchild'">
+        <ng-container>
+            <app-odc-addchildform [existingodcchild]="existingodcchild" (oDCDetails)="oDCReceived($event)" (isODCFromSubmitted)="onOdcFormSubmitted($event)"></app-odc-addchildform>
+        </ng-container>
+      
+    </ng-container>
+</ng-container>

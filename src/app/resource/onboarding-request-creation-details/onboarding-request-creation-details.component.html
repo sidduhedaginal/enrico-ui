@@ -1,0 +1,1470 @@
+<!-- Onboarding request Details Page -->
+<form [formGroup]="createdForm">
+  <div>
+    <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+      <app-resource-loader-ui></app-resource-loader-ui>
+    </div>
+    <div class="row" style="background: #fff;z-index: 99;position: sticky;top: 0;">
+      <div class="col-md-4 col-sm">
+
+        <h3 class="title-head mt-2" (click)="findInvalidControls()">Onboarding Request Details</h3>
+      </div>
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="userDetailsRoles == '/Vendors'">
+        <button mat-stroked-button class="m-2 actionBtn" (click)="cancelBtn()"> <mat-icon
+            class="gapSpaceIcon">close</mat-icon> Cancel</button>
+        <button *ngIf="iClikedEditButton==false" mat-stroked-button class="m-2 actionBtn"
+          (click)="saveButton('Save Draft')"> <img class="gapSpaceIcon" style="padding-right: 6px;"
+            src="./assets/icons/saveOnboardImg.svg" /> Save</button>
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem"
+          [ngClass]="!createdForm.valid?'disabledcolorClass':''" [disabled]="!createdForm.valid"
+          *ngIf="editSubmit !='EDIT' && getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back'"
+          (click)="submitDialog('Submit')"><img src="./assets/img/checkmark-bold.png" class="gapSpace2" />
+          Submit</button>
+
+        <button mat-stroked-button style="width: auto;" class="m-2 actionBtn selectedDefaultItem"
+          [ngClass]="!createdForm.valid?'disabledcolorClass':''" [disabled]="!createdForm.valid"
+          *ngIf="editSubmit =='EDIT' && getElementData.statusdescription !='First Level Sent Back'"
+          (click)="reSubmitDialogOpen('Resubmit')"><img src="./assets/img/checkmark-bold.png" class="gapSpace2" />
+          Submit/Edit</button>
+
+
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem"
+          [ngClass]="!createdForm.valid?'disabledcolorClass':''" [disabled]="!createdForm.valid"
+          *ngIf="getElementData.statusdescription =='First Level Sent Back' || getElementData.statusdescription =='Second Level Sent Back'"
+          (click)="reSubmitDialogOpen('Resubmit')"><img src="./assets/img/resubmit-frame.png" class="gapSpace2"
+            style="position: relative;bottom: 1px;padding: 3px;" /> Re-Submit</button>
+
+      </div>
+    </div>
+
+
+
+
+
+    <div class="mb-4" *ngIf="getElementData.statusdescription=='First Level Sent Back'">
+      <div class="md-stepper-horizontal">
+        <div class="md-step active second-done">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title"> <span>Yet to Submit </span></div>
+          <div class="md-step-action-by">{{vendorDetailsData?.vendorName}}</div>
+          <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}} </div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step in-active sent-back">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title sent-back">Sent Back</div>
+          <div class="md-step-action-by-active">
+            <div>{{onboardingFirstApproveList?.firstApproverName}}</div>
+            <div class="md-step-action-on">{{getDateFirstLevelSentBackDate|date:'dd-MMM-yyyy'}} </div>
+          </div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step second-done in-active">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title"><span> Yet to Approve</span></div>
+          <div class="md-step-action-by">{{onboardingFirstApproveList?.secondApproverName}}</div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mb-4" *ngIf="getElementData.statusdescription=='Second Level Sent Back'">
+      <div class="md-stepper-horizontal">
+        <div class="md-step active second-done">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title"> <span>Yet to Submit </span></div>
+          <div class="md-step-action-by">{{vendorDetailsData?.vendorName}}</div>
+          <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}} </div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step first-done active">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title tgrin"><span style="color:#3F8876">Approved</span></div>
+          <div class="md-step-action-by">{{onboardingFirstApproveList?.firstApproverName}}</div>
+          <div class="md-step-action-on">{{getDateFirstLevelApprovedDate|date:'dd-MMM-yyyy'}}</div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step in-active sent-back">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title sent-back">Sent Back</div>
+          <div class="md-step-action-by-active">
+            <div>{{onboardingFirstApproveList?.secondApproverName}}</div>
+            <div class="md-step-action-on">{{getDateSecondLevelSentBackDate|date:'dd-MMM-yyyy'}} </div>
+          </div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <h3>Order Information</h3>
+    <div class="bgClr">
+      <h3>SOW JD</h3>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Sign Off ID </span>
+          <span class="spanText"> {{getElementDataSignOff || '--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">SOW JD ID </span>
+          <span class="spanText"> {{getElementData.sowJdNumber || '--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">SOW JD Description</span>
+          <span class="spanText"> {{getElementData.sowjdDescription || '--'}} </span>
+        </div>
+
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">SOW JD Type</span>
+          <span class="spanText"> {{getElementData.sowJdType || '--'}}</span>
+        </div>
+
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Skillset</span>
+          <span class="spanText">{{getElementData.skillsetName || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Grade</span>
+          <span class="spanText">{{getElementData.grade || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Outsourcing Mode</span>
+          <span class="spanText">{{getElementData.outSourcingType || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+           <!-- <span class="spanLabel">Salary Level</span> -->
+            <!-- <span class="spanText">{{salaryLevelStatus}} </span> -->
+            <span class="spanLabel">Location Mode</span>
+            <span class="spanText">{{getElementData?.locationMode}} </span>
+        </div>
+
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Location</span>
+          <span class="spanText">{{getElementDataLocation || '--'}} </span>
+
+        </div>
+        <div class="col-md-3 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Sub/Work Location</mat-label>
+            <mat-select formControlName="subWorkLocation">
+              <mat-option [value]="v" *ngFor="let v of workLocationList">{{v.plantCode}} - {{v.name}}</mat-option>
+              <!-- <mat-option value="BGSW-BAN-Non-STP">BGSW-BAN-Non-STP </mat-option>
+<mat-option value="BGSW-BAN-STP"> BGSW-BAN-STP</mat-option>
+<mat-option value="BGSW-BAN-STP-KOR"> BGSW-BAN-STP-KOR</mat-option>
+<mat-option value="BGSW-COB-GTP">BGSW-COB-GTP </mat-option>
+<mat-option value="BGSW-COB-SEZ">BGSW-COB-SEZ </mat-option>
+<mat-option value="BGSW-COB-SEZ1">BGSW-COB-SEZ1 </mat-option>
+<mat-option value="BGSW-HYD-SSKP"> BGSW-HYD-SSKP</mat-option>
+<mat-option value="BGSW-PUN-DTA"> BGSW-PUN-DTA</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Purchase Order</span>
+          <span class="spanText">{{getElementData.purchaseOrder || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>PO Line Item</mat-label>
+            <mat-select formControlName="poLineItem">
+              <mat-option *ngFor="let v of poLineItemsList" [value]="v">{{v}}</mat-option>
+              <!-- <mat-option value="2">2</mat-option>
+            <mat-option value="3">3</mat-option>
+            <mat-option value="4">4</mat-option>
+            <mat-option value="5">5</mat-option>
+            <mat-option value="6">6</mat-option>
+            <mat-option value="7">7</mat-option>
+            <mat-option value="8">8</mat-option>
+            <mat-option value="9">9</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="11">11</mat-option>
+            <mat-option value="12">12</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Requested Date of Joining</span>
+          <span class="spanText">{{ getElementData.resourceOnboardingDate | date:'dd-MMM-YYYY'||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Expected Date of Joining</mat-label>
+            <input matInput [matDatepicker]="expectedDojPicker" placeholder="Choose a date" readonly
+              (click)="expectedDojPicker.open()" formControlName="expectedDoj" [min]="todayDateShowAfterSeven"
+              [matDatepickerFilter]="weekendsDatesFilter" (dateChange)="addExpectedDojChangeEvent($event)" />
+            <mat-datepicker-toggle matSuffix [for]="expectedDojPicker"></mat-datepicker-toggle>
+            <mat-datepicker #expectedDojPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Contract End Date</span>
+          <span class="spanText" *ngIf="getElementData.statusdescription !='First Level Sent Back'">{{
+            getElementData.contactEndDate | date:'dd-MMM-YYYY'||'--'}} </span>
+          <span class="spanText" *ngIf="getElementData.statusdescription=='First Level Sent Back'">{{
+            getElementData.contractEndDate | date:'dd-MMM-YYYY'||'--'}} </span>
+
+        </div>
+        <div class="col-md-3 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Billable</mat-label>
+            <mat-select formControlName="billable" (selectionChange)="billableOptionChange($event)">
+              <mat-option value="True">Yes</mat-option>
+              <mat-option value="False">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm" *ngIf="createdForm.value.billable=='True'">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Billing Start Date</mat-label>
+            <input matInput [matDatepicker]="billingStartDatePicker" placeholder="Choose a date" readonly
+              (click)="billingStartDatePicker.open()" formControlName="billableStartDate" [min]="minBillingDateShow"  [matDatepickerFilter]="weekendsDatesFilter"/>
+            <mat-datepicker-toggle matSuffix [for]="billingStartDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #billingStartDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Replacement Order</span>
+          <span class="spanText" *ngIf="getElementData.isReplacementOrder==true">Yes</span>
+          <span class="spanText" *ngIf="getElementData.isReplacementOrder==false">No</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Status</span>
+          <span class="spanTextStatusOb backorange" *ngIf="getElementData.statusdescription=='First Level Sent Back'">
+            {{getElementData.statusdescription}} </span>
+          <span class="spanTextStatusOb backorange" *ngIf="getElementData.statusdescription=='Second Level Sent Back'">
+            {{getElementData.statusdescription}} </span>
+          <span class="spanTextStatusOb"
+            *ngIf="getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back'">
+            Draft </span>
+        </div>
+
+      </div>
+           <!--Start for SowJD Section-->
+           <div class="row mt-4 msaCs" *ngIf="sowJdSectionFilter?.section=='SowjdSection' && getElementData.statusdescription =='First Level Sent Back'">
+            <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+              {{sowJdSectionFilter?.remark}}</div>
+          </div>
+          <!--End for SowJD Section-->
+
+    </div>
+
+    <div class="bgClr mt-4">
+      <h3>Organization Details</h3>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Company</span>
+          <span class="spanText">{{getElementData.company || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Company Name</span>
+          <span class="spanText">{{getElementData.companyName || '--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Group</span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription !='First Level Sent Back'">{{getElementData.group || '--'}} </span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription =='First Level Sent Back'">{{getElementData.groupName || '--'}}
+          </span>
+
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Department</span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription !='First Level Sent Back'">{{getElementData.department || '--'}}
+          </span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription =='First Level Sent Back'">{{getElementData.departmentName || '--'}}
+          </span>
+
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Section</span>
+          <span class="spanText">{{getElementData.sectionName || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">BU</span>
+          <span class="spanText">{{getElementData.buName || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">GB Business Area</span>
+          <span class="spanText">{{getElementData.gbDescription || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Section SPOC</span>
+          <span class="spanText"> {{getElementData.sectionSpoc || '--'}} </span>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Delivery Manager</span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription !='First Level Sent Back'">{{getElementData.sowJdOwner || '--'}}
+          </span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription =='First Level Sent Back'">{{getElementData.deliveryManager ||
+            '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Joining Loction</span>
+          <span class="spanText">{{getElementData.joiningLocation || '--'}} </span>
+        </div>
+
+      </div>
+          <!--Start for Organization Details Section-->
+          <div class="row mt-4 msaCs" *ngIf="organizationSectionFilter?.section=='OrganizationSection' && getElementData.statusdescription =='First Level Sent Back'">
+            <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+              {{organizationSectionFilter?.remark}}</div>
+          </div>
+          <!--End for  Organization Details  Section-->
+    </div>
+
+
+    <div class="hrLine">&nbsp;</div>
+    <h3>Vendor Details</h3>
+    <div class="bgClr">
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Vendor ID </span>
+          <span class="spanText">{{getElementData.vendorSAPID || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel"> Vendor Name</span>
+          <span class="spanText">{{getElementData.vendorName || '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Vendor Email</span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription !='First Level Sent Back'">{{getElementData.email || '--'}} </span>
+          <span class="spanText"
+            *ngIf="getElementData.statusdescription =='First Level Sent Back'">{{getElementData.vendorEmail || '--'}}
+          </span>
+
+        </div>
+        <div class="col-md-3 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Resource Type</mat-label>
+            <mat-select formControlName="resourceType" (selectionChange)="resourceTypeChange($event)">
+              <mat-option value="Direct">Direct</mat-option>
+              <mat-option value="Contract" *ngIf="(getElementData?.subcontractAllowed || vendorDetailsData?.subcontractAllowed)=='Yes'?true:false;">Contract</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div *ngIf="showHideContractDiv==true">
+        <div class="row mt-1">
+          <div class="col-md-3 col-sm">
+            <mat-form-field class="full-width gMFFInput" appearance="fill">
+              <mat-label>Registered Name of Sub-Contractor</mat-label>
+              <input matInput formControlName="registeredNameSubContractor" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 col-sm">
+            <mat-form-field class="full-width gMFFInput" appearance="fill">
+              <mat-label>Domain ID of the Sub-Contractor</mat-label>
+              <input matInput formControlName="domainIdSubContractor" (change)="checkDomainSubContractor()" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mt-1 msaCs">
+          <div class="col-md-10 col-sm">
+            <span class="spanLabel spaninline">Master Service Agreement (MSA) Scope Extension<span
+                class='redClr'>*</span></span>
+            <span class="fileNameText">{{msaUploadFileName}}</span>
+          </div>
+          <div class="col-md-2 col-sm rsideUp">
+            <label class="obfileLevel" *ngIf="msaUploadFileName ==''">
+              <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+              <input type="file" class="obUploadFileCs" id="msaUpload" (change)="changeUploadFileMSA($event)"
+                formControlName="msaUploadFileFormControlName">
+            </label>
+
+            <label *ngIf="msaUploadFileName !=''">
+              <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                (click)="deleteUploadMSA()"
+                *ngIf="(getElementData.statusdescription!='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && vendorSectionFilter?.section =='VendorSection')">
+              <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                (click)="msavendorClickDownload()"
+                *ngIf="(getElementData.statusdescription=='First Level Sent Back'  || (getElementData.statusdescription=='Second Level Sent Back' && vendorSectionFilter?.section !='VendorSection'))">
+            </label>
+
+          </div>
+        </div>
+        <!--Start for Vendor Section-->
+        <div class="row mt-4 msaCs" *ngIf="vendorSectionFilter?.section=='VendorSection'">
+          <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+            {{vendorSectionFilter?.remark}}</div>
+        </div>
+        <!--End for vendor Section-->
+      </div>
+    </div>
+
+    <div class="hrLine">&nbsp;</div>
+    <h3>Resource Details</h3>
+    <div class="bgClr">
+      <h3>Personal Information</h3>
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="gMFFSelect" style="width:30%" appearance="fill">
+            <mat-label>Title</mat-label>
+            <mat-select formControlName="personalInfoTitle">
+              <mat-option value="MR">MR</mat-option>
+              <mat-option value="MRS">MRS</mat-option>
+              <mat-option value="MS">MS</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="gMFFInput" style="width: 68%;margin-left: 6px;" appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="personalInfoFirstName" maxlength="30"
+              (keypress)="validateOnlyAlphabet($event)" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Middle Name</mat-label>
+            <input matInput formControlName="personalInfoMiddleName" maxlength="30"
+              (keypress)="validateOnlyAlphabet($event)" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="personalInfoLastName" maxlength="30"
+              (keypress)="validateOnlyAlphabet($event)" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="dobPicker" placeholder="Choose a date" readonly (click)="dobPicker.open()"
+              [max]="maxDateOfBirth" formControlName="personalInfoLastDOB"  [min]="minDateOfBirth"/>
+            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="personalInfoGender">
+              <mat-option value="Male">Male</mat-option>
+              <mat-option value="Female">Female</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Nationality</mat-label>
+            <mat-select formControlName="personalInfoNationality">
+              <mat-select-filter [array]="nationalityListRecords" [displayMember]="'name'"
+                (filteredReturn)="nationalityListData =$event"></mat-select-filter>
+              <mat-option *ngFor="let v of nationalityListData" [value]="v.value">{{v.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <!--Start for Personal Information Section-->
+      <div class="row mt-4 msaCs" *ngIf="personalInfoSectionFilter?.section=='PersonalInformationSection'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+          {{personalInfoSectionFilter?.remark}}</div>
+      </div>
+      <!--End for Personal Information Section-->
+    </div>
+
+    <div class="bgClr mt-4">
+      <h3>Contact Information</h3>
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Official Email ID</mat-label>
+            <input matInput formControlName="officialEmailID" (change)="checkDomainOfficialEmail()" />
+          </mat-form-field>
+          <div *ngIf="f.officialEmailID.invalid && (f.officialEmailID.touched || f.officialEmailID.dirty)"
+            style="color: red;">
+            <span *ngIf="f.officialEmailID.errors?.email">Official Email is not valid*</span>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm pt-2" *ngIf="verifiedOtp==false && showHideVerifyEmailIDButton1">
+          <button type="button" class="buttonExportRM msaCsUFBtn" (click)="clickVerifyEmailButton()">
+            <div class="icon-class">Verify Email ID</div>
+          </button>
+          </div>
+          <div class="col-md-2 col-sm pt-2" *ngIf="verifiedOtp==false && showHideVerifyEmailIDButton2">
+          <button  type="button"  class="buttonExportRM msaCsUFBtn"
+            (click)="clickVerifyEmailButton()">
+            <div class="icon-class">Resend OTP</div>
+          </button>
+        </div>
+        <div class="col-md-4 col-sm timerCsOB" *ngIf="otpSentFlag">
+          <div>Regenerate Verification code option will be enabled in<br> <span id="timer" style="color: #007bc0">{{setTimerCount}}</span></div>
+        </div>
+        <div class="col-md-2 col-sm pt-2" *ngIf="otpSentFlag">
+          <mat-form-field class="gMFFInput" appearance="fill">
+            <mat-label>Enter Verification Code</mat-label>
+            <input matInput formControlName="otpValueFormControlName" maxlength="6" (keypress)="isNumberKey($event);" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 col-sm pt-3" *ngIf="otpSentFlag">
+          <button class="buttonExportRM msaCsUFBtn" (click)="clickConfirmOtpButton()">
+            <div class="icon-class">Confirm</div>
+          </button>
+        </div>
+        <div class="col-md-2 col-sm" *ngIf="verifiedOtp">
+          <button class="buttonExportRM msaCsUFBtn verfiedBtncs">
+            <div class="icon-class">Successfully Verified</div>
+          </button>
+        </div>
+
+
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Personal Email ID</mat-label>
+            <input matInput formControlName="personalEmailID" />
+          </mat-form-field>
+          <div *ngIf="f.personalEmailID.invalid && (f.personalEmailID.touched || f.personalEmailID.dirty)"
+            style="color: red;">
+            <span *ngIf="f.personalEmailID.errors?.email">Personal Email is not valid*</span>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="gMFFSelect" style="width:30%" appearance="fill">
+            <mat-label>Code</mat-label>
+            <mat-select formControlName="primaryCountryMobileCode">
+              <mat-select-filter [array]="stdCodeListRecordsprimary" [displayMember]="'name'"
+                (filteredReturn)="stdCodeListDataPrimary =$event"></mat-select-filter>
+              <mat-option *ngFor="let v of stdCodeListDataPrimary" [value]="v.value">{{v.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="gMFFInput" style="width: 68%;margin-left: 6px;" appearance="fill">
+            <mat-label>Primary Contact Number</mat-label>
+            <input matInput formControlName="primaryContactNumber" (keypress)="isNumberKey($event);"
+              (paste)="onTextPaste($event)" maxlength="10" />
+          </mat-form-field>
+          <div *ngIf="f.primaryContactNumber.touched && f.primaryContactNumber.invalid" style="color: red;">
+            <div *ngIf="f.primaryContactNumber.errors?.pattern">Primary Contact Number is not 10 digit*</div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="gMFFSelect" style="width:30%" appearance="fill">
+            <mat-label>Code</mat-label>
+            <mat-select formControlName="alternateCountryMobileCode">
+              <mat-select-filter [array]="stdCodeListRecordsAlternate" [displayMember]="'name'"
+                (filteredReturn)="stdCodeListDataAlternate =$event"></mat-select-filter>
+              <mat-option *ngFor="let v of stdCodeListDataAlternate" [value]="v.value">{{v.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="gMFFInput" style="width: 68%;margin-left: 6px;" appearance="fill">
+            <mat-label>Alternate Contact Number</mat-label>
+            <input matInput formControlName="alternateContactNumber" (keypress)="isNumberKey($event);"
+              (paste)="onTextPaste($event)" maxlength="10" />
+          </mat-form-field>
+
+          <div *ngIf="f.alternateContactNumber.touched  && f.alternateContactNumber.invalid" style="color: red;">
+            <div *ngIf="f.alternateContactNumber.errors?.minlength">Alternate contact number is not 10 digit*</div>
+          </div>
+
+        </div>
+      </div>
+      <h3>Emergency Contact Information</h3>
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="emergencyContactName" (keypress)="validateOnlyAlphabet($event)"
+              maxlength="50" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="gMFFSelect" style="width:30%" appearance="fill">
+            <mat-label>Code</mat-label>
+            <mat-select formControlName="emergencyContactMobileCode">
+              <mat-select-filter [array]="stdCodeListRecordsEmergency" [displayMember]="'name'"
+                (filteredReturn)="stdCodeListDataEmergency =$event"></mat-select-filter>
+              <mat-option *ngFor="let v of stdCodeListDataEmergency" [value]="v.value">{{v.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="gMFFInput" style="width: 68%;margin-left: 6px;" appearance="fill">
+            <mat-label>Contact Number</mat-label>
+            <input matInput formControlName="emergencyContactMobileNumber" (keypress)="isNumberKey($event);"
+              (paste)="onTextPaste($event)" maxlength="10" />
+          </mat-form-field>
+          <div *ngIf="f.emergencyContactMobileNumber.touched && f.emergencyContactMobileNumber.invalid"
+            style="color: red;">
+            <div *ngIf="f.emergencyContactMobileNumber.errors?.pattern">Emergency Contact Number is not 10 digit*</div>
+          </div>
+        </div>
+      </div>
+      <!--Start for Contact Information Section-->
+      <div class="row mt-4 msaCs" *ngIf="contactInformationSectionFilter?.section=='ContactInformationSection'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+          {{contactInformationSectionFilter?.remark}}</div>
+      </div>
+      <!--End for Contact Information Section-->
+    </div>
+
+    <div class="bgClr mt-4">
+      <h3>Identity Information</h3>
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>ID Type</mat-label>
+            <mat-select formControlName="idType">
+              <mat-option value="PAN">PAN</mat-option>
+              <!-- <mat-option value="SSN">SSN</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>ID Number</mat-label>
+            <input matInput formControlName="idNumber" maxlength="10" style="text-transform: uppercase;"
+              (keypress)="isNumberAndAlphabetKey($event);" (paste)="onTextPaste($event)" />
+          </mat-form-field>
+          <div *ngIf="f.idNumber.touched  && f.idNumber.invalid" style="color: red;">
+            <div *ngIf="f.idNumber.errors?.minlength">ID number is not 10 digit*</div>
+          </div>
+        </div>
+      </div>
+      <!--Start for Identity Information Section-->
+      <div class="row mt-4 msaCs" *ngIf="identityInformationSectionFilter?.section=='IdentityInformationSection'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+          {{identityInformationSectionFilter?.remark}}</div>
+      </div>
+      <!--End for Identity Information Section-->
+    </div>
+
+    <div class="bgClr mt-4">
+      <h3>Proof of Address</h3>
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>ID Type</mat-label>
+            <mat-select formControlName="proofIDType">
+              <!-- <mat-option value="Electricity bill">Electricity bill</mat-option> -->
+              <mat-option value="Election Commission Photo ID card">Election Commission Photo ID card</mat-option>
+              <!-- <mat-option value="Proof of Gas Connection">Proof of Gas Connection</mat-option> -->
+              <!-- <mat-option value="Aadhaar Card">Aadhaar Card</mat-option>
+              <mat-option value="Rent Agreement">Rent Agreement</mat-option> -->
+              <mat-option value="Savings Bank Account Passbook">Savings Bank Account Passbook</mat-option>
+              <mat-option value="Passport">Passport</mat-option>
+              <mat-option value="Driving License (Issued in India only)">Driving License (Issued in India only)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-1 msaCs">
+        <div class="col-md-10 col-sm">
+          <span class="spanLabel spaninline">Proof of Address<span class='redClr'>*</span></span><span
+            class="fileNameText">{{proofAdressUploadFileName}}</span>
+        </div>
+        <div class="col-md-2 col-sm rsideUp">
+          <label class="obfileLevel" *ngIf="proofAdressUploadFileName ==''">
+            <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+            <input type="file" class="obUploadFileCs" id="proofAdressUpload"
+              (change)="changeUploadFileProofAddress($event)" formControlName="proofAddressUploadFileFormControlName">
+          </label>
+          <label *ngIf="proofAdressUploadFileName !=''">
+            <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+              (click)="deleteUploadProofAddress()"
+              *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && addressProofSectionSectionFilter?.section =='AddressProofSection')">
+            <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+              (click)="proofAddressClickDownload()"
+              *ngIf="(getElementData.statusdescription=='First Level Sent Back'  || (getElementData.statusdescription=='Second Level Sent Back' && addressProofSectionSectionFilter?.section !='AddressProofSection'))">
+          </label>
+        </div>
+      </div>
+      <!--Start for Proof Address Section-->
+      <div class="row mt-4 msaCs" *ngIf="addressProofSectionSectionFilter?.section=='AddressProofSection'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+          {{addressProofSectionSectionFilter?.remark}}</div>
+      </div>
+      <!--End for Proof Address Section-->
+    </div>
+
+    <div class="bgClr mt-4">
+      <div>
+        <h3>Residence Address</h3>
+        <div class="row mt-4">
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>House no. & Street</mat-label>
+              <input matInput formControlName="residenceAddressHouseStreetNumber" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>Landmark</mat-label>
+              <input matInput formControlName="residenceAddressLandmark" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFInput" appearance="fill">
+              <mat-label>City</mat-label>
+              <input matInput formControlName="residenceAddressCity" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>State</mat-label>
+              <input matInput formControlName="residenceAddressState" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>Postal Code</mat-label>
+              <input matInput formControlName="residenceAddressPostalCode" (keypress)="isNumberKey($event);"
+                maxlength="6" (paste)="onTextPaste($event)" />
+            </mat-form-field>
+            <div *ngIf="f.residenceAddressPostalCode.touched  && f.residenceAddressPostalCode.invalid"
+              style="color: red;">
+              <div *ngIf="f.residenceAddressPostalCode.errors?.minlength">Postal Code is not 6 digit*</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="custom__options_R"> <span class="spanText"><mat-checkbox class="small-checkbox sCbx"
+            formControlName="residenceAddressCheckBox" (change)="showResidencePermanentAddress($event)"> Above mentioned
+            address
+            is the Permanent address. </mat-checkbox> </span> </div>
+      <div class="mt-4">
+        <h3>Permanent Address</h3>
+
+        <div class="row mt-4">
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>House no. & Street</mat-label>
+              <input matInput formControlName="permanentAddressHouseStreet">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>Landmark</mat-label>
+              <input matInput formControlName="permanentAddressLandmark" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFInput" appearance="fill">
+              <mat-label>City</mat-label>
+              <input matInput formControlName="permanentAddressCity" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>State</mat-label>
+              <input matInput formControlName="permanentAddressState" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 col-sm">
+            <mat-form-field class="full-width gMFFSelect" appearance="fill">
+              <mat-label>Postal Code</mat-label>
+              <input matInput formControlName="permanentAddressPostalCode" (keypress)="isNumberKey($event);"
+                maxlength="6" (paste)="onTextPaste($event)" />
+            </mat-form-field>
+            <div *ngIf="f.permanentAddressPostalCode.touched  && f.permanentAddressPostalCode.invalid"
+              style="color: red;">
+              <div *ngIf="f.permanentAddressPostalCode.errors?.minlength">Postal Code is not 6 digit*</div>
+            </div>
+          </div>
+        </div>
+        <!--Start for Residence Address Section-->
+        <div class="row mt-4 msaCs" *ngIf="residenceSectionSectionFilter?.section=='ResidenceSection'">
+          <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+            {{residenceSectionSectionFilter?.remark}}</div>
+        </div>
+        <!--End for Residence Address Section-->
+      </div>
+    </div>
+
+    <div class="bgClr mt-4">
+      <h3>SSC/10th Education Details</h3>
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Board</mat-label>        
+            <mat-select formControlName="sscBoard">
+              <mat-option value="ICSE">ICSE</mat-option>
+              <mat-option value="CBSE">CBSE</mat-option>
+              <mat-option value="IGCSE">IGCSE</mat-option>
+              <mat-option value="IB">IB</mat-option>
+              <mat-option value="NIOS">NIOS</mat-option>
+              <mat-option value="ISE">ISE</mat-option>
+              <mat-option value="State Boards">State Boards</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Institution</mat-label>
+            <input matInput formControlName="sscInstitution" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Year of Passing</mat-label>
+            <mat-select formControlName="sscYearPassing">
+              <mat-option *ngFor="let v of listYear" [value]="v">{{v}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Percentage</mat-label>
+            <input matInput formControlName="sscPercentage" (change)="changePercentageSSC()"
+              (keypress)="allowNumbersAndDot($event);" maxlength="5" (paste)="onTextPaste($event)" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Mode</mat-label>
+            <mat-select formControlName="sscMode">
+              <mat-option value="Regular">Regular</mat-option>
+              <mat-option value="Correspondance">Correspondance </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-1 msaCs">
+        <div class="col-md-10 col-sm">
+          <span class="spanLabel spaninline">SSC/10th Education<span class='redClr'>*</span></span><span
+            class="fileNameText">{{sscEducationUploadFileName}}</span>
+
+          <!-- <div class="row msaCs m-0" style="background-color: #f0f0f0; padding-left: 10px;" *ngIf="selectedFilesSSC && selectedFilesSSC.length>0">
+      <div class="col-md-4 col-sm" style="padding-left: calc(0rem);margin: 4px 0px;" *ngFor="let doc of selectedFilesSSC;let index=index;">
+        <div class="docCsOb m-0 p-2">
+          <span class="fileNameText" style="left:0">{{doc}}</span>
+          <label><img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File" (click)="deleteUploadSSCeducation(index)"></label>
+        </div>
+      </div>
+      
+    </div> -->
+        </div>
+        <div class="col-md-2 col-sm rsideUp">
+          <!-- <label class="obfileLevel">
+          <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+          <input type="file" class="obUploadFileCs" title=" " id="sscEducationUpload" (change)="changeUploadFileSSCeducation($event)" formControlName="sscUploadFileFormControlName" multiple>
+        </label> -->
+          <label class="obfileLevel" *ngIf="sscEducationUploadFileName ==''">
+            <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+            <input type="file" class="obUploadFileCs" id="sscEducationUpload"
+              (change)="changeUploadFileSSCeducation($event)" formControlName="sscUploadFileFormControlName">
+          </label>
+          <label *ngIf="sscEducationUploadFileName !=''">
+            <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+              (click)="deleteUploadSSCeducation()"
+              *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && sscSectionFilter?.section =='SSCSection')">
+            <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+              (click)="sscClickDownload()"
+              *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && sscSectionFilter?.section !='SSCSection'))">
+          </label>
+        </div>
+      </div>
+
+
+      <!--Start for SSC Section-->
+      <div class="row mt-4 msaCs" *ngIf="sscSectionFilter?.section=='SSCSection'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br> {{sscSectionFilter?.remark}}
+        </div>
+      </div>
+      <!--End for SSC Section-->
+
+    </div>
+
+    <div class="bgClr mt-4" *ngIf="salaryLevelStatus=='Level 83'">
+      <h3>Highest Qualification Details</h3>
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Qualification</mat-label>
+            <mat-select formControlName="highestQualification">
+              <mat-option value="Diploma">Diploma</mat-option>
+              <mat-option value="Under Graduate">Under Graduate</mat-option>
+              <mat-option value="Post Graduate">Post Graduate</mat-option>
+              <mat-option value="Doctoral">Doctoral</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Specialization</mat-label>
+            <input matInput formControlName="hqSpecialization" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Institution</mat-label>
+            <input matInput formControlName="hqInstitution" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Year of Passing</mat-label>
+            <mat-select formControlName="hqYearPassing">
+              <mat-option *ngFor="let v of listYear" [value]="v">{{v}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Percentage</mat-label>
+            <input matInput formControlName="hqPercentage" (change)="changePercentageHQ()"
+              (keypress)="allowNumbersAndDot($event);" maxlength="5" (paste)="onTextPaste($event)" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Mode</mat-label>
+            <mat-select formControlName="hqMode">
+              <mat-option value="Regular">Regular</mat-option>
+              <mat-option value="Correspondance">Correspondance </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-1 msaCs">
+        <div class="col-md-10 col-sm">
+          <span class="spanLabel spaninline">Highest Qualification<span class='redClr'>*</span></span><span
+            class="fileNameText">{{highestEducationUploadFileName}}</span>
+          <!-- <div class="row msaCs m-0" style="background-color: #f0f0f0; padding-left: 10px;" *ngIf="selectedFilesHighestQualification && selectedFilesHighestQualification.length>0">
+          <div class="col-md-4 col-sm" style="padding-left: calc(0rem);margin: 4px 0px;" *ngFor="let doc of selectedFilesHighestQualification;let index=index;">
+            <div class="docCsOb m-0 p-2">
+              <span class="fileNameText" style="left:0">{{doc}}</span>
+              <label><img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File" (click)="deleteUploadHighestQual(index)"></label>
+            </div>
+          </div>
+          
+        </div> -->
+        </div>
+        <div class="col-md-2 col-sm rsideUp">
+          <!-- <label class="obfileLevel" >
+          <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+          <input type="file" class="obUploadFileCs" title=" " id="highestEducationUpload" (change)="changeUploadFileHighestQual($event)" formControlName="highestQualUploadFileFormControlName" multiple>
+        </label>       -->
+          <label class="obfileLevel" *ngIf="highestEducationUploadFileName ==''">
+            <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+            <input type="file" class="obUploadFileCs" id="highestEducationUpload"
+              (change)="changeUploadFileHighestQual($event)" formControlName="highestQualUploadFileFormControlName">
+          </label>
+          <label *ngIf="highestEducationUploadFileName !=''">
+            <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+              (click)="deleteUploadHighestQual()"
+              *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && hqSectionFilter?.section =='HQSection')">
+            <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+              (click)="highestQualClickDownload()"
+              *ngIf="(getElementData.statusdescription=='First Level Sent Back'|| (getElementData.statusdescription=='Second Level Sent Back' && hqSectionFilter?.section !='HQSection'))">
+          </label>
+        </div>
+      </div>
+
+      <!--Start for HQ Section-->
+      <div class="row mt-4 msaCs" *ngIf="hqSectionFilter?.section=='HQSection'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br> {{hqSectionFilter?.remark}}
+        </div>
+      </div>
+      <!--End for HQ Section-->
+
+    </div>
+
+    <div class="bgClr mt-4">
+      <div>
+        <h3>Work Experience (As on Date of Joining)</h3>
+        <div class="row mt-1">
+          <div class="col-md-2 col-sm">
+            <span class="spanLabel" style="position: relative; top: 14px;">Total Experience:</span>
+          </div>
+          <div class="col-md-2 col-sm text-right">
+            <mat-form-field appearance="fill" class="minPluscs">
+              <mat-label>Year<span class='redClr'>*</span></mat-label>
+              <input matInput readonly formControlName="valueTotalExpYearFormControlName">
+              <div matSuffix style="display:flex;"
+                *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && workExperienceSectionFilter?.section =='WorkExperienceSection')">
+                <button mat-icon-button (click)="handleMinusYear()"><mat-icon>remove</mat-icon></button>
+                <button mat-icon-button (click)="handlePlusYear()"><mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2 col-sm text-right">
+            <mat-form-field appearance="fill" class="minPluscs">
+              <mat-label>Month<span class='redClr'>*</span></mat-label>
+              <input matInput formControlName="valueTotalExpMonthFormControlName" readonly>
+              <div matSuffix style="display:flex;"
+                *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && workExperienceSectionFilter?.section =='WorkExperienceSection')">
+                <button mat-icon-button (click)="handleMinusMonth()"><mat-icon>remove</mat-icon></button>
+                <button mat-icon-button (click)="handlePlusMonth()"><mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6 col-sm text-right">
+            &nbsp;
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-2 col-sm">
+            <span class="spanLabel" style="position: relative; top: 14px;">Relevant Experience:</span>
+          </div>
+          <div class="col-md-2 col-sm text-right">
+            <mat-form-field appearance="fill" class="minPluscs">
+              <mat-label>Year<span class='redClr'>*</span></mat-label>
+              <input matInput readonly formControlName="valueRelevantExpYearFormControlName">
+              <div matSuffix style="display:flex;"
+                *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back')  || ( getElementData.statusdescription =='Second Level Sent Back' && workExperienceSectionFilter?.section =='WorkExperienceSection')">
+                <button mat-icon-button (click)="handleMinusYearRE()"><mat-icon>remove</mat-icon></button>
+                <button mat-icon-button (click)="handlePlusYearRE()"><mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2 col-sm text-right">
+            <mat-form-field appearance="fill" class="minPluscs">
+              <mat-label>Month<span class='redClr'>*</span></mat-label>
+              <input matInput formControlName="valueRelevantExpMonthFormControlName" readonly>
+              <div matSuffix style="display:flex;"
+                *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back')  || ( getElementData.statusdescription =='Second Level Sent Back' && workExperienceSectionFilter?.section =='WorkExperienceSection')">
+                <button mat-icon-button (click)="handleMinusMonthRE()"><mat-icon>remove</mat-icon></button>
+                <button mat-icon-button (click)="handlePlusMonthRE()"><mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6 col-sm text-right">
+            &nbsp;
+          </div>
+        </div>
+        <!--Start for Work Experience Section-->
+        <div class="row mt-4 msaCs" *ngIf="workExperienceSectionFilter?.section=='WorkExperienceSection'">
+          <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+            {{workExperienceSectionFilter?.remark}}</div>
+        </div>
+        <!--End for Work Experience Section-->
+      </div>
+    </div>
+    <div class="bgClr mt-4">
+      <div class="row mt-4 mb-0">
+        <div class="col-md-4 col-sm">
+          <span class="spanLabel"> Have you previously worked with BGSW in the past year?<span
+              class='redClr'>*</span></span>
+          <div class="mt-2">
+            <mat-radio-group class="radioObCs" formControlName="workedPreviousYearFormControlName"
+              (change)="radioChangeWorkedPastYear($event)">
+              <mat-radio-button value="Yes">Yes</mat-radio-button>
+              <mat-radio-button value="No" class="pl-4">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm" *ngIf="createdForm.value.workedPreviousYearFormControlName=='Yes'">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>Bosch Employee Number</mat-label>
+            <input matInput formControlName="boschEmployeeNumber" maxlength="10" (keypress)="isNumberKey($event);"
+              (paste)="onTextPaste($event)" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill"
+            *ngIf="createdForm.value.workedPreviousYearFormControlName=='Yes'">
+            <mat-label>Last Working Day at BGSW</mat-label>
+            <input matInput [matDatepicker]="lwdGCSWPicker" placeholder="Choose a date" readonly
+              (click)="lwdGCSWPicker.open()" formControlName="lwdBgsw" [max]="todayDateShow" />
+            <mat-datepicker-toggle matSuffix [for]="lwdGCSWPicker"></mat-datepicker-toggle>
+            <mat-datepicker #lwdGCSWPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <!--Start for previously worked  Section-->
+      <div class="row mt-4 msaCs" *ngIf="previousWorkedSectionFilter?.section=='PreviousWorkedSection'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>
+          {{previousWorkedSectionFilter?.remark}}</div>
+      </div>
+      <!--End for previously worked  Section-->
+
+    </div>
+
+    <div class="hrLine">&nbsp;</div>
+    <h3>Documents</h3>
+    <div class="bgClr mt-4 docD">
+
+      <table class="docTblOb">
+        <tr>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Photo<span class='redClr'>*</span> <span
+                  class="fileNameText">{{photoUploadFileName}}</span></span>
+              <label class="obfileLevel" *ngIf="photoUploadFileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="photoUpload" (change)="changeUploadPhoto($event)"
+                  formControlName="photoUploadFileFormControlName">
+              </label>
+              <label *ngIf="photoUploadFileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadPhoto()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back'  && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && photoSectionFilter?.section =='PhotoSection')">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="photoClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && photoSectionFilter?.section !='PhotoSection'))">
+              </label>
+
+            </div>
+          </td>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Purchase Order<span class='redClr'>*</span><span
+                  class="fileNameText">{{purchaseOrderUploaddFileName}}</span></span>
+              <label class="obfileLevel" *ngIf="purchaseOrderUploaddFileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="purchaseOrderUpload"
+                  (change)="changeUploadPurchaseOrder($event)" formControlName="purchaseOrderUploadFileFormControlName">
+              </label>
+              <label *ngIf="purchaseOrderUploaddFileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadPurchaseOrder()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && poSectionFilter?.section =='PurchaseOrderSection')">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="purchaseOrderClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && poSectionFilter?.section !='PurchaseOrderSection'))">
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Letter of Undertaking<span class='redClr'>*</span><span
+                  class="fileNameText">{{letterofUndertakingrUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="letterofUndertakingrUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="letterofUndertakingrUpload"
+                  (change)="changeUploadLetterUndertaking($event)"
+                  formControlName="letterUndertakingUploadFileFormControlName">
+              </label>
+              <label *ngIf="letterofUndertakingrUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadLOU()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && louSectionFilter?.section =='LouSection')">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="louClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && louSectionFilter?.section !='LouSection'))">
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Background Verification Report<span class='redClr'>*</span><span
+                  class="fileNameText">{{backgroundVerificationReportUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="backgroundVerificationReportUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="backgroundVerificationReportUpload"
+                  (change)="changeUploadBackgroundVerificationReport($event)"
+                  formControlName="backgroundVRUploadFileFormControlName">
+              </label>
+              <label *ngIf="backgroundVerificationReportUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadBVR()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && bvrSectionFilter?.section =='BvrSection')">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="bvreportClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && bvrSectionFilter?.section !='BvrSection'))">
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Information Security Policy (ISP) Training Acknowlegement<span
+                  class='redClr'>*</span><span class="fileNameText">{{iSPTrainingUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="iSPTrainingUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="iSPTrainingUpload"
+                  (change)="changeUploadISPTraining($event)" formControlName="ispTrainingUploadFileFormControlName">
+              </label>
+              <label *ngIf="iSPTrainingUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadISPTraining()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && ispTrainingSectionFilter?.section =='IspTrainingSection')">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="ispTrainingClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && ispTrainingSectionFilter?.section !='IspTrainingSection'))">
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Parent Organization ID Card<span class='redClr'>*</span><span
+                  class="fileNameText">{{parentOrgUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="parentOrgUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="parentOrgUpload" (change)="changeUploadParentOrg($event)"
+                  formControlName="parentOrgUploadFileFormControlName">
+              </label>
+              <label *ngIf="parentOrgUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadParentOrg()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || ( getElementData.statusdescription =='Second Level Sent Back' && parentOrgSectionFilter?.section =='ParentOrgCardSection')">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="parentOrgClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && parentOrgSectionFilter?.section !='ParentOrgCardSection'))">
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Declaration of Obligation (DOO)<span class='redClr'>*</span> <span
+                  class="fileNameText">{{dOOUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="dOOUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="dooUpload" (change)="changeUploadDOO($event)"
+                  formControlName="dOOUploadFileFormControlName">
+              </label>
+              <label *ngIf="dOOUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadDOO()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || (getElementData.statusdescription =='Second Level Sent Back' && dooSectionFilter?.section =='DOOSection')">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="dooClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && dooSectionFilter?.section !='DOOSection'))">
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Information Security Policy (ISP) Certificate<span
+                  class='redClr'>*</span><span class="fileNameText">{{ispSecurityUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="ispSecurityUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="ispSecurityUpload"
+                  (change)="changeUploadISPsecurity($event)" formControlName="ispSecurityUploadFileFormControlName">
+              </label>
+              <label *ngIf="ispSecurityUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadISPsecurity()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') ||  (getElementData.statusdescription =='Second Level Sent Back' && ispCertificateSectionFilter?.section =='IspCertificateSection') ">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="ispCertificateClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back'  && ispCertificateSectionFilter?.section !='IspCertificateSection'))">
+              </label>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="salaryLevelStatus=='Level 83'">
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Previous Employer Experience/Relieving Letter<span
+                  class='redClr'>*</span><span class="fileNameText">{{releivingLetterUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="releivingLetterUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="releivingLetterUpload"
+                  (change)="changeUploadRelievingLetter($event)"
+                  formControlName="relievingletterUploadFileFormControlName">
+              </label>
+              <label *ngIf="releivingLetterUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadReleivingLetter()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') || (getElementData.statusdescription =='Second Level Sent Back' && releavingSectionFilter?.section =='ReleivingLetterSection') ">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="releivingClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && releavingSectionFilter?.section !='ReleivingLetterSection'))">
+              </label>
+            </div>
+
+          </td>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Letter of Authorization (LOA)<span class='redClr'>*</span><span
+                  class="fileNameText">{{loaUploadfileName}}</span></span>
+              <label class="obfileLevel" *ngIf="loaUploadfileName ==''">
+                <div class="uploadFileBtnOb"><span class="export icon"></span> &nbsp;Upload File</div>
+                <input type="file" class="obUploadFileCs" id="loaUpload" (change)="changeUploadLOA($event)"
+                  formControlName="lOAUploadFileFormControlName">
+              </label>
+              <label *ngIf="loaUploadfileName !=''">
+                <img src="../assets/icons/delete.svg" class="imgDelOb" matTooltip="Delete File"
+                  (click)="deleteUploadLOA()"
+                  *ngIf="(getElementData.statusdescription !='First Level Sent Back' && getElementData.statusdescription !='Second Level Sent Back') ||  (getElementData.statusdescription =='Second Level Sent Back' && loaSectionFilter?.section =='LOASection') ">
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"
+                  (click)="loaClickDownload()"
+                  *ngIf="(getElementData.statusdescription=='First Level Sent Back' || (getElementData.statusdescription=='Second Level Sent Back' && loaSectionFilter?.section !='LOASection'))">
+              </label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <h3 *ngIf="getElementData.statusdescription =='Second Level Sent Back'">Documents Remarks</h3>
+    <!--Start for  Photo  Section-->
+    <div class="row msaCs" *ngIf="photoSectionFilter?.section=='PhotoSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Photo</span><br>
+        {{photoSectionFilter?.remark}}</div>
+    </div>
+    <!--End for Photo  Section-->
+    <!--Start for  Purchase Order  Section-->
+    <div class="row mt-4 msaCs" *ngIf="poSectionFilter?.section=='PurchaseOrderSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Purchase Order</span><br>
+        {{poSectionFilter?.remark}}</div>
+    </div>
+    <!--End for  Purchase Order   Section-->
+    <!--Start for  LOU  Section-->
+    <div class="row mt-4 msaCs" *ngIf="louSectionFilter?.section=='LouSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Letter of Undertaking </span><br>
+        {{louSectionFilter?.remark}}</div>
+    </div>
+    <!--End for LOU  Section-->
+    <!--Start for  BVR  Section-->
+    <div class="row mt-4 msaCs" *ngIf="bvrSectionFilter?.section=='BvrSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Background Verification Report</span><br>
+        {{bvrSectionFilter?.remark}}</div>
+    </div>
+    <!--End for BVR  Section-->
+    <!--Start for  (ISP) Training  Section-->
+    <div class="row mt-4 msaCs" *ngIf="ispTrainingSectionFilter?.section=='IspTrainingSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline"> (ISP) Training Acknowlegement</span><br>
+        {{ispTrainingSectionFilter?.remark}}</div>
+    </div>
+    <!--End for (ISP) Training  Section-->
+ 
+    <!--Start for  Parent Organization ID Card  Section-->
+    <div class="row mt-4 msaCs" *ngIf="parentOrgSectionFilter?.section=='ParentOrgCardSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Parent Organization ID Card</span><br>
+        {{parentOrgSectionFilter?.remark}}</div>
+    </div>
+    <!--End for Parent Organization ID Card  Section-->
+    <!--Start for  Declaration of Obligation  Section-->
+    <div class="row mt-4 msaCs" *ngIf="dooSectionFilter?.section=='DOOSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Declaration of Obligation</span><br>
+        {{dooSectionFilter?.remark}}</div>
+    </div>
+    <!--End for Declaration of Obligation  Section-->
+    <!--Start for   (ISP) Certificate  Section-->
+    <div class="row mt-4 msaCs" *ngIf="ispCertificateSectionFilter?.section=='IspCertificateSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline"> (ISP) Certificate</span><br>
+        {{ispCertificateSectionFilter?.remark}}</div>
+    </div>
+    <!--End for  (ISP) Certificate  Section-->
+    <!--Start for  Releiving  Section-->
+    <div class="row mt-4 msaCs" *ngIf="releavingSectionFilter?.section=='ReleivingLetterSection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Previous Employer Experience/Relieving Letter</span><br>
+        {{releavingSectionFilter?.remark}}</div>
+    </div>
+    <!--End for Releiving  Section-->
+     <!--Start for  Letter of Authorization (LOA)  Section-->
+     <div class="row mt-4 msaCs" *ngIf="loaSectionFilter?.section=='LOASection'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Letter of Authorization (LOA)</span><br>
+        {{loaSectionFilter?.remark}}</div>
+    </div>
+    <!--End for Letter of Authorization (LOA)  Section-->
+
+    <div
+      *ngIf="getElementData.statusdescription=='First Level Sent Back' || getElementData.statusdescription=='Second Level Sent Back'">
+      <mat-accordion>
+        <mat-expansion-panel class="remarksColapse">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3 class="m-0">Remarks</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="bgClr" style="border-bottom: 1px solid #d3d3d3;" *ngFor="let v of remarksList">
+            <div class="row mt-1">
+              <div class="col-md-9 col-sm">
+                <span class="spanLabel">{{v.createdBy}}</span>
+                <span class="spanText">{{v.createdOn| date:'dd-MMM-yyyy' }}</span>
+              </div>
+              <!-- <div class="col-md-3 col-sm" style="text-align:right">    
+            <span class="spanLabel">
+              <span  *ngIf="v.statusDescription !='First Level Approved' && v.statusDescription != 'Employee Master Created'&& v.statusDescription !='First Level Sent Back'"> {{v.statusDescription}}</span>
+              <span *ngIf="v.statusDescription=='First Level Sent Back'" style="color:#EEC100">First Level Sent Back</span>
+              <span  *ngIf="v.statusDescription =='First Level Approved' || v.statusDescription == 'Employee Master Created'" style="color:darkgreen"> {{v.statusDescription}}</span>
+              
+              </span>
+          </div> -->
+
+              <div class="col-md-3 col-sm" style="text-align:right">
+                <span class="spanLabel">
+                  <span
+                    *ngIf="v.statusDescription !='First Level Approved' && v.statusDescription=='Rejected' && v.statusDescription != 'Submitted' && v.statusDescription != 'Employee Master Created' && v.statusDescription !='First Level Sent Back'  &&  v.statusDescription !='Date Of Joining Extended' && v.statusDescription !='Second Level Sent Back' &&  v.statusDescription !=''">
+                    {{v.statusDescription}}</span>
+                  <span *ngIf="v.statusDescription=='First Level Sent Back'" style="color:#EEC100">First Level Sent
+                    Back</span>
+                  <span *ngIf="v.statusDescription=='Second Level Sent Back'" style="color:#EEC100">Second Level Sent
+                    Back</span>
+                  <span *ngIf="v.statusDescription=='Date Of Joining Extended'" style="color:#EEC100">Date Of Joining
+                    Extended</span>
+                  <span
+                    *ngIf="v.statusDescription =='First Level Approved' || v.statusDescription == 'Employee Master Created'  || v.statusDescription == 'Employee Master Created' || v.statusDescription == 'Submitted'"
+                    style="color:green">
+
+                    <span
+                      *ngIf="v.statusDescription == 'Submitted' &&  v.remark.includes('SubmitRemarksFirstOBs:')==true  "
+                      style="color:green">
+                      Submitted
+                    </span>
+                    <span
+                      *ngIf="v.statusDescription == 'Submitted' &&  v.remark.includes('ReSubmitRemarksSecondOBs:')==true  "
+                      style="color:green">
+                      Re-Submitted
+                    </span>
+                    <span
+                      *ngIf="v.statusDescription == 'Submitted' &&  (v.remark.includes('ReSubmitRemarksSecondOBs:')==false && v.remark.includes('SubmitRemarksFirstOBs:')==false)  "
+                      style="color:green">
+                      {{v.statusDescription}}
+                    </span>
+                    <span
+                      *ngIf="v.statusDescription =='First Level Approved' || v.statusDescription == 'Employee Master Created'"
+                      style="color:green">
+                      {{v.statusDescription}}
+                    </span>
+                  </span>
+                  <span *ngIf="v.statusDescription ==''" style="color:#0061cf"> Delegate</span>
+                  <span *ngIf="v.statusDescription=='Rejected'" style="color:red">Rejected</span>
+
+                </span>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 col-sm">
+                <span class="spanText">{{getRemarkTextparagrapg(v.remark)}}</span>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <br><br><br><br>
+  </div>
+</form>

@@ -1,0 +1,55 @@
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-alpine.css";
+
+@import url("https://unpkg.com/ag-grid-community@28.2.0/styles/ag-grid.css");
+@import url("https://unpkg.com/ag-grid-community@28.2.0/styles/ag-theme-alpine.css");
+
+.ag-theme-alpine {
+  --ag-checkbox-background-color: #3f51b5;
+
+}
+::ng-deep.mat-select-value-text {
+  font-size: 0.7rem;
+}
+::ng-deep.mat-option-text {
+  font-size: 0.8rem;
+}
+
+.icon-class {
+  display: flex;
+  margin-left: 4px;
+  margin-top:10px;
+}
+.icon {
+  height: 20px;
+  width: 20px;
+}
+
+.add {
+  background-image: url("assets/others/add-frame.svg");
+}
+.export {
+  background-image: url("assets/others/export.svg");
+}
+.import {
+  background-image: url("assets/others/import.svg");
+}
+.approve {
+  background-image: url("assets/others/checkmark-bold.svg");
+}
+.delete {
+  background-image: url("assets/others/delete.svg");
+}
+.search {
+  background-image: url("assets/others/search.svg");
+}
+.settings {
+  background-image: url("assets/others/settings.svg");
+}
+.cancel {
+  background-image: url("assets/others/abort-frame.svg");
+}
+.edit {
+  background-image: url("assets/others/edit.svg");
+}
+

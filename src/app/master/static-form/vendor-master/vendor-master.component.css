@@ -1,0 +1,265 @@
+.title {
+  padding-left: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.title p {
+  margin: 0;
+}
+
+/* .dynamicForm {
+  justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+} */
+.dynamicRadioCheckboxForm {
+  display: flex;
+  justify-content: space-around !important;
+  width: 100%;
+}
+.mat-form-field {
+  display: inline-block;
+  text-align: left;
+  padding-left: 1rem;
+  /* min-width: 25%; */
+  padding-right: 1rem;
+  width: 29%;
+}
+
+.mat-input-element {
+  font-size: 0.7rem;
+}
+::ng-deep.mat-select-value-text {
+  font-size: 0.7rem;
+}
+::ng-deep.mat-option-text {
+  font-size: 0.7rem;
+}
+
+.form-label {
+  font-size: 0.7rem;
+}
+
+::ng-deep .mat-form-field-label-wrapper {
+  padding: 6px;
+  margin-left: 2px;
+}
+
+ /* ::ng-deep.mat-form-field-appearance-legacy .mat-form-field-infix {
+   background: #e0e2e5; 
+   background: white;
+   padding: 6px;
+   color: gray;
+ } */
+::ng-deep .mat-form-field-flex {
+  background: #e0e2e5 !important;
+}
+
+::ng-deep
+  .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label,
+.mat-form-field-appearance-legacy.mat-form-field-can-float
+  .mat-input-server:focus
+  + .mat-form-field-label-wrapper
+  .mat-form-field-label {
+  padding: 3px;
+}
+
+::ng-deep.mat-focused.mat-form-field-label {
+  color: #007bc0 !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  background-color: #007bc0;
+}
+
+::ng-deep.mat-form-field-ripple {
+  background-color: #007bc0 !important;
+}
+
+.save-btn {
+  height: 2.5rem;
+  width: 5rem;
+  border-radius: 0;
+  background-color: #007bc0;
+}
+.cancel-btn {
+  height: 2.5rem;
+  width: 5rem;
+  border-radius: 0;
+  background-color: #ffffff;
+  color: #007bc0;
+  border: 1px solid #007bc0;
+  margin-left: 1rem;
+  margin-right: 2rem;
+}
+.header-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+.action-btn {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+   /* margin-top: 0.5rem; */
+}
+
+.action-btn-new {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+   /* margin-top: 0.5rem; */
+  position: absolute;
+  top: 100px;
+}
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10vh;
+}
+.matCheckbox {
+  padding: 0.3rem 1rem;
+}
+.matCheckbox-label {
+  padding: 0.3rem 1rem;
+  font-size: 0.7rem;
+  display: block;
+}
+
+::ng-deep.mat-radio-label {
+  padding: 0.3rem 1rem !important;
+  font-size: 0.6rem;
+  display: block;
+}
+.checkboxContainer {
+  width: 100%;
+}
+.radioContainer {
+  width: 100%;
+}
+.mat-checkbox {
+  font-size: 0.7rem;
+}
+
+.mat-radio-label {
+  font-size: 0.7rem;
+  margin-left: 1rem;
+  display: block;
+}
+.mat-checkbox {
+  font-size: 0.7rem !important;
+  margin-left: 1rem;
+}
+.mat-radio-label {
+  font-size: 0.7rem !important;
+  margin-left: 1rem;
+  display: block;
+}
+.dynamicRadioCheckboxContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.classification {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.selectedClassification {
+  /* min-width: 25%; */
+  font-size: 0.7rem;
+  padding: 0.5rem;
+  align-items: center;
+  display: flex;
+  height: 1rem;
+  border-top: 1px solid #333;
+  border-right: 1px solid #333;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+}
+
+.selectedClassification:first-child {
+  border-left: 1px solid #333;
+  margin-left: 2.5rem;
+  align-items: center;
+}
+.active {
+  background-color: #007bc0;
+  color: #ffffff;
+}
+.inActive {
+  background-color: gainsboro;
+  color: rgb(0, 0, 0);
+}
+
+.dynamicForm {
+  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.scrollable-content {
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.label {
+  color: gray;
+  font-size: 10px;
+}
+.value {
+  font-size: 10px;
+  height: 20px;
+  overflow: scroll;
+}
+
+.view-lables {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 200px;
+  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+  padding: 10px;
+  /* border-radius: 10px; */
+  height: 60px;
+  border-bottom: 1px solid lightgray;
+  /* overflow-x:scroll; */
+  /* overflow-y:scroll; */
+  /* border-bottom:1px solid lightgray; */
+}
+
+.value::-webkit-scrollbar {
+  display: none;
+}
+
+.value {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.starcolor {
+  color: red;
+}
+.erroMessageTag {
+  color: red;
+  font-size: 10px;
+  margin-left: 20px;
+}
+
+:host ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: gray;
+}
+
+:host
+  ::ng-deep
+  .mat-radio-button.mat-accent.mat-radio-checked
+  .mat-radio-outer-circle {
+  border-color: gray;
+}

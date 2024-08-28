@@ -1,0 +1,37 @@
+.button-primary {
+    color: white;
+   font-family: Bosch-Sans;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    line-height: 14px;
+    padding: 12px 16px;
+    cursor: pointer;
+    width: auto;
+    background-color: #007bc0;
+    background-size: 100% 200%;
+    border-width: 1;
+    border-color: transparent;
+    border-style: solid;
+    border-radius: 0;
+    padding:8px 15px;
+    margin-right:5px;
+   }
+   .button-secondary {
+    color: #007bc0;
+     
+          font-family: Bosch-Sans;
+     font-weight: 400;
+     font-size: 16px;
+     line-height: 1.5;
+     line-height: 10px;
+     padding: 11px 15px;
+     cursor: pointer;
+     width: auto;
+     border-width: 1px;
+     border-color: #007bc0;
+     border-style: solid;
+    border-radius: 0;
+    padding:11px 15px;
+    margin-right:5px
+    }

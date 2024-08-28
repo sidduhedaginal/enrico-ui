@@ -1,0 +1,8 @@
+<mat-dialog-content align="Center">
+  <h2 mat-dialog-title>Delete Confirmation</h2>
+  <span class="suretext">Are you sure you want to delete ?</span>
+</mat-dialog-content>
+<div mat-dialog-actions align="Center">
+  <button mat-button class="button-secondary" type="button" (click)="onClose($event)" >No</button>
+  <button  mat-button class="button-primary"  (click)="OnConfirm($event)" >Yes</button>
+</div>

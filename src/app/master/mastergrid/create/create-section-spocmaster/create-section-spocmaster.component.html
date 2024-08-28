@@ -1,0 +1,190 @@
+<div class="myForm">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field>
+      <mat-label>Section SPOC ID</mat-label>
+      <input matInput formControlName="sectionSpocId" placeholder="Section SPOC ID" readonly />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Section Name</mat-label>
+      <mat-select formControlName="sectionName" placeholder="Section Name">
+        <mat-option *ngFor="let name of sectionSpocMaster" [value]= "name" >{{ name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-label>Spoc Name</mat-label>
+      <input matInput formControlName="spocName" placeholder="spocName" readonly />
+      <mat-error *ngIf="myForm.get('spocName')?.hasError('pattern')">Please enter alphanumeric only.</mat-error>
+    </mat-form-field>
+    
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="startDatePicker" formControlName="validityStart" placeholder="Validity Start">
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDatePicker" formControlName="validityEnd" placeholder="Validity End"
+        [min]="getValidityEndMinDate()">
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+      <mat-error *ngIf="myForm.controls['validityEnd'].invalid">
+        Please provide a valid date.
+      </mat-error>
+    </mat-form-field>
+
+    <button class="cancel-btn" mat-raised-button color="primary" type="submit" (click)="cancel()">Cancel</button>
+    <button class="save-btn" mat-raised-button color="primary" type="submit" [disabled]="myForm.invalid">Save</button>
+  </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="main_block">
+
+  <div class="grid_header">
+    <div class="left_title">
+      <h1 class="grid_title">{{title}} </h1>
+    </div>
+    <div class="right_buttons">
+
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-secondary"
+        (click)="cancel()"
+      >
+      Cancel
+
+      </button>
+
+
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-primary"
+        (click)="saveSectionSpocMaster()"
+
+      >
+      Save
+
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="errorMessage.length>0">
+  <div class="grid_header">
+    <span style="color:red">{{ errorMessage}}</span>
+
+  </div>
+</div>
+
+
+<div class="row">
+
+<mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+  <mat-label>Section Spoc Id</mat-label>
+  <input
+
+    matInput
+    placeholder="Section Spoc Id"
+    [(ngModel)]="sectionSpocId"
+    readonly
+
+  />
+</mat-form-field>
+
+<mat-form-field appearance="fill" style= "width: 30%;">
+  <mat-label>Section Name</mat-label>
+
+  <mat-select
+  [(ngModel)]="sectionName"
+
+  >
+      <mat-option
+          *ngFor="let location of sectionSpocMaster"
+          [value]="location.sectionId"
+      >
+          {{ location.sectionName }}
+
+      </mat-option>
+  </mat-select>
+
+</mat-form-field>
+
+
+  <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+      <mat-label>SPOC Name</mat-label>
+      <input
+
+        matInput
+        placeholder="SPOC Name"
+        [(ngModel)]="spocName"
+
+      />
+  </mat-form-field>
+  
+
+</div>
+
+<div class="row">
+
+<mat-form-field style="width: 30%" appearance="fill">
+  <mat-label>Validity Start </mat-label>
+
+    <input matInput [matDatepicker]="validityStartDate" placeholder="Validity Start"  [(ngModel)]="validity_startDate">
+    <mat-datepicker-toggle matSuffix [for]="validityStartDate">
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #validityStartDate></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field style="width: 30%" appearance="fill">
+  <mat-label>Validity end</mat-label>
+
+    <input matInput [matDatepicker]="validityEndDate" placeholder="Validity End"  [(ngModel)]="validity_endDate">
+    <mat-datepicker-toggle matSuffix [for]="validityEndDate">
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #validityEndDate></mat-datepicker>
+</mat-form-field>
+
+
+<mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+  <mat-label>Approve Status</mat-label>
+  <input
+
+    matInput
+    placeholder="Approve Status"
+    [(ngModel)]="approveStatus"
+
+  />
+</mat-form-field>
+</div> -->
+
+
+
+

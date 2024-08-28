@@ -1,0 +1,165 @@
+<div
+  class="main_block"
+  *ngIf="url === '/sowjd/rfq-tech-eval' || url === '/rfq-tech-eval'"
+>
+  <div class="container-fluid filter-wrapper">
+    <div class="filterTopPortion">
+      <div class="searchOptions">
+        <div class="textBox">
+          <input
+            matInput
+            placeholder="Search"
+            [(ngModel)]="filterValue"
+            (input)="onFilterTextBoxChanged()"
+          />
+          <span class="searchgrey_planning paddings"
+            >&nbsp;&nbsp;&nbsp;&nbsp;</span
+          >
+        </div>
+
+        <div
+          class="multiSelectDropDownSearch"
+          (click)="onDropdownClick($event)"
+        >
+          <div>
+            <button class="button-columnsettings" (click)="toggleDropdown()">
+              <div
+                class="columnSettingsSection"
+                (click)="setActiveItem('rfq-column-settings')"
+                [ngClass]="
+                  activeItem === 'rfq-column-settings' ? 'highLightCls' : ''
+                "
+              >
+                <span class="settingsblack_planning"
+                  >&nbsp;&nbsp;&nbsp;&nbsp;</span
+                >
+                <span>Column Settings</span>
+              </div>
+            </button>
+            <div
+              class="triangle"
+              [ngClass]="{ show: dropdownVisible }"
+              *ngIf="dropdownVisible"
+            ></div>
+
+            <div
+              class="dropdown-menu"
+              [ngClass]="{ show: dropdownVisible }"
+              *ngIf="dropdownVisible"
+            >
+              <div class="saveConfigHeader">
+                <span class="selectColoumnTitle">Select Column</span>
+                <div class="save-button" (click)="saveRFQColumns()">
+                  Save Filter
+                </div>
+              </div>
+              <div class="saveConfigCheckBox">
+                <div *ngFor="let option of columnDefs">
+                  <div class="custom__options" *ngIf="option.field">
+                    <span *ngIf="!option.dontShow">
+                      <mat-checkbox
+                        class="small-checkbox"
+                        [(ngModel)]="!option.hide"
+                        (ngModelChange)="toggleMySubmissions(option.field)"
+                      >
+                        {{ option.headerName }}
+                      </mat-checkbox>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="saveConfigResetFilters">
+                <div class="column-settings-footer">
+                  <div class="save-button" (click)="selectAllColumns()">
+                    Select All
+                  </div>
+                  <div class="save-button" (click)="unSelectAllColumns()">
+                    Unselect All
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="filterTopPortion1">
+        <div class="inner-right-btn">
+          <div class="righttitle" *ngIf="permissionDetails?.exportPermission">
+            <div class="button-wrappper">
+              <button mat-button class="arrow space" (click)="onBtnExport()">
+                <div class="btn-wrapper">
+                  <div class="icon">
+                    <span class="export"></span>
+                  </div>
+                  <div class="btn-name">Export</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-size-select">
+            <mat-form-field class="pagesize-dropdown">
+              <mat-label class="page-size-label"> Page Size</mat-label>
+              <mat-select
+                class="px-2"
+                [(ngModel)]="paginationPageSize"
+                (selectionChange)="OnPageSizeChange($event)"
+              >
+                <mat-option [value]="5">5 </mat-option>
+                <mat-option [value]="10">10 </mat-option>
+                <mat-option [value]="15">15 </mat-option>
+                <mat-option [value]="20">20 </mat-option>
+                <mat-option [value]="25">25 </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="px-2">
+            <span
+              class="refresh"
+              title="Refresh data"
+              (click)="getsowjdRFQTechEvaluation()"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:inline-flex" *ngIf="filterChipsSets && filterChipsSets.length>0">
+    <div class="p-2"><b>Filter applied on: </b> </div>
+   <div>  <mat-chip-list #chipList>
+      <mat-chip *ngFor="let f of filterChipsSets" (removed)="removeChips(f)">
+        {{ getCapitalize(f)  }} 
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>   
+    </mat-chip-list>
+  </div>
+    <div class="save-button1 p-2" (click)=" saveChipsFilters()">  Save Filters </div>
+    <div class="save-button1 p-2" (click)=" ClearAllChipsFilters()">  Clear Filters </div>
+  </div>
+
+  <ag-grid-angular
+    class="ag-theme-alpine"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [gridOptions]="gridOptions"
+    [autoGroupColumnDef]="autoGroupColumnDef"
+    [rowData]="sowJdRFQData"
+    [paginationPageSize]="paginationPageSize"
+    [paginationAutoPageSize]="false"
+    [paginateChildRows]="true"
+    [animateRows]="true"
+    [pagination]="true"
+    [suppressAggFuncInHeader]="true"
+    (gridReady)="sowjdRFQTechEvaluation($event)"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    [suppressMenuHide]="true"
+    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+    (filterChanged)="onFilterChanged($event)"
+    (horizontalScroll)="onHorizontalScroll($event)"
+    (sortChanged)="onSortChanged($event)"
+  ></ag-grid-angular>
+</div>
+<router-outlet></router-outlet>

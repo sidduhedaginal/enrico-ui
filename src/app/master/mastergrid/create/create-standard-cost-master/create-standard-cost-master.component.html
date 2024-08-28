@@ -1,0 +1,94 @@
+<div class="myForm">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="header-items">
+      <div class="title">
+        <p>{{ title }}</p>
+      </div>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Company Code</mat-label>
+      <input
+        matInput
+        formControlName="companyCode"
+        placeholder="Company Code"
+        readonly
+      />
+      <mat-error *ngIf="myForm.get('companyCode')?.hasError('pattern')"
+        >Please enter numbers only.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Business Unit</mat-label>
+      <mat-select formControlName="bulist" placeholder="Business Unit">
+        <mat-option *ngFor="let location of buList" [value]="location.buid">
+          {{ location.buname }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Currency</mat-label>
+      <mat-select formControlName="currency">
+        <mat-option *ngFor="let item of currencys" [value]="item">
+          {{ item }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Cost</mat-label>
+      <input matInput formControlName="cost" placeholder="Cost" readonly />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        [matDatepicker]="startDatePicker"
+        formControlName="validityStart"
+        placeholder="Validity Start"
+        (dateChange)="logStartDate($event)"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        [matDatepicker]="endDatePicker"
+        formControlName="validityEnd"
+        placeholder="Validity End"
+        [min]="getValidityEndMinDate()"
+        (dateChange)="logEndDate($event)"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="endDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+      <mat-error *ngIf="myForm.controls['validityEnd'].invalid">
+        Please provide a valid date.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="action-btn">
+      <button
+        class="cancel-btn"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button class="save-btn" mat-raised-button color="primary" type="submit">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

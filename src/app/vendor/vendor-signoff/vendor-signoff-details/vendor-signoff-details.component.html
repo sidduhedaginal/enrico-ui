@@ -1,0 +1,820 @@
+<div *ngIf="signoffDetail" id="pEl" #pdfElement>
+  <div *ngIf="isPDF">
+    <app-header></app-header>
+  </div>
+  <div *ngIf="isPDF">
+    <img src="../assets/img/supergraphicFor.png" class="boschBGImg" />
+  </div>
+  <div>
+    <div class="heading">
+      <div class="approve-title" style="font-size: 18px">
+        {{ signoffDetail.technicalProposalNumber }} Details
+        <!-- <img
+            src="../assets/img/exportPDFImg1.png"
+            (click)="exportPDFdownload()"
+            matTooltip="Download PDF"
+            style="width: 30px; cursor: pointer"
+          /> -->
+      </div>
+      <div *ngIf="!isSignOffRecordeLocked; else otherBlock">
+        <div class="button-wrappper">
+          <div
+            *ngIf="
+              signoffDetail.tpStatusID === 1 ||
+              signoffDetail.tpStatusID === 3 ||
+              signoffDetail.tpStatusID === 8
+            "
+          >
+            <button
+              mat-button
+              class="btn-hover arrow space"
+              type="button"
+              *ngIf="signoffDetail.outSourcingCode !== 'TAM'"
+              (click)="cancel()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="cancel-icon"></span>
+                </div>
+                <div class="btn-name">Cancel</div>
+              </div>
+            </button>
+            <button
+              *ngIf="
+                signoffDetail.tpStatusID === 1 ||
+                signoffDetail.outSourcingCode !== 'TAM'
+              "
+              mat-button
+              class="btn-hover-primary arrow space"
+              (click)="submitTP()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="checkmark-icon"></span>
+                </div>
+                <div class="btn-name">Submit</div>
+              </div>
+            </button>
+            <button
+              *ngIf="signoffDetail.tpStatusID === 3"
+              mat-button
+              class="btn-hover-primary arrow space"
+              (click)="submitTP()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="checkmark-icon"></span>
+                </div>
+                <div class="btn-name">Re-Submit</div>
+              </div>
+            </button>
+          </div>
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            type="button"
+            *ngIf="signoffDetail.tpStatusID === 6"
+            (click)="commonSignOff('Partner')"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="contract-white"></span>
+              </div>
+              <div class="btn-name">Partner Sign Off</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <ng-template #otherBlock>
+        <div class="error-message">{{ checkSignOffDateMessage }}</div>
+      </ng-template>
+    </div>
+
+    <div class="approval-section-heading">
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-3">
+                <div>SoW JD ID</div>
+                <div>{{ signoffDetail.sowJdNumber }}</div>
+              </div>
+              <div class="col-3">
+                <div>SoW JD Description</div>
+                <div>{{ signoffDetail.description }}</div>
+              </div>
+              <div class="col-3">
+                <div>SoW JD Type</div>
+                <div>{{ signoffDetail.sowJdType }}</div>
+              </div>
+              <div class="col-3">
+                <div>Company</div>
+                <div>{{ signoffDetail.companyCode }}</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div>Company Name</div>
+                <div>{{ signoffDetail.companyFullName }}</div>
+              </div>
+              <div class="col">
+                <div>Currency</div>
+                <div>{{ signoffDetail.currencyName }}</div>
+              </div>
+              <div class="col">
+                <div>Location Mode</div>
+                <div>{{ signoffDetail.locationMode }}</div>
+              </div>
+              <div class="col">
+                <div>Outsourcing Mode</div>
+                <div>{{ signoffDetail.outSourcingType }}</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div>Location</div>
+                <div>{{ signoffDetail.plantName }}</div>
+              </div>
+              <div class="col">
+                <div>Section SPOC</div>
+                <div>{{ signoffDetail.secSpoc }}</div>
+              </div>
+              <div class="col">
+                <div>Delivery Manager</div>
+                <div>{{ signoffDetail.deliveryManager }}</div>
+              </div>
+              <div class="col">
+                <div>Sign Off Status</div>
+                <div>{{ signoffDetail.technicalProposalStatus }}</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <div>Project Start date</div>
+                <div>{{ signoffDetail.startDate | date : dateFormat }}</div>
+              </div>
+              <div class="col-3">
+                <div>Project End date</div>
+                <div>{{ signoffDetail.endDate | date : dateFormat }}</div>
+              </div>
+              <div class="col-3" *ngIf="signoffDetail.managedCapacity">
+                <div>Managed Capacity</div>
+                <div>{{ signoffDetail.managedCapacity }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-content-heading">SOW JD Documents</div>
+      <div class="approval-section">
+        <div class="container-fluid">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">File</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <div
+                *ngIf="
+                  documentsList?.data?.length > 0;
+                  then dataExistsDoc;
+                  else noDataExistsDoc
+                "
+              ></div>
+              <ng-template #dataExistsDoc>
+                <tr *ngFor="let doc of documentsList?.data; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    {{ doc.documentName }}
+                  </td>
+                  <td>
+                    <a
+                      href="{{ doc.documentUrl }}{{ documentsList.sasToken }}"
+                      title="Download"
+                      ><div class="cloud-download"></div>
+                    </a>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #noDataExistsDoc
+                ><tr>
+                  No documents found.
+                </tr></ng-template
+              >
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      class="approval-section-heading"
+      *ngIf="signoffDetail.outSourcingCode === 'TAM'"
+    >
+      <div class="approval-content-heading">SOW JD Demand</div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          pagination
+          [paginationPageSize]="5"
+          [rowData]="rowDataSkillset"
+          [columnDefs]="columnDefsSkillsetsTAM"
+          [defaultColDef]="defaultColDef"
+          (gridReady)="onGridReadySkillset($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          (cellClicked)="onCellClicked($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        >
+        </ag-grid-angular>
+      </div>
+    </div>
+
+    <div class="approval-section-heading">
+      <div class="approval-content-heading">Vendor Detail</div>
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-3">
+                <div>Vendor Name</div>
+                <div>{{ vendorDetail.vendorName }}</div>
+              </div>
+              <div class="col-3">
+                <div>Vendor ID</div>
+                <div>{{ vendorDetail.vendorSAPId }}</div>
+              </div>
+              <div class="col-3">
+                <div>Vendor Email</div>
+                <div>{{ vendorDetail.vendorEmail }}</div>
+              </div>
+              <div class="col-3">
+                <div>Last Date to Submit Proposal and Resource Plan</div>
+                <div>{{ signoffDetail.tpEndDate | date : dateFormat }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-content-heading">Vendor Proposal Documents</div>
+      <div
+        *ngIf="signoffDetail.tpStatusID === 1 || signoffDetail.tpStatusID === 3"
+      >
+        <div class="fileUpload" (click)="fileInput.click()"></div>
+        <input
+          style="display: none"
+          #attachments
+          type="file"
+          (change)="onproposalFileChanged($event)"
+          #fileInput
+          multiple="true"
+        />
+      </div>
+      <div class="approval-section">
+        <div>
+          <div>
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">File</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <span
+                    *ngIf="
+                      proposalDocuments?.data?.length > 0;
+                      then dataExists;
+                      else noDataExists
+                    "
+                  ></span>
+                  <ng-template #dataExists>
+                    <tr
+                      *ngFor="let doc of proposalDocuments?.data; let i = index"
+                    >
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        {{ doc.fileName }}
+                      </td>
+                      <td>
+                        <div style="display: flex">
+                          <a
+                            href="{{ doc.fileUrl }}{{
+                              proposalDocuments.sasToken
+                            }}"
+                            ><div class="cloud-download"></div>
+                          </a>
+                          <div
+                            *ngIf="
+                              signoffDetail.tpStatusID === 1 ||
+                              signoffDetail.tpStatusID === 3
+                            "
+                            class="blue-delete icon edit-delete space"
+                            (click)="deleteFile(doc.id)"
+                          ></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template #noDataExists
+                    ><tr>
+                      No documents found.
+                    </tr></ng-template
+                  >
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="
+        signoffDetail.sowjdTypeCode === 'RC' &&
+        signoffDetail.outSourcingCode === 'TAM'
+      "
+    >
+      <div class="approval-section-heading">
+        <div class="heading">
+          <div class="approval-content-heading">Vendor Resource Plan</div>
+        </div>
+        <div class="approval-section-border">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="columnDefsResourceBGSWRateCardTM"
+            [defaultColDef]="defaultColDef"
+            [rowData]="resourceList"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="vendorResourceGridReady($event, 1)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+          ></ag-grid-angular>
+        </div>
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-section">
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-4">
+                  <div>Equivalent Capacity</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.equivalentCapacity
+                        | numberFormat : companyLocale : companyNumericFormat
+                    }}
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div>Equivalent PMO</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.equivalentPMO
+                        | numberFormat : companyLocale : companyNumericFormat
+                    }}
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div>Total Cost Vendor (Incl. Overhead)</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.totalCost
+                        | countryCurrency : companyCurrencyName : companyLocale
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="
+        signoffDetail.sowjdTypeCode === 'NRC' &&
+        signoffDetail.outSourcingCode === 'TAM'
+      "
+    >
+      <div class="approval-section-heading">
+        <div class="heading">
+          <div class="approval-content-heading">Vendor Resource Plan</div>
+        </div>
+        <div class="approval-section-border">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="columnDefsResource"
+            [defaultColDef]="defaultColDef"
+            [rowData]="resourceList"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="vendorResourceGridReady($event, 2)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+          ></ag-grid-angular>
+        </div>
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-section">
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-4">
+                  <div>Equivalent Capacity</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.equivalentCapacity
+                        | numberFormat : companyLocale : companyNumericFormat
+                    }}
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div>Equivalent PMO</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.equivalentPMO
+                        | numberFormat : companyLocale : companyNumericFormat
+                    }}
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div>Total Cost Vendor (Incl. Overhead)</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.totalCost
+                        | countryCurrency : companyCurrencyName : companyLocale
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="
+        signoffDetail.sowjdTypeCode === 'RC' &&
+        (signoffDetail.outSourcingCode === 'WP' ||
+          signoffDetail.outSourcingCode === 'MS')
+      "
+    >
+      <div class="approval-section-heading">
+        <div class="heading">
+          <div class="approval-content-heading">Work Package Details</div>
+          <div class="button-wrappper">
+            <button
+              *ngIf="
+                (signoffDetail.tpStatusID === 1 ||
+                  signoffDetail.tpStatusID === 3 ||
+                  signoffDetail.tpStatusID === 8) &&
+                !isSignOffRecordeLocked
+              "
+              mat-button
+              class="btn-hover-primary arrow space"
+              mat-button
+              (click)="addBGSVRateCardWPWorkPackage()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="add-icon"></span>
+                </div>
+                <div class="btn-name">Add Activity</div>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="approval-section-border">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="columnDefsWorkPackageBGSVRateCardWP"
+            [defaultColDef]="defaultColDef"
+            [rowData]="workPackageList"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="workPackageGridReady($event, 1)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+          ></ag-grid-angular>
+        </div>
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-section">
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-6">
+                  <div>Total Hours</div>
+                  <div>{{ getTpWorkPackage?.totalHours }}</div>
+                </div>
+                <div class="col-6">
+                  <div>Total Cost Vendor (Incl. Overhead)</div>
+                  <div>
+                    {{
+                      getTpWorkPackage?.totalCost
+                        | countryCurrency : companyCurrencyName : companyLocale
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="approval-section-heading">
+        <div class="heading">
+          <div class="approval-content-heading">Vendor Resource Plan</div>
+          <div class="button-wrappper">
+            <button
+              *ngIf="
+                (signoffDetail.tpStatusID === 1 ||
+                  signoffDetail.tpStatusID === 3 ||
+                  signoffDetail.tpStatusID === 8) &&
+                !isSignOffRecordeLocked
+              "
+              mat-button
+              class="btn-hover-primary arrow space"
+              mat-button
+              (click)="addBGSVRateCardWPResource()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="add-icon"></span>
+                </div>
+                <div class="btn-name">Add Resource</div>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="approval-section-border">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="columnDefsResourceRateCardWP"
+            [defaultColDef]="defaultColDef"
+            [rowData]="resourceList"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="vendorResourceGridReady($event, 3)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+          ></ag-grid-angular>
+        </div>
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-section">
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-4">
+                  <div>Equivalent Capacity</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.equivalentCapacity
+                        | numberFormat : companyLocale : companyNumericFormat
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="
+        signoffDetail.sowjdTypeCode === 'NRC' &&
+        (signoffDetail.outSourcingCode === 'WP' ||
+          signoffDetail.outSourcingCode === 'MS')
+      "
+    >
+      <div class="approval-section-heading">
+        <div class="heading">
+          <div class="approval-content-heading">Work Package Details</div>
+          <div class="button-wrappper">
+            <button
+              *ngIf="
+                (signoffDetail.tpStatusID === 1 ||
+                  signoffDetail.tpStatusID === 3 ||
+                  signoffDetail.tpStatusID === 8) &&
+                !isSignOffRecordeLocked
+              "
+              mat-button
+              class="btn-hover-primary arrow space"
+              mat-button
+              (click)="addBGSVNoNRateCardWPWorkPackage()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="add-icon"></span>
+                </div>
+                <div class="btn-name">Add Activity</div>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="approval-section-border">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="columnDefsWorkPackageBGSVRateCardWP"
+            [defaultColDef]="defaultColDef"
+            [rowData]="workPackageList"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="workPackageGridReady($event, 2)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+          ></ag-grid-angular>
+        </div>
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-section">
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-6">
+                  <div>Total Hours</div>
+                  <div>{{ getTpWorkPackage?.totalHours }}</div>
+                </div>
+                <div class="col-6">
+                  <div>Total Cost Vendor (Incl. Overhead)</div>
+                  <div>
+                    {{
+                      getTpWorkPackage?.totalCost
+                        | countryCurrency : companyCurrencyName : companyLocale
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="approval-section-heading">
+        <div class="heading">
+          <div class="approval-content-heading">Vendor Resource Plan</div>
+          <div class="button-wrappper">
+            <button
+              *ngIf="
+                (signoffDetail.tpStatusID === 1 ||
+                  signoffDetail.tpStatusID === 3 ||
+                  signoffDetail.tpStatusID === 8) &&
+                !isSignOffRecordeLocked
+              "
+              mat-button
+              class="btn-hover-primary arrow space"
+              mat-button
+              (click)="addBGSVRateCardWPResource()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="add-icon"></span>
+                </div>
+                <div class="btn-name">Add Resource</div>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="approval-section-border">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="columnDefsResourceRateCardWP"
+            [defaultColDef]="defaultColDef"
+            [rowData]="resourceList"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="vendorResourceGridReady($event, 4)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+          ></ag-grid-angular>
+        </div>
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-section">
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-4">
+                  <div>Equivalent Capacity</div>
+                  <div>
+                    {{
+                      tpEquivalentResponse?.equivalentCapacity
+                        | numberFormat : companyLocale : companyNumericFormat
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="approval-section-heading" *ngIf="VendorPOList?.length > 0">
+      <div class="heading">
+        <div class="approval-content-heading">Purchase Order</div>
+      </div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefsPO"
+          [defaultColDef]="defaultColDef"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowData]="VendorPOList"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="getPurchaseOrder($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+
+    <mat-expansion-panel class="mt-3">
+      <mat-expansion-panel-header>
+        <div class="approval-section-heading">
+          <mat-panel-title class="approval-content-heading"
+            >Remarks</mat-panel-title
+          >
+        </div>
+      </mat-expansion-panel-header>
+      <div>
+        <div
+          *ngIf="vendorSignoffRemarks?.length > 0; else noRemarksFound"
+          class="remarks-section"
+        >
+          <div
+            class="approval-section-remarks"
+            *ngFor="let item of vendorSignoffRemarks"
+          >
+            <div>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col">
+                    <div>
+                      {{ item.createdBy }}
+                      <span
+                        style="float: right"
+                        [ngClass]="
+                          sowjdService.getSignOffStatusColor(item.commentId)
+                        "
+                        >{{ item.commentsType }}</span
+                      >
+                    </div>
+                    <div>{{ item.createdOn | date : dateFormat }}</div>
+                    <div>{{ item.comments }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noRemarksFound>
+        <p class="px-4">No remarks found</p>
+      </ng-template>
+    </mat-expansion-panel>
+    <hr />
+  </div>
+  <div *ngIf="isPDF">
+    <img src="../assets/img/supergraphicFor.png" class="boschBGImg" />
+  </div>
+</div>

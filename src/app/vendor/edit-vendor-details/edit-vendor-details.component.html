@@ -1,0 +1,217 @@
+<div class="edit-vendor">
+  <div class="page-header">
+    <div>{{ title }}</div>
+    <div>
+      <mat-icon style="cursor: pointer" matTooltip="Close" (click)="cancel()"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <form [formGroup]="VendorDeatilsForm">
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field" aria-disabled="">
+        <mat-label>Vendor Name</mat-label>
+        <input matInput placeholder="" formControlName="vendorName" />
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['vendorName'].invalid &&
+            VendorDeatilsForm.controls['vendorName'].touched
+          "
+        >
+          Please choose Vendor Name
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Vendor Code(SAP ID)</mat-label>
+        <input matInput placeholder="" formControlName="vendorSAPID" />
+        <!-- <mat-error
+              *ngIf="VendorDeatilsForm.controls['vendorSAPID'].invalid &&
+                     VendorDeatilsForm.controls['vendorSAPID'].touched">
+              Please choose Vendor Code(SAP ID)
+          </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Classification</mat-label>
+        <mat-select formControlName="classification">
+          <mat-option>Select</mat-option>
+          <mat-option *ngFor="let c of classifications" [value]="c.id">{{
+            c.classificationName
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['vendorType'].invalid &&
+            VendorDeatilsForm.controls['vendorType'].touched
+          "
+        >
+          Please choose Classification
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Vendor Type</mat-label>
+        <mat-select formControlName="vendorType">
+          <mat-option>Select</mat-option>
+          <mat-option *ngFor="let type of vendor_types" [value]="type.id">{{
+            type.vendorTypeName
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['vendorType'].invalid &&
+            VendorDeatilsForm.controls['vendorType'].touched
+          "
+        >
+          Please choose Vendor Type
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Business Support</mat-label>
+        <mat-select formControlName="businessSupport">
+          <mat-option>Select</mat-option>
+          <mat-option *ngFor="let bs of businessSupports" [value]="bs.id">{{
+            bs.businessSupportName
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['businessSupport'].invalid &&
+            VendorDeatilsForm.controls['businessSupport'].touched
+          "
+        >
+          Please choose Business Support
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Parent Vendor</mat-label>
+        <mat-select formControlName="parentVendor" [disabled]="disabled">
+          <mat-option>Select</mat-option>
+          <mat-option
+            *ngFor="let vendor of parentVendor_list"
+            [value]="vendor.id"
+            >{{ vendor.vendorName }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['parentVendor'].invalid &&
+            VendorDeatilsForm.controls['parentVendor'].touched
+          "
+        >
+          Please choose Business Support
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Currency</mat-label>
+        <mat-select formControlName="currency">
+          <mat-option>Select</mat-option>
+          <mat-option
+            *ngFor="let currency of currency_list"
+            [value]="currency.id"
+            >{{ currency.currencyName }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['currency'].invalid &&
+            VendorDeatilsForm.controls['currency'].touched
+          "
+        >
+          Please choose Currency
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Country</mat-label>
+        <input matInput placeholder="" formControlName="country" />
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['country'].invalid &&
+            VendorDeatilsForm.controls['country'].touched
+          "
+        >
+          Please choose Country
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>State</mat-label>
+        <input matInput placeholder="" formControlName="state" />
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['state'].invalid &&
+            VendorDeatilsForm.controls['state'].touched
+          "
+        >
+          Please choose State
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>City</mat-label>
+        <input matInput placeholder="" formControlName="city" />
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['city'].invalid &&
+            VendorDeatilsForm.controls['city'].touched
+          "
+        >
+          Please choose City
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option>Select</mat-option>
+          <mat-option *ngFor="let status of status_list" [value]="status.id">{{
+            status.status
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['status'].invalid &&
+            VendorDeatilsForm.controls['status'].touched
+          "
+        >
+          Please choose Status
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <textarea class="address" matInput formControlName="address"></textarea>
+        <mat-error
+          *ngIf="
+            VendorDeatilsForm.controls['address'].invalid &&
+            VendorDeatilsForm.controls['address'].touched
+          "
+        >
+          Please choose Address
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="buttons">
+      <button mat-button class="secondaryButton" (click)="cancel()">
+        Cancel
+      </button>
+      <button
+        mat-button
+        [disabled]="VendorDeatilsForm.invalid"
+        class="primaryButton"
+        (click)="save()"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

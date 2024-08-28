@@ -1,0 +1,115 @@
+<div class="spinner_planning" *ngIf="showLoading">
+  <lib-spinner></lib-spinner>
+</div>
+
+<div class="commonstylemain bordercolor">
+  <div class="lefttitle">
+    <span class="statusText Textuppercase">{{ poPlanningData.poPlanningId }} - Purchase Order Plan</span>
+  </div>
+  <div class="ownermainblock">
+    <div class="OwnerBlock">
+      <span class="onwer">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="statusText1">{{poPlanningData?.ownerName}} ({{poPlanningData?.ownerNtid}})</span>&nbsp;
+      <span *ngIf="osmRoleAdmin"  class="blue-edit_planning" title="Edit" (click)="OpenOwnershipDialog('PlanningPO',poPlanningData?.ownerEno)">&nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</div>
+
+<div class="editButton">
+  <div>
+    <button mat-stroked-button class="icon-button" *ngIf="showSubmitIcon" (click)="showSubmit()">
+      <span class="submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="action_text"> Submit</span>
+    </button>
+  </div>
+  <div>
+    <button mat-stroked-button class="icon-button" *ngIf="ShowEditicon" (click)="showEdit()">
+      <span class="blue-edit_planning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="action_text"> Edit</span>
+    </button>
+  </div>
+</div>
+
+<div>
+
+  
+  <br />
+  <div class="background">
+    <div class="commonstyle">
+      <div class="spantitle">
+        <span><b>Planning Year ID: </b></span><br />
+        <span>{{ poPlanningData.planningYearId }}</span>
+      </div>
+
+      <div class="spantitle">
+        <span><b>Annual Planning ID: </b></span><br />
+        <span>{{ poPlanningData.annualPlanningId }}</span>
+      </div>
+
+      <div class="spantitle">
+        <span><b>Company</b></span
+        ><br />
+        <span>{{ poPlanningData.companyCode }}</span>
+      </div>
+
+      <div class="spantitle">
+        <span><b>Planning Year: </b></span><br />
+        <span>{{ poPlanningData.planningYear }}</span>
+      </div>
+    </div>
+    <br />
+
+    <div class="commonstyle">
+      <div class="spantitle">
+        <span><b>PO Planning Level: </b></span><br />
+        <span>{{ poPlanningData.poPlanningLevel }}</span>
+      </div>
+      <div class="spantitle">
+        <span><b> PO Planning Organization Unit </b></span><br />
+        <span>{{ poPlanningData.organizationUnit }}</span>
+      </div>
+      <div class="spantitle">
+        <span><b>Activity SPOC: </b></span><br />
+        <span style="color: #008ecf">{{ poPlanningData.activitySPOCName }}</span>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="filterTopPortion1"> 
+    <div style="padding: 0 10px">
+      <mat-form-field style="width: 35%; float: right;padding-right: 8px;">
+        <mat-label style="font-size: 12px;padding-left: 8px;padding-top: 8px;">
+          Page Size</mat-label>
+        <mat-select style="padding-left: 8px;" [(ngModel)]="paginationPageSize" (selectionChange)="OnPageSizeChange($event)">
+          <mat-option [value]=5>5 </mat-option>
+          <mat-option [value]=10>10 </mat-option>
+          <mat-option [value]=15>15 </mat-option>
+          <mat-option [value]=20>20 </mat-option>
+          <mat-option [value]=25>25 </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <ag-grid-angular
+ 
+    class="ag-theme-alpine"
+    rowAnimation
+    [pagination]="true"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [autoGroupColumnDef]="autoGroupColumnDef"
+    [groupDefaultExpanded]="groupDefaultExpanded"
+    [masterDetail]="true"
+    [paginationPageSize]="paginationPageSize"
+    (gridReady)="onGridReady($event)"
+    [detailCellRendererParams]="detailCellRendererParams"
+    [detailRowAutoHeight]="true"
+    (cellClicked)="onCellClicked($event)"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    [suppressMenuHide]="true" 
+    (filterChanged)="onFilterChanged($event)"
+    (horizontalScroll)="onHorizontalScroll($event)"
+    (sortChanged)="onSortChanged($event)"
+  ></ag-grid-angular>
+</div>

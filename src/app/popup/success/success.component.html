@@ -1,0 +1,23 @@
+<div class="success">
+  <div mat-dialog-content>
+    <div class="success-message">
+      <div class="success-icon">
+        <img src="../../../assets/icons/checkmark-frame-green.svg" />
+      </div>
+      <div class="success-mess">Successful</div>
+      <div class="message">{{ message }}</div>
+    </div>
+  </div>
+  <div class="button-wrappper btn-align">
+    <button
+      mat-button
+      class="btn-hover-primary arrow space"
+      (click)="onClose()"
+      type="button"
+    >
+      <div class="btn-wrapper">
+        <div class="btn-name">Ok</div>
+      </div>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,169 @@
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GridApi, GridReadyEvent } from 'ag-grid-community';
+import { Observable, ReplaySubject } from 'rxjs';
+import { PlaningService } from '../../services/planing.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoaderService } from 'src/app/services/loader.service';
+
+@Component({
+  selector: 'app-approveaop',
+  templateUrl: './approveaop.component.html',
+  styleUrls: ['./approveaop.component.css']
+})
+export class ApproveaopComponent {
+  myForm!:FormGroup;
+  receivedData: any;
+  fileData!: string;
+  EventFile: any;
+  base64Output: any;
+  File:any=[];
+  FileRowdata:any;
+  filteredMSBE: string[] = ['MSBE1', 'MSBE2', 'MSBE3', 'MSBE4'];
+  selectedMSBE: string[] = [];
+  selectedOrgLevel: string = '';
+  toppingList : any = []
+  private gridApi!: GridApi;
+  orgLevelSelect: any;
+  SendStatus :any;
+  showLoading: boolean = false;
+  showErroMessage = false;
+  errorMessage = '';
+  orgLevelsNames = ["name1", "name2"];
+  sectionList:any = [];
+  warningcancel : boolean = false;
+
+  @Output() isFromSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  constructor(public dialogRef: MatDialogRef<ApproveaopComponent>,
+    private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data:any,
+    private planningService:PlaningService,
+    private snackBar: MatSnackBar,
+    private loaderService: LoaderService,)
+    {}
+
+  ngOnInit(): void {
+    this.receivedData =this.data.message;
+    this.SendStatus = this.data.status;
+    this.getEmployeMaster();
+    this.myForm = this.makeForm();
+  }
+  space(event:any){
+    if(event.target.selectionStart === 0 && event.code === 'Space'){
+      event.preventDefault();
+    }
+  }
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+  }
+  onClose(event: any) {
+    event.preventDefault();
+    this.isFromSubmitted.emit(false);
+    this.dialogRef.close();
+  }
+  setAll(checked:any){
+    if(checked == true){
+      this.warningcancel = true;
+    }else if(checked == false){
+      this.warningcancel = false;
+      this.myForm.get('Remark')?.reset();
+    }
+  }
+  onSubmit() {
+     this.loaderService.setShowLoading();
+    const updateaop:any = {
+      ...this.myForm.value
+    }
+    updateaop["id"]  = this.receivedData.id;
+    updateaop["status"] = this.SendStatus,
+
+    this.planningService.UpdateAOP(updateaop)
+    .subscribe({
+      next: (response:any) => {
+        if (
+          response?.status?.startsWith('"Record already Approved/Cancelled') 
+                  ) {
+          this.loaderService.setDisableLoading();
+          this.errorMessage = response.status;
+          this.showErroMessage = true;
+          return;
+        }
+        if (
+          response.data === 'Success'
+        ) {
+          this.loaderService.setDisableLoading();
+          this.isFromSubmitted.emit(true);
+          this.showSnackbar(`AOP ${this.SendStatus}`);
+          this.onClose(event);
+        } else {
+          this.loaderService.setDisableLoading();
+          this.isFromSubmitted.emit(true);
+          this.showSnackbar(response.data);
+        }
+      },
+      error: (e:any) => {
+        this.loaderService.setDisableLoading();
+      },
+      complete: () => {
+      }
+  });
+  }
+
+  getEmployeMaster(){
+    this.planningService.getEmployeMaster()
+    .subscribe({
+      next: (response:any) => {
+        this.sectionList = response.data.object;
+        
+      },
+      error: (e:any) => {
+        this.loaderService.setDisableLoading();
+      },
+      complete: () => {
+      }
+  });
+  }
+  showSnackbar(content: string) {
+    this.snackBar.open(content, undefined, { duration: 5000 });
+  }
+  makeForm() {
+    return this.formBuilder.group({
+      Remark: ['',Validators.required],
+    })
+  }
+  uploadFile(event: any) {
+    this.EventFile = event.target.files[0];
+    this.convertFile(this.EventFile).subscribe((base64:any) => {
+      this.base64Output = base64;
+      this.EventFile["documentContent"] = this.base64Output;
+      this.EventFile["documentName"] = this.EventFile.name;
+      this.File.push(this.EventFile);
+      this.FileRowdata = this.File
+    });
+  }
+ 
+  convertFile(file : File) : Observable<string> {
+    const result = new ReplaySubject<string>(1);
+    const reader = new FileReader();
+    reader.readAsBinaryString(file);
+    reader.onload = (event : any) => result.next(btoa(event.target.result.toString()));
+    return result;
+  }
+  decimalFilter(event: any) {
+    const reg = /^-?\d*(\.\d{0,3})?$/;
+    let input = event.target.value + String.fromCharCode(event.charCode);
+ 
+    if (!reg.test(input)) {
+        event.preventDefault();
+    }
+ }
+ filterMSBEByOrgLevel() {
+  if (this.selectedOrgLevel === 'BU') {
+    this.filteredMSBE = ['MSBE1', 'MSBE2'];
+  } else if (this.selectedOrgLevel === 'Section') {
+    this.filteredMSBE = ['MSBE3', 'MSBE4'];
+  }
+}
+
+}

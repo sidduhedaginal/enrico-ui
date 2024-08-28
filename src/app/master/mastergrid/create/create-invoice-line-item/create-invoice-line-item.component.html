@@ -1,0 +1,121 @@
+<div class="main_block">
+
+    <div class="grid_header">
+      <div class="left_title">
+        <h1 class="grid_title">{{title}}</h1>
+      </div>
+      <div class="right_buttons">
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-secondary"
+          (click)="cancelMaster()"
+
+        >
+        Cancel
+
+        </button>
+
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-primary"
+          (click)="saveMaster()"
+
+        >
+        Save
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="errorMessage.length>0">
+    <div class="grid_header">
+      <span style="color:red">{{ errorMessage}}</span>
+
+    </div>
+  </div>
+
+  <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>PONumber</mat-label>
+        <input
+
+          matInput
+          placeholder="PONumber"
+          [(ngModel)]="ponumber"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>Item</mat-label>
+        <input
+
+          matInput
+          placeholder="Item"
+          [(ngModel)]="item"
+
+        />
+    </mat-form-field>
+
+
+
+    <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Vendor Invoice Date</mat-label>
+
+        <input matInput [matDatepicker]="vendorInvoiceDate" placeholder="Vendor Invoice Date" [(ngModel)]="vendorInvoice_Date">
+        <mat-datepicker-toggle matSuffix [for]="vendorInvoiceDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #vendorInvoiceDate></mat-datepicker>
+      </mat-form-field>
+
+</div>
+
+ <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>Debit_Credit_Indicator</mat-label>
+        <input
+
+          matInput
+          placeholder="Debit_Credit_Indicator"
+          [(ngModel)]="debiCrediIndicator"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>FC_InvoiceValue</mat-label>
+        <input
+
+          matInput
+          placeholder="FC_InvoiceValue"
+          [(ngModel)]="fcInvoiceValue"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>LC_InvoiceValue</mat-label>
+        <input
+
+          matInput
+          placeholder="LC_InvoiceValue"
+          [(ngModel)]="lcInvoiceValue"
+
+        />
+    </mat-form-field>
+
+</div>
+
+
+

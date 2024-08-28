@@ -1,0 +1,85 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div class="title">{{ title }}</div>
+    <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose('no')"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+
+  <form [formGroup]="sendbackSignOffForm" (ngSubmit)="onSubmit()">
+    <div class="row" *ngIf="data.type !== 'edit'">
+      <div class="col">
+        <mat-form-field class="matform">
+          <mat-label>Last Date to Submit Proposal and Resource Plan</mat-label>
+          <input
+            class="inputmat"
+            matInput
+            [min]="endDate"
+            [matDatepickerFilter]="myFilter"
+            [matDatepicker]="picker"
+            placeholder="Last Date of Submit Proposal"
+            formControlName="signOffEndDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="
+              sendbackSignOffForm.controls['signOffEndDate'].touched &&
+              sendbackSignOffForm.controls['signOffEndDate'].invalid
+            "
+          >
+            Please select Last Date to Submit Proposal
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Remarks</mat-label>
+          <textarea
+            matInput
+            (keydown)="sowjdService.space($event)"
+            placeholder="Remarks"
+            formControlName="remarks"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              sendbackSignOffForm.controls['remarks'].invalid &&
+              sendbackSignOffForm.controls['remarks'].touched
+            "
+          >
+            Please add remarks
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose('no')"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="sendbackSignOffForm.invalid"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

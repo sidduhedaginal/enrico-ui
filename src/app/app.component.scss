@@ -1,0 +1,33 @@
+.content-container {
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  padding-top: 6px;
+}
+.content-container:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+  content: "";
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-image: url("../assets/images/supergraphic1.svg");
+  z-index: 100;
+}
+
+.globalspinner {
+  // margin-top: 50vw;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  z-index: 99999;
+  margin-top: 50vh;
+  pointer-events: unset;
+}

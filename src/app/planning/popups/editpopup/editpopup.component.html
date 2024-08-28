@@ -1,0 +1,43 @@
+<form [formGroup]="myForm" (ngSubmit)="onSave()">
+  <mat-dialog-content class="scrollable-dialog">
+      <div class="main-form">
+        <div class="left-form">
+          <span class="titlebold">Update End Date</span>
+        </div>
+        <div class="right-form1">
+          <mat-icon matTooltip="Close" class="close-btn" (click)="onClose($event)"
+          >close</mat-icon
+        >
+        </div>
+      </div>
+      <div class="spinner_planning" *ngIf="showLoading">
+        <lib-spinner></lib-spinner>
+      </div>
+      <div class="erroMessageTag" *ngIf="showErroMessage">
+            <span>{{errorMessage}}</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="commonstyle">
+          <mat-form-field>
+            <mat-label>Planning Start Date</mat-label>
+            <input matInput [matDatepicker]="dp1" placeholder="Start Date" formControlName ="startDate">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle class="datepicker" matSuffix  [for]="dp1"></mat-datepicker-toggle>
+            <mat-datepicker #dp1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field style="padding: 0 0 0 6px;">
+            <mat-label>Planning End date</mat-label>
+            <input matInput [matDatepicker]="dp3" placeholder="End Date" formControlName ="cfCyclePlanningEndate">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle class="datepicker" matSuffix [for]="dp3"></mat-datepicker-toggle>
+            <mat-datepicker #dp3 ></mat-datepicker>
+          </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <div class="action-btn">
+  
+      <button class="cancel-btn" mat-raised-button color="primary" type="button" (click)="onClose($event)">Cancel</button>
+
+      <button class="save-btn" mat-raised-button color="primary" type="submit">Save</button> 
+    </div>
+</form>

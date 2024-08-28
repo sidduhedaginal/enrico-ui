@@ -1,0 +1,161 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div>Add Work Package</div>
+    <div>
+      <mat-icon style="cursor: pointer" matTooltip="Close" (click)="cancel()"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <div class="remarks-red py-2">{{ errorMessage }}</div>
+  <form [formGroup]="workPackageForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Project Name</mat-label>
+          <input matInput placeholder="" formControlName="projectName" />
+          <mat-error
+            *ngIf="
+              workPackageForm.controls['projectName'].invalid &&
+              workPackageForm.controls['projectName'].touched
+            "
+          >
+            Please enter Project Name
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Activity Type</mat-label>
+          <input matInput placeholder="" formControlName="activityType" />
+          <mat-error
+            *ngIf="
+              workPackageForm.controls['activityType'].invalid &&
+              workPackageForm.controls['activityType'].touched
+            "
+          >
+            Please enter Activity Type
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <app-vendor-search-bar-skillset
+          (selectionChangeEvent)="changedEventValue($event)"
+          [labelValue]="'SkillSet'"
+          [isRequired]="true"
+          [id]="data.id"
+          [flag]="data.flag"
+          [searchPlaceholder]="'skillSetName'"
+          [searchPlaceholderId]="'id'"
+        ></app-vendor-search-bar-skillset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Grade</mat-label>
+          <mat-select formControlName="grade">
+            <mat-option *ngFor="let g of grades" [value]="g.id">{{
+              g.gradeName
+            }}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              workPackageForm.controls['grade'].invalid &&
+              workPackageForm.controls['grade'].touched
+            "
+          >
+            Please choose Grade
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>No. of Activity Planned</mat-label>
+          <input
+            matInput
+            placeholder=""
+            formControlName="NoOfActivity"
+            type="number"
+            min="1"
+            onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+          />
+          <mat-error
+            *ngIf="
+              workPackageForm.controls['NoOfActivity'].invalid &&
+              workPackageForm.controls['NoOfActivity'].touched
+            "
+          >
+            Please enter No.of Activity
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Estimation(hrs)/Activity</mat-label>
+          <input
+            matInput
+            placeholder=""
+            formControlName="estimation"
+            type="number"
+            min="0"
+            (keypress)="isNumberKey($event, 'two')"
+          />
+          <mat-error
+            *ngIf="
+              workPackageForm.controls['estimation'].invalid &&
+              workPackageForm.controls['estimation'].touched
+            "
+          >
+            Please enter Estimation
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <mat-form-field>
+          <mat-label>Price/Hr</mat-label>
+          <input
+            matInput
+            placeholder=""
+            formControlName="unitPrice"
+            type="number"
+            min="1"
+            (keypress)="isNumberKey($event, 'three')"
+          />
+          <mat-error
+            *ngIf="
+              workPackageForm.controls['unitPrice'].invalid &&
+              workPackageForm.controls['unitPrice'].touched
+            "
+          >
+            Please enter unit price
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="cancel()"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="workPackageForm.invalid"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

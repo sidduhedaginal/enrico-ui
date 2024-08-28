@@ -1,0 +1,90 @@
+<div *ngIf="sowJdDetail">
+  <div class="header">
+    <div class="title">Delegate SOW JD</div>
+    <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose('no')"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <div class="delegation-message">{{ delegationMessage }}</div>
+
+  <mat-dialog-content>
+    <div class="approval-section">
+      <form
+        [formGroup]="delegateForm"
+        (ngSubmit)="onSubmit()"
+        class="action-form"
+      >
+        <div class="approval-section-heading">
+          <div class="approval-section">
+            <ng-container>
+              <app-delegate-search-bar
+                (selectionChangeEvent)="changedEventValue($event)"
+                [labelValue]="'Search User'"
+                [isRequired]="true"
+                [searchPlaceholder]="'name'"
+                [searchPlaceholderId]="'ntId'"
+              ></app-delegate-search-bar>
+              <mat-error
+                *ngIf="
+                  delegateFormControl['delegatedTo'].touched &&
+                  delegateFormControl['delegatedTo'].invalid
+                "
+              >
+                Please choose whom you want to delegate
+              </mat-error>
+            </ng-container>
+
+            <mat-form-field>
+              <mat-label>Remarks</mat-label>
+              <textarea
+                matInput
+                (keydown)="sowjdService.space($event)"
+                placeholder="Add remark"
+                formControlName="remark"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  delegateFormControl['remark'].touched &&
+                  delegateFormControl['remark'].invalid
+                "
+              >
+                Please add delegation remark
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="button-wrappper">
+          <button
+            mat-button
+            class="btn-hover arrow space"
+            type="button"
+            (click)="onClose('no')"
+          >
+            <div class="btn-wrapper">
+              <!-- <div class="icon">
+                  <span class="cancel-icon"></span>
+                </div> -->
+              <div class="btn-name">Cancel</div>
+            </div>
+          </button>
+          <button
+            mat-button
+            [disabled]="delegateForm.invalid"
+            class="btn-hover-primary arrow space"
+            type="submit"
+            [disabled]="delegateForm.invalid"
+          >
+            <div class="btn-wrapper">
+              <!-- <div class="icon">
+                  <span class="save-white-icon"></span>
+                </div> -->
+              <div class="btn-name">Submit</div>
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

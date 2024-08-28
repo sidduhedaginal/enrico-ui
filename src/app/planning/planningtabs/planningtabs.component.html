@@ -1,0 +1,24 @@
+<mat-tab-group 
+    animationDuration="500ms"
+    [(selectedIndex)]="currenttabindex"
+    (selectedTabChange)="tabClick($event)"
+    class="remove-border-bottom"
+>
+    <mat-tab mat-ink-bar label="CF Cycles" *ngIf="showCFCycle">
+        
+        <app-cfcycle [selectedTab]="selectedTab"></app-cfcycle>
+    </mat-tab>
+    <mat-tab mat-ink-bar label="AOP Planning" *ngIf="showAOP"> 
+        <app-annualplanning [selectedTab]="selectedTab"></app-annualplanning>
+    </mat-tab>
+    <mat-tab mat-ink-bar label="First Level Planning" *ngIf="showFirstLevel"> 
+        <app-firstlevelplanning [selectedTab]="selectedTab"></app-firstlevelplanning>
+    </mat-tab>
+    <mat-tab mat-ink-bar label="Second Level Planning" *ngIf="showSecondLevel"> 
+        <app-secondlevelplanning [selectedTab]="selectedTab"></app-secondlevelplanning>
+    </mat-tab>
+    <mat-tab mat-ink-bar label="PO Plan and Release" *ngIf="showPO"> 
+        <app-poplan [selectedTab]="selectedTab" ></app-poplan>
+    </mat-tab>
+</mat-tab-group>
+

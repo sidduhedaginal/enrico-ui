@@ -1,0 +1,65 @@
+<div class="sowjd-details">
+  <div class="sowjd-header">
+    <div style="display: flex">
+      <div class="page-heading">{{ sowJdNumber }} Details</div>
+    </div>
+  </div>
+  <div class="main__form">
+    <div class="left-portion">
+      <mat-tree
+        #tree
+        [dataSource]="dataSource"
+        [treeControl]="treeControl"
+        class="sowjd-details"
+      >
+        <mat-tree-node
+          *matTreeNodeDef="let node"
+          matTreeNodePadding
+          (click)="activeNode = node"
+          [ngClass]="{ 'background-highlight': activeNode === node }"
+        >
+          <div class="tree-align" (click)="navigateChildPage(node)">
+            <mat-icon>{{ node.isLocked }}</mat-icon>
+            <div>{{ node.name }}</div>
+          </div>
+        </mat-tree-node>
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          matTreeNodePadding
+        >
+          <button
+            mat-icon-button
+            matTreeNodeToggle
+            [attr.aria-label]="'Toggle ' + node.name"
+          >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{
+                treeControl.isExpanded(node) ? "expand_more" : "chevron_right"
+              }}
+            </mat-icon>
+          </button>
+          <span matTreeNodeToggle class="cursor"> {{ node.name }}</span>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+
+    <div class="right-portion">
+      <div *ngIf="!sowhide">
+        <lib-sowjdtabs [sowjd]="SOWJDID"></lib-sowjdtabs>
+      </div>
+      <div *ngIf="!rfqdisplay">
+        <lib-rfqform
+          [sowjd]="SOWJDID"
+          [rfqId]="rfqId"
+          [technicalEvloutionID]="technicalEvloutionID"
+        ></lib-rfqform>
+      </div>
+      <div *ngIf="!tedisplay">
+        <lib-technical-proposal [sowJdId]="SOWJDID"></lib-technical-proposal>
+      </div>
+      <div *ngIf="!srndisplay">
+        <lib-srnform></lib-srnform>
+      </div>
+    </div>
+  </div>
+</div>

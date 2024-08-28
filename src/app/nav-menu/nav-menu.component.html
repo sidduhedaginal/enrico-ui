@@ -1,0 +1,253 @@
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="side" opened="isExpanded">
+    <mat-nav-list>
+      <mat-list-item class="first-child">
+        <span *ngIf="!isExpanded" class="menu-item">
+          <a [routerLink]="'/bgsw'">
+            <img class="logo-icon" src="../../assets/images/logo-icon.png" />
+          </a>
+        </span>
+        <span>
+          <a [routerLink]="'/bgsw'">
+            <img
+              *ngIf="isExpanded"
+              class="logo"
+              src="../../assets/images/bosch_logo.png"
+            />
+          </a>
+        </span>
+      </mat-list-item>
+
+      <mat-list-item *ngIf="!isVendor" [routerLink]="'dashboard'">
+        <img
+          class="sidenav-icon"
+          title="Master Data"
+          src="../../assets/images/srn.svg"
+        />
+        <span *ngIf="isExpanded" class="menu-item">Master Data</span>
+      </mat-list-item>
+      <mat-list-item *ngIf="!isVendor" [routerLink]="'planning'">
+        <img
+          class="sidenav-icon"
+          title="Planning"
+          src="../../assets/images/planning.svg"
+        />
+        <span *ngIf="isExpanded" class="menu-item">Planning</span>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="
+          !isVendor &&
+          (permissionDetailsSoWJD?.readPermission ||
+            permissionDetailsRFQ?.readPermission ||
+            permissionDetailsSignOff?.readPermission)
+        "
+        [routerLink]="'sowjd'"
+      >
+        <img class="sidenav-icon" src="../../assets/images/sowjd.svg" />
+        <span *ngIf="isExpanded" class="menu-item">SoW JD</span>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="!isVendor && permissionDetailsSRN?.readPermission"
+        [routerLink]="'sowjd-srn'"
+      >
+        <img class="sidenav-icon" src="../../assets/images/sowjd.svg" />
+        <span *ngIf="isExpanded" class="menu-item">SRN</span>
+      </mat-list-item>
+      <mat-list-item *ngIf="!isVendor" [routerLink]="'/Resource-Management'">
+        <img class="sidenav-icon" src="../../assets/images/resource.svg" />
+        <span *ngIf="isExpanded" class="menu-item">Resource</span>
+      </mat-list-item>
+      <mat-list-item *ngIf="!isVendor" [routerLink]="'/my-actions'">
+        <img class="sidenav-icon" src="../../assets/images/reference.svg" />
+        <span *ngIf="isExpanded" class="menu-item">My Actions</span>
+      </mat-list-item>
+
+      <!--Vendor Menu start -->
+      <mat-list-item
+        *ngIf="isVendor && vendorDetails?.businessSupport != 'BGV'"
+        [routerLink]="'vendor'"
+      >
+        <img class="sidenav-icon" src="../../assets/images/resource.svg" />
+        <span *ngIf="isExpanded" class="menu-item">Vendor Dashboard</span>
+      </mat-list-item>
+
+      <mat-list-item *ngIf="isVendor" [routerLink]="'vendor/vendor-detail'">
+        <img class="sidenav-icon" src="../../assets/images/user.svg" />
+        <span *ngIf="isExpanded" class="menu-item">Vendor Account</span>
+      </mat-list-item>
+
+      <mat-list-item
+        *ngIf="isVendor && vendorDetails?.businessSupport != 'BGV'"
+        [routerLink]="'vendor/vendor-srn'"
+      >
+        <img class="sidenav-icon" src="../../assets/images/sowjd.svg" />
+        <span *ngIf="isExpanded" class="menu-item">SRN</span>
+      </mat-list-item>
+      <!--Vendor Menu end -->
+    </mat-nav-list>
+
+    <mat-nav-list class="footer-menu">
+      <div clickOutside (clickOutside)="clickedOutside()">
+        <mat-list-item (click)="toggleProfile()">
+          <img
+            class="sidenav-icon"
+            src="../../assets/images/my-brand-frame-white.svg"
+          />
+          <span *ngIf="isExpanded" class="menu-item">Profile</span>
+        </mat-list-item>
+      </div>
+      <mat-list-item>
+        <img
+          class="sidenav-icon"
+          src="../../assets/images/customerservice-white.svg"
+        />
+        <span *ngIf="isExpanded" class="menu-item">Help</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="profile-menu-card" *ngIf="isOpenProfile">
+      <div class="img-avatar">
+        <img
+          class="my-title"
+          src="../../assets/images/profile.svg"
+          style="width: 100%"
+        />
+      </div>
+      <div *ngIf="!isVendor" class="card-text">
+        <div class="title" title="{{ userProfileDetails.displayName }}">
+          {{ userProfileDetails.displayName }}
+        </div>
+        <div class="sub-title">({{ userProfileDetails.department }})</div>
+
+        <div class="roles-wrapper" *ngIf="roleList.length > 0">
+          <div class="left-roles">Roles:</div>
+          <div>
+            <div *ngFor="let role of roleList">
+              <div class="role">{{ role }}</div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="desc">
+          <div class="main" *ngIf="userProfileDetails.group">
+            <div class="label">Group:</div>
+            <div class="data">{{ userProfileDetails.group }}</div>
+          </div>
+          <div *ngIf="userProfileDetails.company">
+            <div class="comp-info">Company Information:</div>
+            <div class="main">
+              <div class="label">Company Code:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyCode"] }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company Name:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyFullName"] }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company Short Name:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyShortName"] }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company Address:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyAddressStreet"] }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company Postal Code:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyAddressPostalCode"] }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company City:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyAddressCity"] }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company Region:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyRegionName"] }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company Country:</div>
+              <div class="data">
+                {{ userProfileDetails.company["companyCountryName"] }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isVendor" class="card-text">
+        <div class="title" title="{{ vendorDetails.email }}">
+          {{ vendorDetails.email }}
+        </div>
+        <div class="sub-title">{{ vendorDetails.vendorName }}</div>
+        <hr />
+        <div class="desc">
+          <div class="main">
+            <div class="label">Vendor Code:</div>
+            <div *ngIf="vendorDetails.vendorCode" class="data">
+              {{ vendorDetails.vendorCode }}
+            </div>
+          </div>
+
+          <div class="main">
+            <div class="label">State:</div>
+            <div *ngIf="vendorDetails.state" class="data">
+              {{ vendorDetails.state }}
+            </div>
+          </div>
+          <div>
+            <div class="main">
+              <div class="label">Company Address:</div>
+              <div class="data" *ngIf="vendorDetails.vendorAddressStreet">
+                {{ vendorDetails.vendorAddressStreet }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company City:</div>
+              <div class="data" *ngIf="vendorDetails.vendorAddressCity">
+                {{ vendorDetails.vendorAddressCity }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Company Country:</div>
+              <div class="data" *ngIf="vendorDetails.vendorCountryName">
+                {{ vendorDetails.vendorCountryName }}
+              </div>
+            </div>
+            <div class="main">
+              <div class="label">Parent Vendor:</div>
+              <div class="data" *ngIf="vendorDetails.parentVendor">
+                {{ vendorDetails.parentVendor }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-header (toggle)="checkToggle($event)"></app-header>
+
+    <div class="display-content">
+      <!--Breadcrumb code starts -->
+      <xng-breadcrumb [separator]="iconTemplate"></xng-breadcrumb>
+      <ng-template #iconTemplate>
+        <mat-icon>chevron_right</mat-icon>
+      </ng-template>
+      <!--Breadcrumb code ends -->
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

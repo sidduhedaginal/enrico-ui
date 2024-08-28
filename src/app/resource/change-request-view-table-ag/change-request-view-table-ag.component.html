@@ -1,0 +1,136 @@
+<div>
+  <div class="container-fluid filter-wrapper pt-0">
+    <div class="row filter-align">
+      <div class="col-2">
+        <mat-form-field appearance="fill">
+          <mat-label>Search</mat-label>
+          <input matInput [(ngModel)]="filterValue" (input)="onFilterTextBoxChanged()"/>   
+          <img matSuffix src="../assets/img/search.png" class="imgSearch" />    
+        </mat-form-field>
+      </div>      
+     <div class="col-7">  
+        <div class="column-setting-menu csm1">
+          <div>
+            <div class="icon-class">
+              <div class="column-setting-dialog" (click)="onDropdownClick($event)">
+                <span class="settingsblack_RM" (click)="toggleDropdown()">&nbsp;</span> 
+                <span class="menu-items-text-RM" (click)="toggleDropdown()">Column Settings</span>
+                <div class="triangle-RM" [ngClass]="{ show: dropdownVisible }" *ngIf="dropdownVisible"></div>
+                <div class="popper popRm" *ngIf="dropdownVisible">
+                  <div class="column-settings-header">
+                    <div class="select-column-RM">Select column  <span class="close-small-icon close-RM" (click)="closeDialogSetting()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+                    <div class="save-button1 psb1"  (click)="saveFilter()"> Save Filter </div>
+                  </div>
+  
+                  <div class="save-config-checkBox mt-2">
+                    <div *ngFor="let option of columnDefs">
+                      <div class="custom__options_R" *ngIf="option.field">
+                        <mat-checkbox class="small-checkbox" [(ngModel)]="!option.hide" (ngModelChange)="toggleMySubmissions(option.field)">
+                          {{ option.headerName }}</mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+             
+  
+                  <div class="saveConfigResetFilters-RM">
+                    <div class="column-settings-footer">
+                      <div class="save-button1" (click)="selectAllColumns()">
+                        Select All
+                      </div>
+                      <div class="save-button1" (click)="unSelectAllColumns()">
+                        Unselect All
+                      </div>
+                    </div>
+                   
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 colLastRM">
+        <table>
+          <tr>
+            <td>
+              <button (click)="exportAgBtn()" class="buttonExportRM" *ngIf='(userDetailsRoles == "/Vendors")||(userDetailsRoles == "/EnricoUsers" && permissionsBehaviorSubjectChangeManagement?.exportPermission)'>
+                <div class="icon-class"><span class="export icon"></span> &nbsp;<span>Export</span></div>
+              </button>
+              <span *ngIf="((userDetailsRoles == '/EnricoUsers') && (permissionsBehaviorSubjectChangeManagement?.exportPermission==false))" style="width: 120px;display: flex;">&nbsp;</span>
+            </td>
+            <td>
+              <mat-form-field style="width: 70px;" class="pageSizeRM_ddl">
+                <mat-label style="font-size: 12px"> Page Size</mat-label>
+                <mat-select [(ngModel)]="paginationPageSize"  (selectionChange)="onPageSizeChange($event)"> 
+                  <mat-option [value]="5">5 </mat-option>     
+                  <mat-option [value]="10">10 </mat-option>
+                  <mat-option [value]="15">15 </mat-option>
+                  <mat-option [value]="20">20 </mat-option>
+                  <mat-option [value]="25">25 </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <img src="./assets/images/refresh.svg" class="refreshtableRM" matTooltip="Refresh Data" (click)="refreshGetData()"/>
+            </td>
+          </tr>
+        </table>
+      </div>       
+    </div>
+  </div>
+  <!-- <div style="display:inline-flex" *ngIf="finalKeyArray && finalKeyArray.length>0">
+    <div class="p-2"><b>Filter applied on: </b> </div>
+   <div>  <mat-chip-list #chipList>
+      <mat-chip *ngFor="let f of finalKeyArray" (removed)="removeChips(f)">
+        {{ getCapitalize(f)  }} 
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>   
+    </mat-chip-list>
+  </div>
+    <div class="save-button1 p-2" (click)=" ClearAllChipsFilters()">  Clear all filters </div>
+  </div> -->
+    <!-- Filter chips start-->
+    <div style="display:inline-flex" *ngIf="filterChipsSets && filterChipsSets.length>0">
+      <div class="p-2"><b>Filter applied on : </b> </div>
+     <div>  <mat-chip-list #chipList>
+        <mat-chip *ngFor="let f of filterChipsSets" (removed)="removeChips(f)">
+          {{ getCapitalize(f)  }} 
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>   
+      </mat-chip-list>
+    </div>
+      <div class="save-button1 p-2" (click)=" saveChipsFilters()">  Save Filters </div>
+      <div class="save-button1 p-2" (click)=" ClearAllChipsFilters()">  Clear Filters </div>
+    </div>
+     <!-- Filter chips end-->
+  <ag-grid-angular 
+  style="width: 100%; overflow: auto;"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData"
+  [defaultColDef]="defaultColDef"
+  (gridReady)="onGridReady($event)"
+  [pagination]="true"
+  [paginationPageSize]="paginationPageSize"
+  [paginationAutoPageSize]="false"
+  [paginateChildRows]="true"
+  [gridOptions]="gridOptions"
+  (cellClicked)="onCellClicked($event)"       
+        [animateRows]="true"
+        [pagination]="true"
+        [suppressAggFuncInHeader]="true"    
+        [autoGroupColumnDef]="autoGroupColumnDef"  
+    (firstDataRendered)="onFirstDataRendered($event)"
+      [suppressMenuHide]="true"
+      [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+      (filterChanged)="onFilterChanged($event)"
+      (horizontalScroll)="onHorizontalScroll($event)"
+      (sortChanged)="onSortChanged($event)"
+      [excelStyles]="excelStyles"
+  ></ag-grid-angular>
+  </div>

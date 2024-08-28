@@ -1,0 +1,834 @@
+<div *ngIf="rfqDetail">
+  <div class="heading">
+    <div class="approve-title">{{ rfqDetail.sowJdRfqNumber }} Details</div>
+    <div *ngIf="!isRFQRecordeLocked; else otherBlock">
+      <div
+        class="button-wrappper"
+        *ngIf="rfqDetail.rfqStatusID !== 3 || rfqDetail.rfqStatusID !== 7"
+      >
+        <div *ngIf="rfqDetail.rfqStatusID === 1">
+          <button
+            mat-button
+            class="btn-hover arrow space"
+            (click)="notInterested(false)"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="thumb-down"></span>
+              </div>
+              <div class="btn-name">Not Interested</div>
+            </div>
+          </button>
+        </div>
+        <button
+          *ngIf="rfqDetail.rfqStatusID === 1 || rfqDetail.rfqStatusID === 5"
+          mat-button
+          class="btn-hover-primary arrow space"
+          (click)="submitRFQ()"
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="white-checkmark"></span>
+            </div>
+            <div class="btn-name">Submit</div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <ng-template #otherBlock>
+      <div class="error-message">{{ checkRFQDateMessage }}</div>
+    </ng-template>
+  </div>
+  <div class="approval-section-heading">
+    <div class="approval-section">
+      <div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-3">
+              <div>SoW JD ID</div>
+              <div>{{ rfqDetail.sowJdNumber }}</div>
+            </div>
+            <div class="col-3">
+              <div>SoW JD Description</div>
+              <div>{{ rfqDetail.description }}</div>
+            </div>
+            <div class="col-3">
+              <div>SoW JD Type</div>
+              <div>{{ rfqDetail.sowJdType }}</div>
+            </div>
+            <div class="col-3">
+              <div>Company</div>
+              <div>{{ rfqDetail.companyCode }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div>Company Name</div>
+              <div>{{ rfqDetail.companyFullName }}</div>
+            </div>
+            <div class="col">
+              <div>Currency</div>
+              <div>{{ rfqDetail.currencyName }}</div>
+            </div>
+            <div class="col">
+              <div>Location Mode</div>
+              <div>{{ rfqDetail.locationMode }}</div>
+            </div>
+            <div class="col">
+              <div>Outsourcing Mode</div>
+              <div>{{ rfqDetail.outSourcingType }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div>Location</div>
+              <div>{{ rfqDetail.plantName }}</div>
+            </div>
+            <div class="col">
+              <div>Section SPOC</div>
+              <div>{{ rfqDetail.secSpoc }}</div>
+            </div>
+            <div class="col">
+              <div>Delivery Manager</div>
+              <div>{{ rfqDetail.deliveryManager }}</div>
+            </div>
+            <div class="col">
+              <div>RFQ Status</div>
+              <div>{{ rfqDetail.sowJdRfqStatus }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div>Project Start date</div>
+              <div>{{ rfqDetail.startDate | date : dateFormat }}</div>
+            </div>
+            <div class="col-3">
+              <div>Project End date</div>
+              <div>{{ rfqDetail.endDate | date : dateFormat }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="approval-section-heading">
+    <div class="approval-content-heading">SOW JD Documents</div>
+    <div class="approval-section">
+      <div class="container-fluid">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">File</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <span
+              *ngIf="
+                documentsList?.data?.length > 0;
+                then dataExistsDoc;
+                else noDataExistsDoc
+              "
+            ></span>
+            <ng-template #dataExistsDoc>
+              <tr *ngFor="let doc of documentsList?.data; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  {{ doc.documentName }}
+                </td>
+                <td>
+                  <a
+                    href="{{ doc.documentUrl }}{{ documentsList.sasToken }}"
+                    title="Download"
+                    ><div class="cloud-download"></div>
+                  </a>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #noDataExistsDoc
+              ><tr>
+                No documents found.
+              </tr></ng-template
+            >
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div
+    class="approval-section-heading"
+    *ngIf="rfqDetail.outSourcingCode === 'TAM'"
+  >
+    <div class="approval-content-heading">SOW JD Demand</div>
+    <div class="approval-section-border">
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        pagination
+        [paginationPageSize]="5"
+        [rowData]="rowDataVendorSkillset"
+        [columnDefs]="columnDefsSkillsetsTAM"
+        [defaultColDef]="defaultColDef"
+        (gridReady)="onGridReadySkillset($event)"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+        (cellClicked)="onCellClicked($event)"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        [suppressMenuHide]="true"
+        [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+        (filterChanged)="onFilterChanged($event)"
+        (horizontalScroll)="onHorizontalScroll($event)"
+        (sortChanged)="onSortChanged($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+
+  <div class="approval-section-heading">
+    <div class="approval-content-heading">Vendor Detail</div>
+    <div class="approval-section">
+      <div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-3">
+              <div>Vendor Name</div>
+              <div>{{ vendorDetail.vendorName }}</div>
+            </div>
+            <div class="col-3">
+              <div>Vendor ID</div>
+              <div>{{ vendorDetail.vendorSAPId }}</div>
+            </div>
+            <div class="col-3">
+              <div>Vendor Email</div>
+              <div>{{ vendorDetail.vendorEmail }}</div>
+            </div>
+            <div class="col-3">
+              <div>Last Date to Submit RFQ</div>
+              <div>{{ rfqDetail.rfqEndDate | date : dateFormat }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="approval-section-heading">
+    <div class="approval-content-heading">Vendor Proposal Documents</div>
+    <div *ngIf="rfqDetail.rfqStatusID === 1 || rfqDetail.rfqStatusID === 5">
+      <div class="fileUpload" (click)="fileInput.click()"></div>
+      <input
+        style="display: none"
+        #attachments
+        type="file"
+        (change)="onproposalFileChanged($event)"
+        #fileInput
+        multiple="true"
+      />
+    </div>
+    <div class="approval-section">
+      <div>
+        <div>
+          <div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">File</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <span
+                  *ngIf="
+                    proposalDocuments?.data?.length > 0;
+                    then dataExists;
+                    else noDataExists
+                  "
+                ></span>
+                <ng-template #dataExists>
+                  <tr
+                    *ngFor="let doc of proposalDocuments?.data; let i = index"
+                  >
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      {{ doc.fileName }}
+                    </td>
+                    <td>
+                      <div style="display: flex">
+                        <a
+                          href="{{ doc.fileUrl }}{{
+                            proposalDocuments.sasToken
+                          }}"
+                          ><div class="cloud-download"></div>
+                        </a>
+                        <div
+                          *ngIf="
+                            rfqDetail.rfqStatusID === 1 ||
+                            rfqDetail.rfqStatusID === 5
+                          "
+                          class="blue-delete icon edit-delete space"
+                          (click)="deleteFile(doc.id)"
+                        ></div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template #noDataExists
+                  ><tr>
+                    No documents found.
+                  </tr></ng-template
+                >
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      rfqDetail.sowjdTypeCode === 'RC' && rfqDetail.outSourcingCode === 'TAM'
+    "
+  >
+    <div class="approval-section-heading">
+      <div class="heading">
+        <div class="approval-content-heading">Vendor Resource Plan</div>
+      </div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefsResourceBGSWRateCardTM"
+          [defaultColDef]="defaultColDef"
+          [rowData]="resourceList"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="vendorResourceGridReady($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <div>Equivalent Capacity</div>
+                <div>
+                  {{
+                    resourceSummary?.equivalentCapacity
+                      | numberFormat : companyLocale : companyNumericFormat
+                  }}
+                </div>
+              </div>
+              <div class="col-4">
+                <div>Equivalent PMO</div>
+                <div>
+                  {{
+                    resourceSummary?.equivalentPMO
+                      | numberFormat : companyLocale : companyNumericFormat
+                  }}
+                </div>
+              </div>
+              <div class="col-4">
+                <div>Total Cost Vendor (Incl. Overhead)</div>
+                <div>
+                  {{
+                    resourceSummary?.totalCost
+                      | countryCurrency : companyCurrencyName : companyLocale
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      rfqDetail.sowjdTypeCode === 'NRC' && rfqDetail.outSourcingCode === 'TAM'
+    "
+  >
+    <div class="approval-section-heading">
+      <div class="heading">
+        <div class="approval-content-heading">Vendor Resource Plan</div>
+      </div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefsResource"
+          [defaultColDef]="defaultColDef"
+          [rowData]="resourceList"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="vendorResourceGridReady($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <div>Equivalent Capacity</div>
+                <div>
+                  {{
+                    resourceSummary?.equivalentCapacity
+                      | numberFormat : companyLocale : companyNumericFormat
+                  }}
+                </div>
+              </div>
+              <div class="col-4">
+                <div>Equivalent PMO</div>
+                <div>
+                  {{
+                    resourceSummary?.equivalentPMO
+                      | numberFormat : companyLocale : companyNumericFormat
+                  }}
+                </div>
+              </div>
+              <div class="col-4">
+                <div>Total Cost Vendor (Incl. Overhead)</div>
+                <div>
+                  {{
+                    resourceSummary?.totalCost
+                      | countryCurrency : companyCurrencyName : companyLocale
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      rfqDetail.sowjdTypeCode === 'RC' &&
+      (rfqDetail.outSourcingCode === 'WP' || rfqDetail.outSourcingCode === 'MS')
+    "
+  >
+    <div class="approval-section-heading">
+      <div class="heading">
+        <div class="approval-content-heading">Work Package Details</div>
+        <div class="button-wrappper">
+          <button
+            *ngIf="
+              (rfqDetail.rfqStatusID === 1 || rfqDetail.rfqStatusID === 5) &&
+              !isRFQRecordeLocked
+            "
+            mat-button
+            class="btn-hover-primary arrow space"
+            mat-button
+            (click)="addBGSVRateCardWPWorkPackage()"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="add-icon"></span>
+              </div>
+              <div class="btn-name">Add Activity</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefsWorkPackageBGSVRateCardWP"
+          [defaultColDef]="defaultColDef"
+          [rowData]="workPackageList"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="workPackageGridReady($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div>Total Hours</div>
+                <div>{{ workPackageSummary?.totalHours }}</div>
+              </div>
+              <div class="col">
+                <div>Total Cost Vendor (Incl. Overhead)</div>
+                <div>
+                  {{
+                    workPackageSummary?.totalCost
+                      | countryCurrency : companyCurrencyName : companyLocale
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="approval-section-heading">
+      <div class="heading">
+        <div class="approval-content-heading">Vendor Resource Plan</div>
+        <div class="button-wrappper">
+          <button
+            *ngIf="
+              (rfqDetail.rfqStatusID === 1 || rfqDetail.rfqStatusID === 5) &&
+              !isRFQRecordeLocked
+            "
+            mat-button
+            class="btn-hover-primary arrow space"
+            mat-button
+            (click)="addBGSVRateCardWPResource()"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="add-icon"></span>
+              </div>
+              <div class="btn-name">Add Resource</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefsResourceRateCardWP"
+          [defaultColDef]="defaultColDef"
+          [rowData]="resourceList"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="vendorResourceGridReady($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div>Equivalent Capacity</div>
+                <div>
+                  {{
+                    resourceSummary?.equivalentCapacity
+                      | numberFormat : companyLocale : companyNumericFormat
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      rfqDetail.sowjdTypeCode === 'NRC' &&
+      (rfqDetail.outSourcingCode === 'WP' || rfqDetail.outSourcingCode === 'MS')
+    "
+  >
+    <div class="approval-section-heading">
+      <div class="heading">
+        <div class="approval-content-heading">Work Package Details</div>
+        <div class="button-wrappper">
+          <button
+            *ngIf="
+              (rfqDetail.rfqStatusID === 1 || rfqDetail.rfqStatusID === 5) &&
+              !isRFQRecordeLocked
+            "
+            mat-button
+            class="btn-hover-primary arrow space"
+            mat-button
+            (click)="addBGSVNoNRateCardWPWorkPackage()"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="add-icon"></span>
+              </div>
+              <div class="btn-name">Add Activity</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefsWorkPackageBGSVRateCardWP"
+          [defaultColDef]="defaultColDef"
+          [rowData]="workPackageList"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="workPackageGridReady($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div>Total Hours</div>
+                <div>{{ workPackageSummary?.totalHours }}</div>
+              </div>
+              <div class="col">
+                <div>Total Cost Vendor (Incl. Overhead)</div>
+                <div>
+                  {{
+                    workPackageSummary?.totalCost
+                      | countryCurrency : companyCurrencyName : companyLocale
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="heading">
+        <div class="approval-content-heading">Vendor Resource Plan</div>
+        <div class="button-wrappper">
+          <button
+            mat-button
+            *ngIf="
+              (rfqDetail.rfqStatusID === 1 || rfqDetail.rfqStatusID === 5) &&
+              !isRFQRecordeLocked
+            "
+            class="btn-hover-primary arrow space"
+            mat-button
+            (click)="addBGSVRateCardWPResource()"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="add-icon"></span>
+              </div>
+              <div class="btn-name">Add Resource</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefsResourceRateCardWP"
+          [defaultColDef]="defaultColDef"
+          [rowData]="resourceList"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="vendorResourceGridReady($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="approval-section-heading">
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <div>Equivalent Capacity</div>
+                <div>
+                  {{
+                    resourceSummary?.equivalentCapacity
+                      | numberFormat : companyLocale : companyNumericFormat
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="approval-section-heading"
+    *ngIf="rfqDetail.rfqStatusID === 8 || rfqDetail.rfqStatusID === 9"
+  >
+    <div class="approval-content-heading">Technical Evaluation Score</div>
+    <div class="approval-section">
+      <mat-accordion>
+        <mat-expansion-panel
+          (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false"
+        >
+          <mat-expansion-panel-header class="score-header-align">
+            <div class="finalresultprogressbar">
+              <div class="overall-score">Overall Score</div>
+              <div class="progress main-bar">
+                <div
+                  [ngClass]="
+                    rfqQuestionRating?.score * 10 > 50
+                      ? 'progress-bar bg-success bg-common'
+                      : rfqQuestionRating?.score * 10 <= 30
+                      ? 'progress-bar bg-danger bg-common'
+                      : 'progress-bar bg-warning bg-common'
+                  "
+                  role="progressbar"
+                  [style.width.%]="rfqQuestionRating?.score * 10"
+                >
+                  <span
+                    *ngIf="
+                      rfqQuestionRating?.score === 'NaN';
+                      else otherOatings
+                    "
+                    >{{ "NA" }}</span
+                  >
+                  <ng-template #otherOatings>{{
+                    rfqQuestionRating?.score
+                  }}</ng-template>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel-header>
+          <table border="1" width="100%" class="table table-striped">
+            <tbody>
+              <tr
+                class="score-tr"
+                *ngFor="
+                  let item of rfqQuestionRating.technicalEvaluationRatings;
+                  let i = index
+                "
+              >
+                <td class="tablecontentstyle">
+                  <div>{{ i + 1 }}. {{ item.question }}</div>
+                </td>
+                <td class="sub-main-bar">
+                  <div class="progress">
+                    <div
+                      [ngClass]="
+                        item.rating * 10 > 50
+                          ? 'progress-bar bg-success bg-common'
+                          : item.rating * 10 <= 30
+                          ? 'progress-bar bg-danger bg-common'
+                          : 'progress-bar bg-warning bg-common'
+                      "
+                      role="progressbar"
+                      [style.width.%]="item.rating * 10"
+                    >
+                      <span *ngIf="item.rating === 0; else otherOatings">{{
+                        "NA"
+                      }}</span>
+                      <ng-template #otherOatings>{{ item.rating }}</ng-template>
+                    </div>
+                  </div>
+                  <div class="statusbarremarks my-1">
+                    <span class="score-remarks">Remarks </span
+                    >{{ item.remarks }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+
+  <mat-expansion-panel class="mt-3">
+    <mat-expansion-panel-header>
+      <div class="approval-section-heading">
+        <mat-panel-title class="approval-content-heading"
+          >Remarks</mat-panel-title
+        >
+      </div>
+    </mat-expansion-panel-header>
+    <div>
+      <div
+        *ngIf="rfqRemarks?.length > 0; else noRemarksFound"
+        class="remarks-section"
+      >
+        <div class="approval-section-remarks" *ngFor="let item of rfqRemarks">
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+                  <div>
+                    {{ item.createdByName }}
+                    <span
+                      style="float: right"
+                      [ngClass]="sowjdService.getRFQStatusColor(item.commentId)"
+                      >{{ item.commentsType }}</span
+                    >
+                  </div>
+                  <div>{{ item.createdOn | date : dateFormat }}</div>
+                  <div>{{ item.comments }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noRemarksFound>
+      <p class="px-4">No remarks found</p>
+    </ng-template>
+  </mat-expansion-panel>
+  <hr />
+</div>

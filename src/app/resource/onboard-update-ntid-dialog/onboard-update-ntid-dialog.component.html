@@ -1,0 +1,64 @@
+
+<div>
+  <form [formGroup]="createdForm">
+    <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+      <app-resource-loader-ui></app-resource-loader-ui>
+     </div>
+   
+    <div class="row">
+      <div class="col-md col-sm">
+        <h3 class="title-head"><b>Update NT ID</b><mat-icon matTooltip="Close" style="float: right;cursor: pointer;" (click)="closeBtn()">close</mat-icon>
+        </h3>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6 col-sm mt-2" >       
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>NTID</mat-label>
+            <input matInput  formControlName="ntidFormControlName" maxlength="10" (paste)="onTextPaste($event)"  (keypress)="restrictFirstChacterSpaceNtid($event)"/>
+          </mat-form-field>
+      </div>
+      <div class="col-md-6 col-sm mt-2">       
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>NTID Created On</mat-label>
+            <input matInput [matDatepicker]="ntidcreatedOnPicker" placeholder="Choose a date" readonly (click)="ntidcreatedOnPicker.open()"  formControlName="ntidCreatedOnFormControlName" [min]="minDate" [max]="todayDate"/>
+            <mat-datepicker-toggle matSuffix [for]="ntidcreatedOnPicker"></mat-datepicker-toggle>
+            <mat-datepicker #ntidcreatedOnPicker></mat-datepicker>
+          </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-12 col-sm mt-2">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label> Email Address(Bosch)</mat-label>
+          <input matInput  formControlName="bEmailID" maxlength="50"/>
+        </mat-form-field>
+        <div *ngIf="f.bEmailID.invalid && (f.bEmailID.touched || f.bEmailID.dirty)" style="color: red;"> 
+          <span *ngIf="f.bEmailID.errors?.email">Email is not valid*</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm mt-2">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Remarks</mat-label>
+          <textarea matInput style="resize:none" formControlName="remarksFormControlName"  (keypress)="restrictFirstChacterSpace($event)"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="row mt-3">
+      <div class="col-md col-sm" style="text-align:right">
+        <button mat-stroked-button class="cancelBtn" (click)="cancleBtn()">
+          Cancel
+        </button>
+        <button mat-stroked-button color="primary" class="submitBtn"  (click)="submitBtn(createdForm)" [ngClass]="!createdForm.valid?'disableBtnClor':''"  [disabled]="!createdForm.valid">
+          Submit
+        </button>
+      </div>
+    </div>
+    </form>
+  </div>

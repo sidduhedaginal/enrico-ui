@@ -1,0 +1,58 @@
+{
+    "status": "success",
+    "actionDate": "2023-09-12T19:25:29.6182682Z",
+    "data": {
+      "resourceDbExitReasons": [
+        {
+          "id": 1,
+          "exitReason": "No show"
+        },
+        {
+          "id": 2,
+          "exitReason": "Absconding"
+        },
+        {
+          "id": 3,
+          "exitReason": "Non-performance"
+        },
+        {
+          "id": 4,
+          "exitReason": "Rotation to Different Project"
+        },
+        {
+          "id": 5,
+          "exitReason": "Resignation"
+        },
+        {
+          "id": 6,
+          "exitReason": "Contract closure by mutual consent"
+        },
+        {
+          "id": 7,
+          "exitReason": "Bosch payroll conversion"
+        },
+        {
+          "id": 8,
+          "exitReason": "Project closure"
+        },
+        {
+          "id": 9,
+          "exitReason": "BGV Failed"
+        },
+        {
+          "id": 10,
+          "exitReason": "Maternity Leave"
+        },
+        {
+          "id": 11,
+          "exitReason": "Breach of Value"
+        },
+        {
+          "id": 12,
+          "exitReason": "Project Resource Swap"
+        }
+      ]
+    },
+    "requestToken": "6tU2FSD8PI7JFdg08ZiIOeQNSP7lskKl"
+  }
+  

@@ -1,0 +1,32 @@
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    background-color: #3498db;
+    color: #ffffff;
+    text-align: center;
+    line-height: 100px;
+    font-size: 20px;
+  }
+  
+  .up {
+    transform: translate(-50%, -50%) translateY(-100px);
+  }
+  
+  .right {
+    transform: translate(-50%, -50%) translateX(100px);
+  }
+  
+  .down {
+
+    transform: translate(-50%, -50%) translateY(100px);
+    
+  }
+  
+  .left {
+    transform: translate(-50%, -50%) translateX(-100px);
+  }
+  

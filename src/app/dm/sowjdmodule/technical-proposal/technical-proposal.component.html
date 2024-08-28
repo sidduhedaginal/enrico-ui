@@ -1,0 +1,448 @@
+<app-loader></app-loader>
+<div *ngIf="technicalProposalData && !loader">
+  <div class="right-portion">
+    <mat-tab-group>
+      <mat-tab label="Technical Proposal">
+        <ng-container
+          *ngIf="
+            technicalProposalData.masterVendors.length > 0;
+            then dataExists;
+            else noDataExists
+          "
+        >
+        </ng-container>
+        <ng-template #dataExists>
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Vendor Detail</div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+                      <div>Vendor Name</div>
+                      <div>
+                        {{ technicalProposalData.masterVendors[0].vendorName }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Vendor Status</div>
+                      <div
+                        [ngClass]="
+                          technicalProposalData.masterVendors[0].status === 3
+                            ? 'legend success-status'
+                            : 'legend non-success-status'
+                        "
+                      >
+                        {{
+                          technicalProposalData.masterVendors[0]
+                            .technicalProposalStatus
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Vendor SAPID</div>
+                      <div>
+                        {{ technicalProposalData.masterVendors[0].vendorSAPID }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div>Vendor Email Id</div>
+                      <div></div>
+                    </div>
+                    <div class="col">
+                      <div>Last date to submit proposal/resource plan</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0].endDate
+                            | date : dateFormat
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Vendor Remarks</div>
+                      <div>
+                        {{ technicalProposalData.masterVendors[0].remarks }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Vendor Cost</div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+                      <div>Equivalent Capacity</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0]
+                            .equivalentCapacity
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Equivalent PMO</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0].equivalentPMO
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Total Cost Vendor</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0].totalCostVendor
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <div>Outsourcing Cost Index</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0]
+                            .outsourcingCostIndex
+                        }}
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div>Purchase Order</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0].purchaseOrder
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Guidance Cost</div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+                      <div>Total Personal Cost</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0]
+                            .totalPersonalCost
+                        }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Total OH Cost</div>
+                      <div>
+                        {{ technicalProposalData.masterVendors[0].totalOHCost }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div>Total Internal Cost</div>
+                      <div>
+                        {{
+                          technicalProposalData.masterVendors[0]
+                            .totalInternalCost
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">
+              Vendor Proposol Documents
+            </div>
+            <div class="approval-section">
+              <div class="container-fluid">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">File</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <span
+                      *ngIf="
+                        technicalProposalData.technicalProposalDocuments
+                          .length > 0;
+                        then dataExists1;
+                        else noDataExists1
+                      "
+                    ></span>
+                    <ng-template #dataExists1>
+                      <tr
+                        *ngFor="
+                          let doc of technicalProposalData.technicalProposalDocuments;
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          {{ doc.fileName }}
+                        </td>
+                        <td>
+                          <a
+                            href="{{ doc.fileUrl }}{{
+                              technicalProposalData.sasToken
+                            }}"
+                            title="Download"
+                            ><div class="cloud-download"></div>
+                          </a>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #noDataExists1
+                      ><tr>
+                        No documents found.
+                      </tr></ng-template
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Resource Profiles</div>
+            <div class="approval-section">
+              <div class="container-fluid">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">File</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <span
+                      *ngIf="
+                        technicalProposalData.techProposalResourceProfiles
+                          .length > 0;
+                        then dataExists2;
+                        else noDataExists2
+                      "
+                    ></span>
+                    <ng-template #dataExists2>
+                      <tr
+                        *ngFor="
+                          let doc of technicalProposalData.techProposalResourceProfiles;
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          {{ doc.fileName }}
+                        </td>
+                        <td>
+                          <a
+                            href="{{ doc.fileUrl }}{{
+                              technicalProposalData.sasToken
+                            }}"
+                            title="Download"
+                            ><div class="cloud-download"></div>
+                          </a>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #noDataExists2
+                      ><tr>
+                        No documents found.
+                      </tr></ng-template
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Vendor Resource Plan</div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <ag-grid-angular
+                    class="ag-theme-alpine"
+                    [columnDefs]="columnDefsResourcePlan"
+                    [defaultColDef]="defaultColDef"
+                    [rowData]="technicalProposalData.techProposalResourcePlans"
+                    [paginationPageSize]="6"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    (gridReady)="onGridReadyVendorResourcePlan($event)"
+                  ></ag-grid-angular>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Bosch Internal Cost</div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <ag-grid-angular
+                    class="ag-theme-alpine"
+                    [columnDefs]="columnDefsInternalCost"
+                    [defaultColDef]="defaultColDef"
+                    [rowData]="technicalProposalData.boschInternalCost"
+                    [paginationPageSize]="6"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    (gridReady)="onGridReadyInternalCost($event)"
+                  ></ag-grid-angular>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">
+              Approval and Sign Off Details
+            </div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <ag-grid-angular
+                    class="ag-theme-alpine"
+                    [columnDefs]="columnDefsForApprovalSignOff"
+                    [defaultColDef]="defaultColDef"
+                    [rowData]="approvalSignOffData.sowjdSingOffDetails"
+                    [paginationPageSize]="6"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    (gridReady)="onGridReadyApprovalSignOff($event)"
+                  ></ag-grid-angular>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="approval-section-heading">
+            <div class="approval-content-heading">Purchase Order Details</div>
+            <div class="approval-section">
+              <div>
+                <div class="container-fluid">
+                  <ag-grid-angular
+                    class="ag-theme-alpine"
+                    [columnDefs]="columnDefsForPORemarks"
+                    [defaultColDef]="defaultColDef"
+                    [rowData]="PORemarks"
+                    [paginationPageSize]="6"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    (gridReady)="onGridReadyPORemarks($event)"
+                  ></ag-grid-angular>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <form
+            [formGroup]="actionFormDM"
+            *ngIf="
+              technicalProposalData.masterVendors[0].status === 3 &&
+              !approvalSignOffData.isDMSignOff
+            "
+          >
+            <mat-form-field class="comment">
+              <mat-label>Sign Off remarks</mat-label>
+              <textarea
+                matInput
+                placeholder="Add remarks"
+                formControlName="dmRemarks"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  actionFormDMControl['dmRemarks'].touched &&
+                  actionFormDMControl['dmRemarks'].invalid
+                "
+              >
+                Please add sign off remarks
+              </mat-error>
+            </mat-form-field>
+            <div class="button-wrappper">
+              <button
+                mat-button
+                class="btn-hover arrow space"
+                (click)="onSubmitDM()"
+              >
+                <div class="btn-wrapper">
+                  <div class="icon">
+                    <span class="checkmark-blue-icon"></span>
+                  </div>
+                  <div class="btn-name">DM Sign Off</div>
+                </div>
+              </button>
+            </div>
+          </form>
+          <form
+            [formGroup]="actionFormSecSpoc"
+            *ngIf="
+              technicalProposalData.masterVendors[0].status === 3 &&
+              !approvalSignOffData.isSecSpocSignOff
+            "
+          >
+            <mat-form-field class="comment">
+              <mat-label>Sign Off remarks</mat-label>
+              <textarea
+                matInput
+                placeholder="Add remarks"
+                formControlName="secSpocRemarks"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  actionFormSecSpocControl['secSpocRemarks'].touched &&
+                  actionFormSecSpocControl['secSpocRemarks'].invalid
+                "
+              >
+                Please add sign off remarks
+              </mat-error>
+            </mat-form-field>
+            <div class="button-wrappper">
+              <button
+                mat-button
+                class="btn-hover-primary arrow space"
+                (click)="onSubmitSecSpoc()"
+              >
+                <div class="btn-wrapper">
+                  <div class="icon">
+                    <span class="checkmark-icon"></span>
+                  </div>
+                  <div class="btn-name">Sec Spoc Sign Off</div>
+                </div>
+              </button>
+            </div>
+          </form>
+        </ng-template>
+        <ng-template #noDataExists>
+          <div class="right-portion">
+            Technical Proposal not found.
+          </div></ng-template
+        >
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

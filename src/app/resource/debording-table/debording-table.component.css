@@ -1,0 +1,189 @@
+
+::ng-deep .gMFFInput.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  ::ng-deep .gMFFSelect.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  .divTableScroll {
+    overflow: auto hidden;
+    scrollbar-width: thin;
+    width: 100%;
+  }
+  .resourceTbl {
+    overflow-x: auto;
+  width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 12px;
+    color: black;
+    min-width: 230px;
+    font-weight: 600;
+  }
+  .mat-cell {
+    font-size: 12px;
+    color: black;
+    min-width: 230px;
+  }
+
+  .iniimg1{
+    width: 20px;
+    margin-right: 16px;
+  }
+  .b1-clr{
+   color: #007BC0
+  }
+  .sortImg{
+    width:15px;
+    padding-left:5px
+  }
+  .curP{
+    cursor: pointer;
+  }
+  .popup {
+    display: flex;
+    z-index: 999999999;
+    position: absolute;
+  
+  }
+.popup .popuptext {
+    visibility: hidden;
+    width: 100%;
+    background-color: #ffffff;
+    color: #000;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.popup .popuptext label{ 
+  vertical-align: text-bottom;
+  padding-left: 4px;
+  font-size: 10.5px;
+  font-weight: 500;
+  position: relative;
+  bottom: 4px;
+}
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+.popup .hide1 {
+  visibility: hidden;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+.rowBg {
+  background: #F5F5F5;
+  padding: 12px 0 0 0;
+}
+.settingText {
+  vertical-align: top;
+  position: relative;
+  top: 3px;
+  left: 6px;
+}
+.setPos {
+  position: relative;
+  top: 14px;
+  height: 40px;
+
+}
+.containerContent {
+  margin: 30px 30px;
+}
+.adjustCSettings{
+  display: inline-block;
+  width: 200px;
+  height: 40px;
+  padding: 13px 0px;
+}
+.imgSearch{
+  position: relative;
+  white-space: nowrap;
+  display: inline;
+  bottom: 12px;
+  width: 18px;
+  padding: 0.95em 0 0.25em 0;
+
+}
+.resetFiltercsDiv{
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+
+}
+.resetFiltercs{
+  display: block;
+  padding: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    background: #fff;
+    color: #007BC0;
+    width: 160px;
+    height: 46px;
+    outline: none;
+    border:none;
+}
+.resetFiltercs:hover{
+ 
+    text-decoration: underline;
+    cursor: pointer;
+}
+::ng-deep.mchipV.mat-standard-chip.mat-chip-with-trailing-icon {
+  font-size: 10.5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 4px;
+  padding-left: 10px;
+}
+.RM-popuptext div {
+  width: 160px !important;
+}
+.inputSearchField{
+  padding: 8px 8px;
+  width: 88%;
+  border-bottom: 1px solid #000;
+  margin: 6px;
+  background: #E0E2E5;
+  font-weight: 600;
+  background: url("https://dev.enrico-digital.bosch.tech/assets/img/search.png") no-repeat right;
+  background-size: 18px;
+  background-position: right 10px bottom 10px;
+}
+.select-all{
+  padding: 6px 14px;
+}
+.mat-row:hover {
+  background-color: #2196f31a;
+}
+tr.mat-row:hover > td.mat-table-sticky {
+  background: #e8f4fe;
+  }
+  td.mat-cell {
+    border-bottom-style: none !important;
+}
+th.mat-header-cell {
+  border-bottom: 1px solid #000 !important;
+}
+::ng-deep .mat-select-panel {
+  background: #f8f8f8 !important;
+}
+::ng-deep .mat-option.mat-active,.mat-option:hover{
+  background:unset !important;
+}
+::ng-deep .mat-select-panel .mat-option {
+  line-height: 2.2em !important;
+  height: 2.2em !important;
+}
+
+  @media screen and (max-width: 700px) {
+  }

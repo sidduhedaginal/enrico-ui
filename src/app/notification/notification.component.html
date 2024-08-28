@@ -1,0 +1,39 @@
+<div class="notification-container">
+  <div class="notification-count">
+    <!-- <div>Notifications({{ notifications.length }})</div> -->
+    <div>UnRead Notifications ({{unReadNotification}})</div>
+    <div>
+      <img
+        mat-dialog-close
+        src="../../assets/icons/close.svg"
+        (click)="closeNotification()"
+      />
+    </div>
+  </div>
+  <div>
+    <div class="model-container">
+      <div *ngIf="notifications.length > 0" class="list-custom" (scroll)="onScroll()">
+        <div *ngFor="let item of notifications">
+          <mat-card (click)="notificationSeen(item)" style="cursor:pointer;">
+            <div *ngIf="!item.isSeen" class="dot"><img src="../../assets/icons/dot.svg" /></div>
+            <div class="content">
+              <div>
+                <div>
+                  <strong>{{ item.notificationTitle }}</strong>
+                </div>
+                <div [title]="item.notificationDescription"  class="description">{{ item.notificationDescription }}</div>
+              </div>
+              <!-- <div class="date">
+                {{ item.modifiedDate }}
+              </div> -->
+            </div>
+          </mat-card>
+          <div class="space"></div>
+        </div>
+      </div>
+      <div *ngIf="notifications.length === 0" class="no-notification">
+        No Notifications
+      </div>
+    </div>
+  </div>
+</div>

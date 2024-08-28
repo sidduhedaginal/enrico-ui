@@ -1,0 +1,113 @@
+.master-data{
+    padding: 15px;
+    font-family: Bosch Sans !important;
+}
+.header{
+    width: 100%;
+    height: 60px;
+    display:flex;
+    justify-content: space-between;
+    gap:10px; 
+    vertical-align: middle;
+  }
+.menu-icon{
+    margin-top:5px;
+    margin-right:5px;
+}
+.menus{
+    background-color: rgb(237, 245, 252);
+    align-items: center;
+    height:100px;    
+    vertical-align: middle;
+}
+.search-button{
+    padding-left: 10px;
+    padding-top: 10px;
+    display: flex;
+    gap:20px
+}
+:host::ng-deep.mat-form-field-appearance-fill .mat-form-field-flex{
+    height: 50px;
+    background-color: #e0e2e5;
+    border-radius:0px;
+    font-family: Bosch Sans !important;
+}
+.menu-items{
+    padding-left: 25px;
+    font-weight: 500;
+}
+.menu-items-text{
+    padding-top: 3px;
+    padding-left:5px;
+}
+
+:host::ng-deep.ngxp__arrow::before{
+    height: 30px !important;
+    width: 30px !important;
+    left: -80px !important;
+}
+:host::ng-deep div.ngxp__container{
+    max-width: 1000px !important;
+}
+.filter-class{
+    display: flex;
+}
+.filter-field{
+    width:200px
+}
+.filter-input{
+    width:180px !important;
+    height: 40px;
+}
+.small-checkbox .mat-checkbox-inner-container {
+    font-size: 14px;
+    width: 13px !important;
+    height: 13px  !important;
+  }
+.custom__options{
+    margin:5px 15px;
+}
+.saveConfigCheckBox
+{
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height:250px;
+    padding: 10px;
+}
+.save-button{
+    cursor: pointer;
+    color:dodgerblue;
+    padding-right:15px;
+}
+.select-column{
+    font-weight: bold;
+    padding-left: 15px;
+}
+.mat-checkbox{
+    font-family: Bosch Sans !important;
+}
+
+
+:host::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: dodgerblue !important;
+  }
+.lable-text{
+    font-weight: bold;
+    padding-bottom: 10px;
+}  
+.heading{
+    padding-left:0;
+}
+.form-field{
+    width: 180px !important;
+}
+.popper {
+    position: absolute;
+    z-index: 100;
+    top: 44px;
+    width:680px;
+    background: #fff;
+    box-shadow: 9px 9px 17px 3px rgba(34, 35, 58, 0.5);
+    padding: 20px 6px;
+  }

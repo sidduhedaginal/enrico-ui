@@ -1,0 +1,674 @@
+<div *ngIf="vendorInfo">
+  <div class="row">
+    <div class="col-6">
+      <h2 class="page-heading">New Service Receipt Note</h2>
+    </div>
+    <div class="col-6">
+      <div class="button-wrappper">
+        <button mat-button class="btn-hover arrow space" (click)="onCancel()">
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="cancel-icon"></span>
+            </div>
+            <div class="btn-name">Cancel</div>
+          </div>
+        </button>
+        <button
+          mat-button
+          class="btn-hover-primary arrow space"
+          [disabled]="
+            isValid ||
+            isWPValid ||
+            !isValidAbsentDays ||
+            !isValidRegExAbsentDays ||
+            !isValidWorkingHours
+          "
+          (click)="submitSRN()"
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="white-checkmark"></span>
+            </div>
+            <div class="btn-name">Submit</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col float-end" *ngIf="isTAMCostExistsValid">
+      <p class="error-message">{{ tamCostExistsMessage }}</p>
+    </div>
+  </div>
+
+  <form [formGroup]="myForm">
+    <div formGroupName="createsrn">
+      <div class="approval-section-heading">
+        <div class="approval-content-heading">Billing Period Details</div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field class="matform1">
+              <mat-label>Billing Month </mat-label>
+              <mat-select
+                formControlName="billingmonthId"
+                (selectionChange)="onBillingMonthChange($event)"
+              >
+                <mat-option
+                  *ngFor="let bill of BillingMonthMasterDetails"
+                  [value]="bill.id"
+                >
+                  {{ bill.billingMonth }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  createSrn.controls['billingmonthId'].touched &&
+                  createSrn.controls['billingmonthId'].invalid
+                "
+              >
+                Please choose Billing Month
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Billing Period ID</mat-label>
+              <input matInput [value]="billingPeriodId" disabled />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>From Date</mat-label>
+              <input matInput [value]="fromDate | date : dateFormat" disabled />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>To Date</mat-label>
+              <input matInput [value]="toDate | date : dateFormat" disabled />
+            </mat-form-field>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-content-heading">SoW JD Details</div>
+        <div class="row">
+          <div class="col-4">
+            <app-search-bar-sowjd
+              (selectionChangeEvent)="getPurchaseOrderDetails($event)"
+              [labelValue]="'Sign Off ID'"
+              [resetClicked]="isSoWJDReset"
+              [isRequired]="true"
+              [vendorId]="vendorId"
+              [searchPlaceholder]="'technicalProposalNumber'"
+              [selectedId]="createSrn.controls['sowJdId'].value"
+            ></app-search-bar-sowjd>
+            <mat-error
+              *ngIf="
+                createSrn.controls['sowJdId'].touched &&
+                createSrn.controls['sowJdId'].invalid
+              "
+            >
+              Please choose SoW JD ID
+            </mat-error>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Description</mat-label>
+              <input
+                matInput
+                [value]="
+                  srnSowJdDetails.description ? srnSowJdDetails.description : ''
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Location Mode</mat-label>
+              <input
+                matInput
+                [value]="
+                  srnSowJdDetails.resourceLocation
+                    ? srnSowJdDetails.resourceLocation
+                    : ''
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>SOW JD Type</mat-label>
+              <input
+                matInput
+                [value]="
+                  srnSowJdDetails.sowJdType ? srnSowJdDetails.sowJdType : ''
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Outsourcing Mode</mat-label>
+              <input
+                matInput
+                [value]="
+                  srnSowJdDetails.outsourcingType
+                    ? srnSowJdDetails.outsourcingType
+                    : ''
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Section SPOC</mat-label>
+              <input
+                matInput
+                [value]="srnSowJdDetails.secSpoc ? srnSowJdDetails.secSpoc : ''"
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Delivery Manager</mat-label>
+              <input
+                matInput
+                [value]="
+                  srnSowJdDetails.deliveryManager
+                    ? srnSowJdDetails.deliveryManager
+                    : ''
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Company</mat-label>
+              <input
+                matInput
+                [value]="
+                  srnSowJdDetails.companyCode ? srnSowJdDetails.companyCode : ''
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4" *ngIf="srnSowJdDetails.managedCapacity">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Managed Capacity</mat-label>
+              <input
+                matInput
+                [value]="srnSowJdDetails.managedCapacity"
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Company Name</mat-label>
+              <input
+                matInput
+                [value]="
+                  srnSowJdDetails.companyFullName
+                    ? srnSowJdDetails.companyFullName
+                    : ''
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <hr />
+      </div>
+
+      <div class="approval-section-heading">
+        <div class="approval-content-heading">Vendor Details</div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Vendor Name</mat-label>
+              <input matInput [value]="vendorInfo.vendorName" disabled />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Vendor ID</mat-label>
+              <input matInput [value]="vendorInfo.vendorSAPID" disabled />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Vendor Email</mat-label>
+              <input matInput [value]="vendorInfo.email" disabled />
+            </mat-form-field>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-content-heading">Purchase Order Details</div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>PO Number</mat-label>
+              <input matInput [value]="poNumber" disabled />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>PO Start Date</mat-label>
+              <input
+                matInput
+                [value]="poStartDate | date : dateFormat"
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>PO End Date</mat-label>
+              <input
+                matInput
+                [value]="poEndDate | date : dateFormat"
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Order Currency</mat-label>
+              <input matInput [value]="orderCurrency" disabled />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col float-end" *ngIf="isValid">
+            <p class="error-message">{{ errorMessage }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col float-end" *ngIf="isWPValid">
+            <p class="error-message">{{ errorMessageWP }}</p>
+          </div>
+        </div>
+
+        <div class="approval-section">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="purchageOrdercolumnDefs"
+            [defaultColDef]="defaultColDef"
+            [autoGroupColumnDef]="autoGroupColumnDef"
+            [aggFuncs]="aggFuncs"
+            [rowData]="srnLineItemsList"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [singleClickEdit]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="myPurchageOrder($event)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+            [suppressMenuHide]="true"
+            (filterChanged)="onFilterChanged($event)"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+            (horizontalScroll)="onHorizontalScroll($event)"
+            (sortChanged)="onSortChanged($event)"
+          ></ag-grid-angular>
+        </div>
+        <div class="row" *ngIf="showResourceEffort">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>SRN Value</mat-label>
+              <input
+                matInput
+                [value]="
+                  poTotalSRNValue
+                    | countryCurrency : companyCurrencyName : companyLocale
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field
+              appearance="fill"
+              class="example-full-width"
+              *ngIf="showPOBalance"
+            >
+              <mat-label>PO Balance</mat-label>
+              <input
+                matInput
+                [value]="
+                  poBalance
+                    | countryCurrency : companyCurrencyName : companyLocale
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div class="approval-section-heading" *ngIf="showWorkPackegeDetails">
+        <div class="approval-content-heading">Work Package Details</div>
+
+        <div class="row">
+          <div class="col float-end" *ngIf="isValidWPQty">
+            <p class="error-message">{{ errorMessageWPQty }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col float-end" *ngIf="isActivityDeliveredExistValid">
+            <p class="error-message">{{ wpActivityDeliveredMessage }}</p>
+          </div>
+        </div>
+
+        <div class="approval-section">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="workingPackegecolumnDefs"
+            [defaultColDef]="defaultColDef"
+            [autoGroupColumnDef]="autoGroupColumnDef"
+            [rowData]="srnWorkPackageList"
+            [aggFuncs]="aggFuncs"
+            [paginationPageSize]="5"
+            (input)="onInputNumber($event)"
+            [singleClickEdit]="true"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="workPackageDetails($event)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+            [suppressMenuHide]="true"
+            (filterChanged)="onFilterChanged($event)"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+            (horizontalScroll)="onHorizontalScroll($event)"
+            (sortChanged)="onSortChanged($event)"
+          ></ag-grid-angular>
+        </div>
+        <hr />
+      </div>
+      <div class="approval-section-heading" *ngIf="showOdcDetails">
+        <div class="align-single-line">
+          <div class="approval-content-heading">ODC Details</div>
+          <div class="button-wrappper">
+            <button
+              mat-button
+              class="btn-hover-primary arrow space"
+              mat-button
+              (click)="addODC()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="add-icon"></span>
+                </div>
+                <div class="btn-name">Add ODC</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="approval-section">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="odcDetailscolumnDefs"
+            [defaultColDef]="defaultColDef"
+            [autoGroupColumnDef]="autoGroupColumnDef"
+            [rowData]="odcList"
+            [aggFuncs]="aggFuncs"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="odcDetails($event)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+            [suppressMenuHide]="true"
+            (filterChanged)="onFilterChanged($event)"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+            (horizontalScroll)="onHorizontalScroll($event)"
+            (sortChanged)="onSortChanged($event)"
+          ></ag-grid-angular>
+        </div>
+        <hr />
+      </div>
+
+      <div class="approval-section-heading" *ngIf="showSRNType">
+        <div class="row">
+          <div class="col">
+            <div class="block2 block_radio">
+              <span class="radiotextstyle"> SRN Type </span> &nbsp;
+              <mat-radio-group
+                formControlName="SRNTypeId"
+                aria-label="Select an option"
+              >
+                <mat-radio-button
+                  [disabled]="isDisabled"
+                  [checked]="SRNTypeSelected === srn.name"
+                  *ngFor="let srn of SRNTypes"
+                  [value]="srn.id"
+                >
+                  {{ srn.name }}&nbsp; </mat-radio-button
+                >&nbsp;&nbsp;
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+
+      <div class="approval-section-heading">
+        <div class="approval-content-heading">Resource Details</div>
+
+        <div class="row" *ngIf="isAbsentDaysExistValid">
+          <div class="col float-end">
+            <p class="error-message">{{ tamAbsentDaysMessage }}</p>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isWorkingHoursExistValid">
+          <div class="col float-end">
+            <p class="error-message">{{ tamWorkingHourssMessage }}</p>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isResourceNotSRNValid">
+          <div class="col float-end">
+            <p class="error-message">{{ resourceNotEligibleMessage }}</p>
+          </div>
+        </div>
+
+        <div class="approval-section">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            [columnDefs]="resourceDetailscolumnDefs"
+            [defaultColDef]="defaultColDef"
+            [autoGroupColumnDef]="autoGroupColumnDef"
+            [rowData]="srnGetResourceList"
+            [aggFuncs]="aggFuncs"
+            [paginationPageSize]="5"
+            [paginationAutoPageSize]="false"
+            [paginateChildRows]="true"
+            [singleClickEdit]="true"
+            [animateRows]="true"
+            [pagination]="true"
+            (input)="onInput($event)"
+            [suppressAggFuncInHeader]="true"
+            (gridReady)="myResourceDetails($event)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+            [suppressMenuHide]="true"
+            (filterChanged)="onFilterChanged($event)"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+            (horizontalScroll)="onHorizontalScroll($event)"
+            (sortChanged)="onSortChanged($event)"
+          ></ag-grid-angular>
+        </div>
+        <hr />
+      </div>
+      <div class="approval-section-heading" *ngIf="showResourceEffort">
+        <div class="approval-content-heading">Resource Effort</div>
+        <div class="row">
+          <div class="col-4" *ngIf="showTotalEffortHours">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Total Effort Hours</mat-label>
+              <input matInput [value]="totalEffortHours" disabled />
+            </mat-form-field>
+          </div>
+          <div
+            class="col-4"
+            *ngIf="showTotalWorkingDays && SRNTypeSelected === 'DAY'"
+          >
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Total Working Days</mat-label>
+              <input matInput [value]="totalWorkingDays" disabled />
+            </mat-form-field>
+          </div>
+          <div class="col-4" *ngIf="showTotalEffortPMO">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Total Effort PMO</mat-label>
+              <input
+                matInput
+                [value]="
+                  totalEffortPmo
+                    | numberFormat : companyLocale : companyNumericFormat
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4" *ngIf="showWorkpackageCost">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Workpackage Cost</mat-label>
+              <input
+                matInput
+                [value]="
+                  workpackageCost
+                    | countryCurrency : companyCurrencyName : companyLocale
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4" *ngIf="showODCCost">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>ODC Cost</mat-label>
+              <input
+                matInput
+                [value]="
+                  odcTotalCost
+                    | countryCurrency : companyCurrencyName : companyLocale
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-4" *ngIf="showRateCardValue">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Rate Card Value</mat-label>
+              <input
+                matInput
+                [value]="
+                  rateCardValue
+                    | countryCurrency : companyCurrencyName : companyLocale
+                "
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div class="approval-section-heading">
+        <div class="approval-content-heading">Support Document</div>
+        <div class="form-group">
+          <div class="imgstyle2">
+            <div class="ImgContainer imgstyle" (click)="fileInput.click()">
+              <div>
+                <input
+                  type="file"
+                  #fileInput
+                  id="file"
+                  hidden
+                  (change)="uploadFile($event)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="approval-section-heading">
+          <div class="approval-section-doc">
+            <div class="container-fluid">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">File</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <span
+                    *ngIf="
+                      myFiles.length > 0;
+                      then dataExists1;
+                      else noDataExists1
+                    "
+                  ></span>
+                  <ng-template #dataExists1>
+                    <tr *ngFor="let doc of myFiles; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        {{ doc.Filename }}
+                      </td>
+
+                      <td>
+                        <div style="display: flex">
+                          <a (click)="deleteFile(i)"
+                            ><div class="deleteblue"></div>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template #noDataExists1
+                    ><tr>
+                      No documents found.
+                    </tr></ng-template
+                  >
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

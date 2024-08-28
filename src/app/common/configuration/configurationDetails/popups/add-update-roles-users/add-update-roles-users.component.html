@@ -1,0 +1,87 @@
+<div>
+  <ng-container *ngIf="receivedData.operation != 'delete'">
+    <div>
+      <h1 class="title" *ngIf="receivedData.operation == 'create'">
+        Add Users
+      </h1>
+      <h1 class="title" *ngIf="receivedData.operation == 'update'">
+        Update Users
+      </h1>
+      <h3 class="error">{{ errorMsg }}</h3>
+    </div>
+
+    <form [formGroup]="myForm" class="Form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="field">
+        <mat-label>Business Role</mat-label>
+        <mat-select placeholder="Select Business Role" formControlName="roleId">
+          <mat-option *ngFor="let role of businessRoles" [value]="role.id">{{
+            role.entityBusinessRoleName
+          }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="myForm?.get('roleId')?.hasError('required')"
+          >Business Role is required</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="field">
+        <mat-label>User NTID</mat-label>
+        <input matInput placeholder="" formControlName="ntiDs" />
+        <mat-error *ngIf="myForm?.get('ntiDs')?.hasError('required')"
+          >User NTID</mat-error
+        >
+      </mat-form-field>
+      <ng-container *ngIf="receivedData.operation == 'update'">
+        <mat-radio-group class="field radioField" formControlName="status">
+          <mat-label>Status:</mat-label>
+          <div>
+            <mat-radio-button [value]="true">Active</mat-radio-button>
+            <mat-radio-button [value]="false">Inactive</mat-radio-button>
+          </div>
+        </mat-radio-group>
+        <mat-error *ngIf="myForm?.get('status')?.hasError('required')">
+          Status is required
+        </mat-error>
+      </ng-container>
+    </form>
+    <div class="action-btn">
+      <button
+        class="cancel-btn"
+        mat-raised-button
+        color="primary"
+        (click)="onClose($event)"
+      >
+        Cancel
+      </button>
+      <button
+        class="save-btn"
+        mat-raised-button
+        color="primary"
+        (click)="onSubmit()"
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="receivedData.operation == 'delete'">
+    <h3>Are you sure want to delete</h3>
+    <div class="action-btn">
+      <button
+        class="cancel-btn"
+        mat-raised-button
+        color="primary"
+        (click)="onClose($event)"
+      >
+        Cancel
+      </button>
+      <button
+        class="save-btn"
+        mat-raised-button
+        color="primary"
+        (click)="onSubmit()"
+        type="submit"
+      >
+        Delete
+      </button>
+    </div>
+  </ng-container>
+</div>

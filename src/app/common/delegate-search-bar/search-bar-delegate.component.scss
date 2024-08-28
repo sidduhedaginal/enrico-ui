@@ -1,0 +1,46 @@
+.mat-form-field {
+  width: 100%;
+}
+
+input.mat-input-element {
+  margin: 0 !important;
+}
+
+.mat-select-panel mat-option {
+  padding: 0 !important;
+}
+
+.mat-select-search-clear {
+  border: none !important;
+  top: 0 !important;
+}
+// .mat-select-search-inner {
+//   width: 347px !important;
+// }
+
+.mat-select-search-input {
+  padding: 0 !important;
+}
+
+.cdk-overlay-container
+  .mat-select-panel
+  mat-option.mat-option.mat-option-multiple
+  .mat-pseudo-checkbox {
+  margin-left: 15px;
+}
+
+button.mat-focus-indicator.mat-select-search-clear.mat-button.mat-icon-button.mat-button-base.ng-star-inserted {
+  background-color: #fff;
+}
+.mat-option-text {
+  margin-left: 10px;
+  max-width: 100%;
+  overflow: auto !important;
+  text-overflow: unset !important;
+}
+.mat-select-disabled .mat-select-trigger {
+  overflow: hidden;
+}
+.mat-select-search-inside-mat-option {
+  padding-left: 10px !important;
+}

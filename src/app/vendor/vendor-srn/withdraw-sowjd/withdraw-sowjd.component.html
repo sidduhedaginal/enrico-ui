@@ -1,0 +1,83 @@
+<div class="body">
+</div>
+<div class="title">
+ <h2 mat-dialog-title>Widthdrawal</h2>
+</div>
+
+<mat-dialog-content
+ class="mat-typography dialog"
+>
+  <div class="department__title">Project Data</div>
+   <div class="sowjd__row1">
+     <mat-form-field class="example-full-width">
+       <mat-label>SOW_JD Number</mat-label>
+       <input matInput placeholder="" [value]="sowJdNumber" disabled="disabled" >
+     </mat-form-field>
+
+     <mat-form-field class="example-full-width">
+       <mat-label>Status</mat-label>
+       <input matInput placeholder="" [value]="statusName" disabled="disabled" >
+       </mat-form-field>
+     
+   </div>
+
+ <div class="wholediv" >
+   <div class="label">
+     <label>SOW JD Type</label><br>
+     <mat-radio-group class="remark" aria-label="SOWJD type" disabled="disabled">
+       <mat-radio-button  [checked]="ratecardtype" value="1">Rate Card</mat-radio-button
+       >&nbsp;
+       <mat-radio-button [checked]="nonratecardtype" value="2">Non Rate Card</mat-radio-button>
+     </mat-radio-group>
+   </div>
+   <div class="sowjd__row1">
+     <mat-form-field class="example-full-width desc">
+       <mat-label>Description</mat-label>
+       <input matInput placeholder="Vendor Id"   disabled="disabled" [value]="description">
+       </mat-form-field>
+   </div>
+ </div>
+ <div class="wholediv">
+   <div class="label">
+     <label>Customer (*)</label><br>
+     <!-- <mat-form-field>
+       <mat-label>Customer </mat-label>
+     <mat-select  placeholder="Customer">
+       <mat-option value="1" >Bosch</mat-option>
+       <mat-option value="2">Global</mat-option>
+     </mat-select>
+   </mat-form-field> -->
+     <mat-radio-group class="remark" aria-label="SOWJD type" disabled="disabled">
+       <mat-radio-button [checked]="Bosch" value="1">Bosch</mat-radio-button
+       >&nbsp;
+       <mat-radio-button [checked]="Global" value="2">Global</mat-radio-button>
+     </mat-radio-group>
+   </div>
+   <div class="sowjd__row1">
+     <mat-form-field class="example-full-width" >
+       <mat-label>Customer Name</mat-label>
+       <input matInput placeholder=""  [value]="customerName" disabled="disabled">
+       </mat-form-field>
+   </div>
+ </div>
+
+</mat-dialog-content>
+<div class="sowjd__row1">
+ <mat-form-field class="example-full-width remark">
+   <mat-label>Remark</mat-label>
+   <input matInput required [(ngModel)]="remarks" >
+   </mat-form-field>
+</div>
+<mat-dialog-actions align="end">
+ <button class="button-secondary"mat-button [mat-dialog-close]="true">Cancel</button>
+ <button
+ [disabled]="remarks == null"
+   mat-button
+   [mat-dialog-close]="true"
+   (click)="SaveForm()"
+
+   class="button-primary"
+ >
+   Save
+ </button>
+</mat-dialog-actions>

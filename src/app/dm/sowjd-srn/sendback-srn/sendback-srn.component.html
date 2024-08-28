@@ -1,0 +1,66 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div class="title">Send Back SRN</div>
+    <div class="close-btn">
+      <mat-icon matTooltip="Close" (click)="onClose('no')">close</mat-icon>
+    </div>
+  </div>
+
+  <form [formGroup]="sendBackSrn" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <div class="warning-design">
+          <span class="warning_planning">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span class="warning_text"
+            >Warning. If you choose to send back the SRN request, the recipient
+            will have the option to resubmit it. Please consider carefully
+            before proceeding with this action.</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Remarks</mat-label>
+          <textarea
+            matInput
+            placeholder="Add remark"
+            formControlName="remarks"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              sendBackSrn.controls['remarks'].invalid &&
+              sendBackSrn.controls['remarks'].touched
+            "
+          >
+            Please add remarks
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose('no')"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="sendBackSrn.invalid"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

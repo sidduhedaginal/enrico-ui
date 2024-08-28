@@ -1,0 +1,79 @@
+.title-head {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .colorStart {
+    color: red;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: -6px;
+  }
+  
+  ::ng-deep .gMFFInput.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  ::ng-deep .gMFFSelect.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  .cancelBtn {
+    border-radius: 0;
+    width: 100px;
+    color: #008ECF;
+    border: 1px solid #008ECF;
+    font-size: 14px;
+    margin-right: 1rem;
+  }
+  
+  .submitBtn {
+    border-radius: 0;
+    width: 100px;
+    color: #fff;
+    border: 1px solid #008ECF;
+    font-size: 14px;
+    background-color: #007BC0;
+  }
+  .imgSearch{
+    position: relative;
+    white-space: nowrap;
+    display: inline;
+    bottom: 12px;
+    width: 18px;
+    padding: 0.95em 0 0.25em 0;
+  }
+  .disableBtnClor {
+    border: 1px solid #cccccc;
+    background-color: #C1C7CC;
+    cursor: not-allowed;
+    color: #000 !important;
+  }
+  .warnTbl{
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 17px;
+  }
+  .warnTbl .td1{
+    vertical-align: baseline;
+    width: 30px;
+  }
+  .warnTbl .td1 img{
+ width:20px;
+ position: relative;
+    left: 6px;
+  }
+  .warnTbl td{
+    padding: 10px 8px;
+  }
+@media screen and (min-width:1500px) {
+  .warnTbl{
+    font-size: 12px;
+  }
+  .warnTbl td{
+    padding: 12px 2px;
+  }
+}

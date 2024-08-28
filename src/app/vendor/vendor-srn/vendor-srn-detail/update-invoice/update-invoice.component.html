@@ -1,0 +1,59 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div class="title">Update Invoice Number</div>
+    <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose('no')"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+
+  <div class="delegation-message pb-3">{{ message }}</div>
+
+  <form [formGroup]="updateInvoiceForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Invoice Number</mat-label>
+          <input
+            matInput
+            placeholder="Remarks"
+            formControlName="invoiceNumber"
+          />
+          <mat-error
+            *ngIf="
+              updateInvoiceForm.controls['invoiceNumber'].invalid &&
+              updateInvoiceForm.controls['invoiceNumber'].touched
+            "
+          >
+            Please enter Invoice Number
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose('no')"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="cancel-icon"></span>
+          </div>
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button mat-button class="btn-hover-primary arrow space" type="submit">
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="checkmark-icon"></span>
+          </div>
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

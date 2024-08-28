@@ -1,0 +1,43 @@
+<div class="header-items">
+  <div class="title">
+      <p mat-dialog-title class="custom-dialog">Confirm Action</p>
+  </div>
+  <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onNoClick()"
+        >close</mat-icon
+      >
+  </div>
+</div>
+<mat-dialog-content>
+
+  <div>
+ 
+    <span style="padding: 0 0.35em;margin: 0.55em;">{{title}}</span>
+    <mat-form-field style="width: 95%;padding: 0 0.75em;margin-top: 0.95em;">
+      <mat-label class="popup-lebel">Remarks <span class="starcolor">*</span> </mat-label>
+      <input maxlength="50" matInput placeholder="Remark" [(ngModel)]="remark" 
+      (keydown)="space($event)" />
+      <!-- <mat-error
+      *ngIf="
+      myForm.controls['Remark'].touched &&
+      myForm.controls['Remark'].invalid">Please Fill Remarks
+      </mat-error> -->
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<!-- <mat-dialog-actions>
+
+  <button mat-button (click)="onNoClick()">No</button>
+  <button mat-button color="warn" (click)="onYesClick()">Yes</button>
+</mat-dialog-actions> -->
+<mat-dialog-actions align="end">
+ 
+  <button class="cancel-btn" mat-raised-button color="primary" cdkFocusInitial (click)="onNoClick()"  [mat-dialog-close]="true">
+    No
+</button>
+  <button [disabled]="!remark"
+  [mat-dialog-close]="true"
+  (click)="onYesClick()" class="save-btn" mat-raised-button color="primary"> Yes
+  </button>
+</mat-dialog-actions>

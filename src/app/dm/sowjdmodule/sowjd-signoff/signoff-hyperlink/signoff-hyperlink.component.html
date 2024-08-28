@@ -1,0 +1,9 @@
+<div *ngIf="permissionDetails?.readPermission; else noViewDetail">
+  <div
+    class="make-hyperlink"
+    (click)="navigateToSowjdDetail(data.technicalproposalID)"
+  >
+    {{ data.technicalProposalNumber }}
+  </div>
+</div>
+<ng-template #noViewDetail>{{ data.technicalProposalNumber }}</ng-template>

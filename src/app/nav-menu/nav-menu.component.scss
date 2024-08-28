@@ -1,0 +1,116 @@
+mat-sidenav-container {
+  height: 100%;
+
+  mat-sidenav {
+    mat-nav-list {
+      .chevron-button {
+        transition: 300ms ease-in-out;
+        transform: rotate(0deg);
+      }
+
+      .chevron-button.rotated {
+        transform: rotate(180deg);
+      }
+
+      .logo {
+        width: 150px;
+      }
+
+      .logo-icon {
+        width: 34px;
+      }
+    }
+  }
+}
+
+.mat-nav-list .mat-list-item:first-child:hover {
+  background: transparent;
+}
+
+.mat-list-base .mat-list-item,
+.mat-list-base .mat-list-option {
+  height: 56px;
+}
+.mat-drawer {
+  background-color: #323131;
+}
+.mat-drawer .mat-nav-list .mat-list-item.first-child {
+  background-color: #fff;
+}
+.mat-drawer-side {
+  border-right: #fff;
+}
+.mat-list-base .mat-list-item:not(.first-child) {
+  color: #fff;
+}
+
+.sidenav-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  box-sizing: content-box;
+  padding-right: 10px;
+}
+.footer-menu {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.roles-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  border-radius: 4px;
+  padding: 4px 4px;
+  align-items: flex-start;
+  .left-roles {
+    font-weight: bold;
+  }
+  .role {
+    display: flex;
+    margin-left: 16px;
+  }
+}
+.profile-menu-card {
+  background: #f1f2f3;
+  box-shadow: 9px 9px 17px 3px rgba(34, 35, 58, 0.5);
+  position: absolute;
+  padding: 16px;
+  bottom: 60px;
+  left: 16px;
+  z-index: 100;
+  text-align: center;
+  .title {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .sub-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .desc {
+    .main {
+      line-height: 30px;
+      display: flex;
+      justify-content: flex-start;
+      .label {
+        font-weight: bold;
+      }
+      .data {
+        margin-left: 16px;
+      }
+    }
+  }
+  .comp-info {
+    text-align: left;
+    font-weight: bold;
+    font-size: 16px;
+    padding-top: 6px;
+  }
+  .img-avatar {
+    .my-title {
+      height: 50px;
+    }
+  }
+}

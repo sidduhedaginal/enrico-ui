@@ -1,0 +1,246 @@
+.commonstyle{
+    display: flex;
+    justify-content:flex-start;
+    align-items:center;
+    font-size: 13px;
+}
+.commonstyle1{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size: 13px;
+}
+.action_text{
+    font-size: 12px;
+    color: #008ecf;
+}
+.lefttitle{
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 0.25em;
+}
+.righticons{
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 5px;
+}
+.righticons1{
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  padding: 8px 0;
+}
+.righticons-nopadding{
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0
+}
+.iconcolor{
+    color: #008ecf;
+    padding:5px;
+    cursor :pointer;
+}
+
+.bordercolor{
+    border: 1px solid #ccc;
+}
+.spantitle{
+    width:25%;
+    text-align: left;
+ }
+ .spantitle1{
+    width:24%;
+    text-align: left;
+    background-color: #525F6B;
+    padding: 0.75em;
+    color: #fff;
+}
+.greybackground{
+ background: #F5F5F5;
+ padding: 8px;
+ margin-bottom: 8px;
+}
+.titleblock{
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+}
+.commonstylemain{
+    display: flex;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+.commonstylemain1{
+    display: flex;
+    justify-content:flex-end;
+    align-items:center;
+}
+.buttonalign{
+    display:flex;
+    align-items:center;
+}
+.icon-button {
+    justify-content: space-between;
+    border-radius: 0;
+    border-color: #008ecf;
+    color:#008ecf;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 122px;
+  }
+  
+  .icon-button mat-icon {
+    margin-left: 10px;
+    color:#008ecf
+  }
+  .mainMasterGrid
+{
+    width:100%;
+}
+.mainMasterGrid1{
+    width:89vw;
+}
+.belowblocks{
+    display: flex;
+    flex-direction: column;
+}
+
+.subpanel{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+.gridTitle{
+    font-size: 14px;
+    font-weight: bold;
+}
+.mat-expansion-panel{
+    box-shadow: none !important;
+}
+
+.date{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding:3px 0px;
+    color:gray;
+    font-size: 12px;
+}
+.remarktext{
+    font-size: 14px;
+}
+
+.mainpanel{
+    background-color: #f5f5f5;
+    width: 89vw;
+    padding:20px;
+    margin: 10px 0px;
+}
+.remarksList{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+mat-expansion-panel-header {
+    background-color:#f5f5f5;
+}
+mat-panel-title{
+    font-weight: 500;
+}
+.statusText{
+    font-size: 15px;
+    font-weight: bold;
+}
+.statusText1{
+    font-size: 12px;
+    font-weight: bold;
+}
+.ownermainblock{
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding:2px 12px;
+}
+.OwnerBlock{
+    background-color: rgb(224, 245, 255);
+    border-radius: 25px;
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding:2px 12px;
+}
+.button-secondary {
+    color: #007bc0;
+    font-family: Bosch-Sans;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    line-height: 24px;
+    cursor: pointer;
+    width: 120px;
+    border-width: 1px;
+    border-color: #007bc0;
+    border-style: solid;
+    border-radius: 0;
+    padding: 5px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+  }
+
+  .button-secondary-disable {
+    color: grey;
+    font-family: Bosch-Sans;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    line-height: 24px;
+    cursor: pointer;
+    width: 120px;
+    border-width: 1px;
+    border-color: none;
+    border-style: solid;
+    border-radius: 0;
+    padding: 5px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+  }
+  .icon-button {
+    color: #007bc0;
+    font-family: Bosch-Sans;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    line-height: 24px;
+    cursor: pointer;
+    width: 120px;
+    border-width: 1px;
+    border-color: #007bc0;
+    border-style: solid;
+    border-radius: 0;
+    padding: 5px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spantitle2{
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding: 0.75em;
+    margin: 0 0.35em;
+}
+.filterTopPortion1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

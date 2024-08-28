@@ -1,0 +1,54 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div class="title">Approve SRN</div>
+    <div class="close-btn">
+      <mat-icon matTooltip="Close" (click)="onClose('no')">close</mat-icon>
+    </div>
+  </div>
+
+  <form [formGroup]="approveSrn" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Remarks</mat-label>
+          <textarea
+            matInput
+            placeholder="Add remark"
+            formControlName="remarks"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              approveSrn.controls['remarks'].invalid &&
+              approveSrn.controls['remarks'].touched
+            "
+          >
+            Please add remarks
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose('no')"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="approveSrn.invalid"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

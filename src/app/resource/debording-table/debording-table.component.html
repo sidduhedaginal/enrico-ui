@@ -1,0 +1,323 @@
+
+<div class="adjustMH">
+  <div *ngIf="showLoading">
+   <app-resource-loader-ui></app-resource-loader-ui>
+  </div>
+  <div class="row rowBg" >
+    <div class="col-md-3 col-sm"   (click)="hideCsPopup()">
+      <mat-form-field class="full-width gMFFInput" appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput #searchInput (keyup)="applyFilter(searchInput.value,'',false)" />
+        <img matSuffix src="../assets/img/search.png" class="imgSearch" />
+      </mat-form-field>
+      </div>
+<div class="col-md-2 col-sm" >
+ 
+  <span class="curP adjustCSettings" id="csID" (click)="openSettingPopupDeboarding()">
+   <span>
+    <img src="../assets/img/settings.png" class="imgSettings curP" />
+  </span>
+  <span class="settingText">Column Settings</span>
+  </span>
+
+            <div class="RM-popup" id="myPopup1" >
+              <div class="RM-popupoverlaySetting" >
+                <div class="RM-popupSet">                 
+                    <div class="RM-setting-upArrow">
+                      <div class="RM-diag-sub-scroll">
+                        <div class="resetFiltercsDiv">
+                          <button class="resetFiltercs" (click)="saveAllFilter()"> Save Filters</button>
+                          <span (click)="closeColumnSettingsPopup()"><mat-icon>close</mat-icon></span>
+                        </div>
+                      <div class="RM-popuptext">    
+              <div *ngFor="let item of _displayAllCols; let i = index">    
+                <input type="checkbox" class="colSetCbx-rm" [id]="item + i" [name]="item" [(ngModel)]="item.Checked" (ngModelChange)="getCheckboxValues($event, item)" /><label [for]="item + i"> {{ getCapitalize(item)  }} </label>    
+              </div> 
+            </div> 
+            <div>
+              <mat-chip-list>
+                <mat-chip class="mchipV" *ngFor="let a of allChilpList;" [removable]="true" (removed)="onToppingRemoved(a)">
+                  {{ getCapitalize(a)  }} 
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                </mat-chip-list>
+            </div> 
+            <div class="resetFiltercsDiv mt-2" style="justify-content: left;">
+        
+              <button class="resetFiltercs" (click)="resetAll()"> Reset All Filters</button>
+            </div>
+                    </div>
+                </div>
+                </div>
+             
+              </div>
+            </div> 
+</div>
+<div class="col-md col-sm"   (click)="hideCsPopup()"></div>
+<div class="col-md-2 col-sm adjustExportWdRM" >
+  <button (click)="btnExport()" class="buttonExportRM">
+  <div class="icon-class"><span class="export icon"></span> &nbsp;<span>Export</span></div>
+</button>
+</div>
+
+<div class="col-md-1 col-sm" >
+  <img src="./assets/images/refresh.svg" class="refreshtableR" matTooltip="Refresh Data" (click)="refreshGetData()"/>
+</div>
+</div>
+</div>
+
+
+<div class="divTableScroll"   (click)="hideCsPopup()">
+    <table mat-table [dataSource]="dataSource" matSort class="resourceTbl custTablePaginator">
+      <ng-container matColumnDef="deboardingRequestID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('deboardingRequestID')"  [ngClass]="activeCol=='deboardingRequestID'?'fTextClr' : ''">  De-boarding ID</span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='deboardingRequestID'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('deboardingRequestID')"/>
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label> De-boarding ID </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'deboardingRequestID')" #selectDeboardID multiple>
+              <input placeholder="Search" class="inputSearchField"  #idDeboardingRequestID  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'DeboardingRequestID')"> 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedDeboardID" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('ID')">Select All</mat-checkbox>
+</div>
+              <mat-option  (click)="optionClick('ID')" *ngFor="let op of drIDDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element"  class="b1-clr curP" (click)="deBoardIDDetails(element)">
+          {{ element.deboardingRequestID }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="employeeNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('employeeNumber')"  [ngClass]="activeCol=='employeeNumber'?'fTextClr' : ''">   Employee Number</span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='employeeNumber'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('employeeNumber')" />
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>  Employee Number </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'employeeNumber')" #selectEmployeeNumber multiple>
+              <input placeholder="Search" class="inputSearchField"  #idEmployeeNumber  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'EmployeeNumber')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedEmployeeNumber" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('empNumber')">Select All</mat-checkbox>
+              </div>  
+              <mat-option  (click)="optionClick('empNumber')"  *ngFor="let op of employeeNumberDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.employeeNumber }}</td>
+      </ng-container>
+      <ng-container matColumnDef="fullname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('fullname')"  [ngClass]="activeCol=='fullname'?'fTextClr' : ''">   Employee Name </span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()">  <img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='fullname'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('fullname')" />
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>  Employee Name </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'fullname')"  #selectEmployeeName multiple>
+              <input placeholder="Search" class="inputSearchField"  #idEmployeeName  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'EmployeeName')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedEmployeeName" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('empName')">Select All</mat-checkbox>
+              </div>  
+              <mat-option  (click)="optionClick('empName')" *ngFor="let op of employeeNameDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.fullname }}</td>
+      </ng-container>
+      <ng-container matColumnDef="vendorName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('vendorName')"  [ngClass]="activeCol=='vendorName'?'fTextClr' : ''">  Vendor </span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='vendorName'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('vendorName')"/>
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label> Vendor </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'vendorName')"  #selectVendor multiple>
+              <input placeholder="Search" class="inputSearchField"  #idVendorName  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'VendorName')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedVendor" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('vendor')">Select All</mat-checkbox>
+              </div> 
+              <mat-option (click)="optionClick('vendor')" *ngFor="let op of vendorDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.vendorName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="exitReason">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('exitReason')"  [ngClass]="activeCol=='exitReason'?'fTextClr' : ''">    Exit Reason </span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='exitReason'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('exitReason')"/>
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>  Exit Reason </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'exitReason')"  #selectExitReason multiple>
+              <input placeholder="Search" class="inputSearchField"  #idExitReason  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'ExitReason')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedExitReason" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('exitReason')">Select All</mat-checkbox>
+              </div> 
+              <mat-option  (click)="optionClick('exitReason')" *ngFor="let op of exitReasonDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.exitReason }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="isReplaceRequest">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('isReplaceRequest')"  [ngClass]="activeCol=='isReplaceRequest'?'fTextClr' : ''">  Replacement Requested  </span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='isReplaceRequest'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('isReplaceRequest')" />
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>  Replacement Requested  </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'isReplaceRequest')"  #replacementRequested multiple>
+              <input placeholder="Search" class="inputSearchField"  #idReplaceRequest  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'ReplaceRequest')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedReplacerequested" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('replaceReq')">Select All</mat-checkbox>
+              </div> 
+            
+              <mat-option  (click)="optionClick('replaceReq')" *ngFor="let op of replaceRequestDetails" [value]="op">
+            
+                <span *ngIf="op !=true && op !=false ">{{op}} </span>
+                 <span *ngIf="op==true">Yes </span>
+                 <span *ngIf="op==false">No </span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.isReplaceRequest ==true">Yes </span>
+          <span *ngIf="element.isReplaceRequest ==false">No </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="lastWorkingDay">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('lastWorkingDay')"  [ngClass]="activeCol=='lastWorkingDay'?'fTextClr' : ''">   Last Working Date   </span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()">  <img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='lastWorkingDay'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('lastWorkingDay')" />
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>  Last Working Date  </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'lastWorkingDay')"  #selectLWD multiple>
+              <input placeholder="Search" class="inputSearchField"  #idLastWorkingDay  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'LastWorkingDay')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedLWD" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('lwday')">Select All</mat-checkbox>
+              </div> 
+              <mat-option  (click)="optionClick('lwday')" *ngFor="let op of lwdDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.lastWorkingDay   |  date: 'dd/MM/yyyy' }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="deliveryManager">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('deliveryManager')"  [ngClass]="activeCol=='deliveryManager'?'fTextClr' : ''">    Delivery Manager  </span>
+          <div class="tooltip-v" (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='deliveryManager'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('deliveryManager')"/>
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>     Delivery Manager  </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'deliveryManager')" #selectDeliveryManager multiple>
+              <input placeholder="Search" class="inputSearchField"  #idDeliveryManager  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'DeliveryManager')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedDeliveryManager" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('deliveryManager')">Select All</mat-checkbox>
+              </div>   
+              <mat-option (click)="optionClick('deliveryManager')" *ngFor="let op of deliveryManagerDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.deliveryManager }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="statusDescription">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span  (click)="colNameClick('statusDescription')"  [ngClass]="activeCol=='statusDescription'?'fTextClr' : ''"> Status</span> 
+          <div class="tooltip-v" (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg"  (mouseover)="mhoverChangeIcon()"  [ngClass]="activeCol=='statusDescription'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('statusDescription')" />
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>     Status   </mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'statusDescription')"  #selectStatus multiple>
+              <input placeholder="Search" class="inputSearchField"  #idStatus  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Status')" > 
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedStatus" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('status')">Select All</mat-checkbox>
+              </div>  
+              <mat-option (click)="optionClick('status')" *ngFor="let op of statusDetails" [value]="op">
+                {{ op }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+     
+          <span *ngIf="element.statusDescription=='Rejected'"> Send Back </span>
+
+          <span *ngIf="element.isFirstLevelApproved==true  && element.statusDescription=='Submitted'">  First Approval </span>
+          <span *ngIf="element.isFirstLevelApproved==false && element.statusDescription=='Submitted'">  De-boarding Initiated </span>
+
+<span *ngIf="element.statusDescription !='Submitted' && element.statusDescription !='Rejected'"> {{element.statusDescription}} </span>
+         
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="more" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef  class="trt" style="text-align: right;">&nbsp;Action</th>
+        <td mat-cell *matCellDef="let element" class="trt curP">
+         
+<span *ngIf="showApproveSendBackDelegateBtn && (_roleGetPermission.approvePermission || _roleGetPermission.rejectPermission || _roleGetPermission.delegatePermission || _roleGetPermission.withdrawPermission) ">
+
+        <mat-icon  [matMenuTriggerFor]="menuMore" class="curP" *ngIf="element.statusDescription =='Submitted' && userDetailsRoles=='/EnricoUsers'">more_vert</mat-icon>    
+      </span>
+          <mat-menu #menuMore="matMenu"> 
+  
+
+            <button mat-menu-item (click)="deOnboardMore(element, 'Approve')" class="b1-clr" *ngIf="_roleGetPermission.approvePermission && ( ((element.firstApprover== userDetails.employeeNumber  && element.isFirstLevelApproved==false && checkOnlyDeliveryManager==true) || (element.secondApprover== userDetails.employeeNumber && element.isFirstLevelApproved==true && checkOnlyDeliveryManager==false))  ||  (checkOnlyDeliveryManager==true && element.firstApprover== userDetails.employeeNumber  && element.isFirstLevelApproved==false) || (checkOnlySectionSpoc==true && element.isFirstLevelApproved==true && element.secondApprover== userDetails.employeeNumber) ) ">
+              <img src="../assets/img/checkmark-frame_blue.png" class="iniimg1" /> Approve
+            </button>
+
+
+            <button mat-menu-item (click)="deOnboardMore(element, 'Reject')"  class="b1-clr" *ngIf="_roleGetPermission.rejectPermission">
+              <img src="./assets/img/back-menu.png" class="iniimg1" /> Send Back
+            </button>
+        
+            <button mat-menu-item (click)="deOnboardMore(element, 'Withdraw')"  class="b1-clr" *ngIf="((showWithdrawResubmitExtendLwdRetainResourceBtn==true && _roleGetPermission.withdrawPermission ) && (element.statusDescription !='Submitted')  )">
+              <img src="./assets/img/subtract-frame.png" class="iniimg1" /> Withdraw
+            </button>
+            <button mat-menu-item (click)="deOnboardMore(element, 'Delegate')"  class="b1-clr"  *ngIf="_roleGetPermission.delegatePermission">
+              <img src="./assets/img/arrow-right-frame.png" class="iniimg1" /> Delegate
+            </button>        
+          </mat-menu>      
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <mat-paginator
+  class="pageCustRange"
+  [length]="dataSource.data.length"
+  #paginator
+  [pageSizeOptions]="[5,10, 25, 50, 100]"
+  appStylePaginator  [showTotalPages]="3"
+  [hidden]="!dataSource.data.length" 
+></mat-paginator>
+
+

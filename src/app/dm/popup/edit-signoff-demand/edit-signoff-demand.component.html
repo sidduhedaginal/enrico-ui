@@ -1,0 +1,160 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div class="title">Edit Demand</div>
+    <div class="close-btn">
+      <mat-icon matTooltip="Close" (click)="onClose('no')">close</mat-icon>
+    </div>
+  </div>
+
+  <form [formGroup]="initiateSignOff" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>SOW JD ID</mat-label>
+          <input matInput [value]="signOffDetail?.sowJdNumber" disabled />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Company</mat-label>
+          <input matInput [value]="signOffDetail?.companyCode" disabled />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Location</mat-label>
+          <input matInput [value]="signOffDetail?.plantName" disabled />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>SOW JD Type</mat-label>
+          <input matInput [value]="signOffDetail?.sowJdType" disabled />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Outsourcing Type</mat-label>
+          <input matInput [value]="signOffDetail?.outSourcingType" disabled />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Location Mode</mat-label>
+          <input matInput [value]="signOffDetail?.locationMode" disabled />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Vendor Name</mat-label>
+          <input matInput [value]="vendorDetail?.vendorName" disabled />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Vendor ID</mat-label>
+          <input matInput [value]="vendorDetail?.vendorSAPId" disabled />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="matform">
+          <mat-label>Last Date to submit Proposal and Resource Plan</mat-label>
+          <input
+            class="inputmat"
+            [matDatepickerFilter]="weekendsDatesFilter"
+            matInput
+            [min]="endDate"
+            [matDatepicker]="picker"
+            placeholder="Last Date to submit Proposal"
+            formControlName="tpEndDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="
+              initiateSignOff.controls['tpEndDate'].touched &&
+              initiateSignOff.controls['tpEndDate'].invalid
+            "
+          >
+            Please select Last Proposal Date
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="signOffDetail?.outSourcingCode === 'TAM'">
+      <div class="approval-section-heading">
+        <div class="approval-content-heading">SOW JD Demand</div>
+        <div class="remarks-red py-2">{{ errorMessage }}</div>
+        <div class="approval-section-border">
+          <ag-grid-angular
+            class="ag-theme-alpine"
+            pagination
+            [paginationPageSize]="5"
+            [rowData]="rowDataSkillset"
+            [columnDefs]="columnDefsSkillsets"
+            (input)="onInputNumber($event)"
+            [singleClickEdit]="true"
+            [defaultColDef]="defaultColDef"
+            (gridReady)="onGridReadySkillset($event)"
+            [suppressMenuHide]="true"
+            [animateRows]="true"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Remarks</mat-label>
+          <textarea
+            matInput
+            (keydown)="sowjdService.space($event)"
+            placeholder="Remarks"
+            formControlName="remarks"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              initiateSignOff.controls['remarks'].invalid &&
+              initiateSignOff.controls['remarks'].touched
+            "
+          >
+            Please add remarks
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose('no')"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="
+          initiateSignOff.invalid || !isValidVendorShare || isOpenDemandZero
+        "
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

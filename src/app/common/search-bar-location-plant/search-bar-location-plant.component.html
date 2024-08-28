@@ -1,0 +1,30 @@
+<mat-form-field>
+  <mat-label>{{ labelValue }}</mat-label>
+  <mat-select
+    [formControl]="searchBarControl"
+    (selectionChange)="optionChange($event)"
+    (click)="getIntialLocationPlant()"
+    #singleSelect
+    [required]="isRequired"
+  >
+    <mat-option>
+      <ngx-mat-select-search
+        [formControl]="searchFilterCtrl"
+        [noEntriesFoundLabel]="noMatchFound"
+        [placeholderLabel]="searchString"
+        (keyup)="getSearchValue($event)"
+      >
+        <mat-icon matSuffix (click)="clearSelection()" ngxMatSelectSearchClear
+          >close</mat-icon
+        >
+      </ngx-mat-select-search>
+    </mat-option>
+    <mat-option
+      [title]="item[searchPlaceholder]"
+      *ngFor="let item of filtereValues | async"
+      [value]="item[searchPlaceholderId]"
+    >
+      {{ item[searchPlaceholder] + " (" + item["plantName"] + ")" }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

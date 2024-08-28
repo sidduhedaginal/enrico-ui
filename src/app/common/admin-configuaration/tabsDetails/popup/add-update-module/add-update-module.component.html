@@ -1,0 +1,82 @@
+<div>
+    <ng-container *ngIf="receivedData.operation != 'delete'">
+      <div>
+        <h1 class="title" *ngIf="receivedData.operation == 'create'">Create Module </h1>
+        <h1 class="title" *ngIf="receivedData.operation == 'update'"> Update Module </h1>
+        <h3 class="error"> {{errorMsg}}</h3>
+    </div>
+      <form [formGroup]="myForm" class="Form" (ngSubmit)="onSubmit()">
+        <mat-form-field class="field">
+          <input matInput placeholder="Module Name" formControlName="moduleName" />
+          <mat-error *ngIf="myForm?.get('moduleName')?.hasError('required')">Module Name is
+            required</mat-error>
+            <mat-error *ngIf="myForm.get('moduleName').hasError('maxlength')">
+              Maximum length for Module Name is 255 characters.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+            <input matInput placeholder="Module Icon" formControlName="moduleIcon" />
+            <mat-error *ngIf="myForm?.get('moduleIcon')?.hasError('required')">Module Icon is
+              required</mat-error>
+              <mat-error *ngIf="myForm.get('moduleIcon').hasError('maxlength')">
+                Maximum length for Module Icon is 255 characters.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+            <input matInput placeholder="Module Description" formControlName="moduleDescription" />
+            <mat-error *ngIf="myForm?.get('moduleDescription')?.hasError('required')">Module Description is
+              required</mat-error>
+            <mat-error *ngIf="myForm.get('moduleDescription').hasError('maxlength')">
+                Maximum length for Module Icon is 500 characters.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <input matInput placeholder="URL Path" formControlName="urlPath" />
+          <mat-error *ngIf="myForm?.get('urlPath')?.hasError('required')">URL Path is
+            required</mat-error>
+          
+          <mat-error *ngIf="myForm.get('urlPath').hasError('maxlength')">
+              Maximum length for Url Path is 100 characters.
+          </mat-error>
+
+
+      </mat-form-field>
+      <ng-container>
+        <mat-radio-group class="field radioField" formControlName="isBelongToVendor">
+          <mat-label>Belongs to Vendor:</mat-label>
+          <div>          
+              <mat-radio-button [value]=true>Yes</mat-radio-button>
+              <mat-radio-button [value]=false>No</mat-radio-button>
+          </div>
+        </mat-radio-group>
+        <mat-error *ngIf="myForm?.get('isBelongToVendor')?.hasError('required')">Belongs to Vendor is
+          required
+        </mat-error>  
+      </ng-container>
+
+      </form>
+      <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+          Cancel
+        </button>
+        <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+          Save
+        </button>
+      </div>
+    </ng-container>
+  
+    <ng-container *ngIf="receivedData.operation == 'delete'" >
+      <h3>Are you sure want to delete</h3>
+      <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+          Cancel
+        </button>
+        <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+          Delete
+        </button>
+      </div>
+    </ng-container>
+  </div>

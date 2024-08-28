@@ -1,0 +1,338 @@
+<app-loader></app-loader>
+<div *ngIf="!loader">
+  <div
+    class="sowjd-header"
+    *ngIf="
+      vendorDetails.masterVendorDetails[0].status === 6 &&
+      technicalEvaluation.technicalEvaluationStatusID !== 3
+    "
+  >
+    <div>
+      <mat-checkbox
+        #checkbox
+        class="small-checkbox project-title"
+        value="checked"
+        (click)="changeValue(checkbox.checked)"
+        [checked]="technicalEvaluation.initiateTechnicalProposal"
+        style="color: #ed0007"
+      >
+        Initiate Technical Proposal & SignOff
+      </mat-checkbox>
+    </div>
+    <div class="button-wrappper">
+      <button
+        *ngIf="isRFQSumbitted == false"
+        mat-button
+        class="btn-hover arrow space"
+        (click)="SaveForm('send_back')"
+        type="button"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="back-menu-icon"></span>
+          </div>
+          <div class="btn-name">Send Back</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        (click)="SaveForm('save')"
+        type="button"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="save-icon"></span>
+          </div>
+          <div class="btn-name">Save</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        (click)="SaveForm('submit')"
+        type="button"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="checkmark-icon"></span>
+          </div>
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="right-portion">
+    <mat-tab-group>
+      <mat-tab label="Vendor Details">
+        <ng-container
+          *ngIf="
+            vendorDetails.masterVendorDetails.length > 0;
+            then dataExists;
+            else noDataExists
+          "
+        >
+        </ng-container>
+        <ng-template #dataExists>
+          <div>
+            <label>Vendor Details</label>
+            <div class="vendor-details">
+              <div class="col">
+                <div class="detail">Vendor Name</div>
+                <div>{{ vendorDetails.masterVendorDetails[0].vendorName }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Vendor SAP ID</div>
+                <div>
+                  {{ vendorDetails.masterVendorDetails[0].vendorSAPID }}
+                </div>
+              </div>
+              <div class="col">
+                <div class="detail">RFQ Status</div>
+                <div
+                  [ngClass]="
+                    vendorDetails.masterVendorDetails[0].status === 6
+                      ? 'legend success-status'
+                      : 'legend non-success-status'
+                  "
+                >
+                  {{ vendorDetails.masterVendorDetails[0].sowJdRfqStatus }}
+                </div>
+              </div>
+            </div>
+
+            <label>Vendor Proposal Documents</label>
+            <div>
+              <div>
+                <div class="proposalDocuments">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">File</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <span
+                        *ngIf="
+                          vendorDetails.vendorProposalDocuments.length > 0;
+                          then dataExists1;
+                          else noDataExists1
+                        "
+                      ></span>
+                      <ng-template #dataExists1>
+                        <tr
+                          *ngFor="
+                            let doc of vendorDetails.vendorProposalDocuments;
+                            let i = index
+                          "
+                        >
+                          <td>{{ i + 1 }}</td>
+                          <td>
+                            {{ doc.fileName }}
+                          </td>
+                          <td>
+                            <a
+                              href="{{ doc.fileUrl }}{{
+                                vendorDetails.sasToken
+                              }}"
+                              title="Download"
+                              ><div class="cloud-download"></div>
+                            </a>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template #noDataExists1
+                        ><tr>
+                          No documents found.
+                        </tr></ng-template
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <label>Resouce Profile</label>
+            <div>
+              <div>
+                <div class="proposalDocuments">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">File</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <span
+                        *ngIf="
+                          vendorDetails.resourceProfiles.length > 0;
+                          then dataExists1;
+                          else noDataExists1
+                        "
+                      ></span>
+                      <ng-template #dataExists1>
+                        <tr
+                          *ngFor="
+                            let doc of vendorDetails.resourceProfiles;
+                            let i = index
+                          "
+                        >
+                          <td>{{ i + 1 }}</td>
+                          <td>
+                            {{ doc.fileName }}
+                          </td>
+                          <td>
+                            <a
+                              href="{{ doc.fileUrl }}{{
+                                vendorDetails.sasToken
+                              }}"
+                              title="Download"
+                              ><div class="cloud-download"></div>
+                            </a>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template #noDataExists1
+                        ><tr>
+                          No documents found.
+                        </tr></ng-template
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <label>Vendor Cost</label>
+            <div class="vendor-details">
+              <div class="col">
+                <div class="detail">Equivalant Capacity</div>
+                <div>
+                  {{ vendorDetails.masterVendorDetails[0].equivalentCap }}
+                </div>
+              </div>
+              <div class="col">
+                <div class="detail">Equivalant PMO</div>
+                <div>
+                  {{ vendorDetails.masterVendorDetails[0].equivalentPMO }}
+                </div>
+              </div>
+              <div class="col">
+                <div class="detail">Total Cost</div>
+                <div>{{ vendorDetails.masterVendorDetails[0].totalCost }}</div>
+              </div>
+            </div>
+
+            <label>Resource Plan</label>
+            <div>
+              <ag-grid-angular
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefsResource"
+                [defaultColDef]="defaultColDef"
+                [rowData]="vendorDetails.resourcePlan"
+                [paginationPageSize]="5"
+                [paginationAutoPageSize]="false"
+                [paginateChildRows]="true"
+                [animateRows]="true"
+                [pagination]="true"
+                [suppressAggFuncInHeader]="true"
+                (gridReady)="onGridReady__resource($event)"
+              >
+              </ag-grid-angular>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #noDataExists>
+          <div class="right-portion">
+            Vendor details not found.
+          </div></ng-template
+        >
+      </mat-tab>
+
+      <mat-tab label="Technical Evaluation">
+        <ng-container
+          *ngIf="
+            technicalEvaluation.technicalEvaluationRatings.length > 0;
+            then techDataExists;
+            else techNoDataExists
+          "
+        >
+        </ng-container>
+        <ng-template #techDataExists>
+          <div class="score-info">
+            <div class="col">
+              <div class="detail">
+                <span class="highlight">Score : </span>
+                <span>{{ technicalEvaluation.score }}</span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="detail">
+                <span class="highlight">Status : </span>
+                <span
+                  [ngClass]="
+                    technicalEvaluation.technicalEvaluationStatusID === 3
+                      ? 'legend success-status'
+                      : 'legend non-success-status'
+                  "
+                >
+                  {{ technicalEvaluation.technicalEvaluationStatusName }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <table
+            class="vendor-details"
+            *ngFor="let item of technicalEvaluation.technicalEvaluationRatings"
+            class="width form-group"
+          >
+            <tr class="trtechques">
+              <td
+                class="tdinside"
+                style="padding-left: 15px; padding-bottom: 55px"
+              >
+                {{ item.question }}
+              </td>
+              <td class="tdques">
+                <div>
+                  <mat-radio-group class="radio" aria-label="Select an option">
+                    <mat-radio-button
+                      *ngFor="let rate of TechnicalRating"
+                      [checked]="rate.rating == item.rating ? true : false"
+                      [value]="rate.rating"
+                      (change)="onRadioQuestions($event, item)"
+                      >{{ rate.rating }}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                  <mat-form-field
+                    appearance="fill"
+                    style="width: 96%; padding-left: 15px"
+                    class="example-full-width"
+                  >
+                    <mat-label>Remarks</mat-label>
+
+                    <input matInput [(ngModel)]="item.remarks" />
+                  </mat-form-field>
+                  &nbsp;
+                </div>
+              </td>
+            </tr>
+          </table>
+        </ng-template>
+        <ng-template #techNoDataExists>
+          <div class="right-portion">
+            Technical evaluation ratings not found.
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div *ngIf="rfqTechEvaNotGenerated">
+  <div class="right-portion">Technical evaluation not found.</div>
+</div>

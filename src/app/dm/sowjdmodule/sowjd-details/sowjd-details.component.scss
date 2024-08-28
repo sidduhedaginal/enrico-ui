@@ -1,0 +1,63 @@
+mat-sidenav-container {
+  min-height: 225px;
+}
+.sowjdNumber {
+  font-size: 15px;
+  font-weight: bold;
+}
+.mat-nav-list .mat-list-item:first-child:hover {
+  background: transparent;
+}
+
+.mat-list-base .mat-list-item,
+.mat-list-base .mat-list-option {
+  height: 45px;
+}
+.mat-drawer {
+  background-color: #eff1f2;
+}
+.mat-drawer-side {
+  border-right: #fff;
+  height: 180px;
+}
+.menu-item {
+  color: #000;
+}
+.display-content-inner {
+  padding: 0 16px;
+}
+
+.mat-nav-list .mat-list-item {
+  font-size: 13px;
+}
+
+.status-details {
+  line-height: 28px;
+}
+.statusText {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.highLightCls .menu-item {
+  color: #007bc0;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 1500px) {
+  .mat-nav-list .mat-list-item {
+    font-size: 14px;
+  }
+  .mat-list-base .mat-list-item,
+  .mat-list-base .mat-list-option {
+    height: 56px;
+  }
+  .mat-drawer-side {
+    height: fit-content;
+  }
+}
+.block{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

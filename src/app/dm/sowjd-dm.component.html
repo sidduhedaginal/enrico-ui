@@ -1,0 +1,42 @@
+<nav
+  mat-tab-nav-bar
+  class="tabs"
+  *ngIf="
+    url === '/sowjd' ||
+    url === '/sowjd/rfq-tech-eval' ||
+    url === '/sowjd/my-sowjd' ||
+    url === '/my-sowjd' ||
+    url === '/rfq-tech-eval' ||
+    url === '/sowjd/sowjd-signoff' ||
+    url === '/sowjd-signoff'
+  "
+>
+  <a
+    *ngIf="permissionDetailsSoWJD?.readPermission"
+    class="first-tab"
+    mat-tab-link
+    routerLink="./my-sowjd"
+    routerLinkActive="active-link"
+    >SoW JD</a
+  >
+  <a
+    *ngIf="permissionDetailsRFQ?.readPermission"
+    class="first-tab"
+    mat-tab-link
+    routerLink="./rfq-tech-eval"
+    routerLinkActive="active-link"
+    >RFQ Technical Evaluation</a
+  >
+  <a
+    *ngIf="permissionDetailsSignOff?.readPermission"
+    class="first-tab"
+    mat-tab-link
+    routerLink="./sowjd-signoff"
+    routerLinkActive="active-link"
+    >SoW JD Sign Off</a
+  >
+</nav>
+<div>
+  <!-- <app-loader></app-loader> -->
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,117 @@
+.parent
+{
+    width: 70px;
+    height: 70px;
+    position: relative;
+
+}
+
+.child1
+{
+    position: absolute;
+    background-color: aqua;
+    width: 30px;
+    height: 30px;
+    animation : firstBox 2s ease-in infinite;
+    transition: background-color 1s ease-in-out;
+    /* transform : transalteX(50%) translateY(50%); */
+    
+}
+
+.child2
+{
+    position: absolute;
+    background-color: bisque;
+    width: 30px;
+    height: 30px;
+    animation: secondBox 2s ease-in infinite;
+    transition: background-color 1s ease-in-out;
+    /* transform : transalteX(50%) translateY(100%); */
+    
+}
+
+.squareSpinner
+{
+    margin-right:25vw;
+    /* margin-top: 50vh; */ 
+
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    margin-top: 0vh;
+}
+
+@keyframes firstBox
+{
+    0% 
+    {
+        left: 50%;
+        top: 50%;
+    }
+    25%
+    {
+        left: 50%;
+        top: 0%;
+        background-color: purple;
+
+    }
+    50%
+    {
+        left: 50%;
+        top: 50%;
+        background-color: green;
+
+    }
+    75%
+    {
+        left: 0%;
+        top: 50%;
+        background-color: gray;
+
+    }
+    100%
+    {
+        left: 50%;
+        top: 50%;
+        /* background-color: yellow; */
+
+    }
+   
+}
+
+@keyframes secondBox
+{
+    0% 
+    {
+        left: 50%;
+        top: 50%;
+        background-color: antiquewhite;
+
+
+    }
+    25%
+    {
+        left: 50%;
+        top: 100%;
+        background-color: orchid;
+        
+    }
+    50%
+    {
+        left: 50%;
+        top: 50%;
+        background-color: forestgreen;
+    }
+    75%
+    {
+        left: 100%;
+        top: 50%;
+        background-color: orangered;
+    }
+    100%
+    {
+        left: 50%;
+        top: 50%;
+    }
+   
+}

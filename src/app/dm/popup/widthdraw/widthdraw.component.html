@@ -1,0 +1,78 @@
+<div>
+  <div class="header">
+    <div class="title" *ngIf="data?.status != 'Withdraw'">Reject SoW JD</div>
+    <div class="title" *ngIf="data?.status == 'Withdraw'">Withdraw SoW JD</div>
+    <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose('no')"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <div class="remarks-red py-2" *ngIf="showerror">{{ errormsg }}</div>
+  <mat-dialog-content>
+    <form [formGroup]="withDrawForm" (ngSubmit)="SaveForm()">
+      <div class="row" *ngIf="data?.status != 'Withdraw'">
+        <div class="col">
+          <div class="warning-design">
+            <span class="warning_planning">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="warning_text"
+              >Warning. If you proceed with reject, the SoW JD request will be
+              rejected permanently. Proceed with caution as this action cannot
+              be undone.</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="example-full-width">
+            <mat-label>Remark</mat-label>
+            <textarea
+              matInput
+              (keydown)="sowjdService.space($event)"
+              placeholder="Remarks"
+              formControlName="remarks"
+            ></textarea>
+            <mat-error
+              *ngIf="
+                withDrawForm.controls['remarks'].invalid &&
+                withDrawForm.controls['remarks'].touched
+              "
+            >
+              Please add remarks
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="button-wrappper">
+        <button
+          mat-button
+          class="btn-hover arrow space"
+          type="button"
+          (click)="onClose('no')"
+        >
+          <div class="btn-wrapper">
+            <!-- <div class="icon">
+              <span class="cancel-icon"></span>
+            </div> -->
+            <div class="btn-name">Cancel</div>
+          </div>
+        </button>
+        <button
+          [disabled]="withDrawForm.invalid"
+          mat-button
+          class="btn-hover-primary arrow space"
+          type="submit"
+        >
+          <div class="btn-wrapper">
+            <!-- <div class="icon">
+              <span class="save-white-icon"></span>
+            </div> -->
+            <div class="btn-name">Submit</div>
+          </div>
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

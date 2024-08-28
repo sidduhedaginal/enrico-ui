@@ -1,0 +1,49 @@
+<div>
+  <form [formGroup]="createdForm">
+    <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+      <app-resource-loader-ui></app-resource-loader-ui>
+    </div>
+
+    <div class="row">
+      <div class="col-md col-sm">
+        <h3 class="title-head"><b>Delegate Onboarding Request</b><mat-icon matTooltip="Close"
+            style="float: right;cursor: pointer;" (click)="closeBtn()">close</mat-icon>
+        </h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm mt-2">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Choose User</mat-label>
+          <input [(ngModel)]="selectedUser" (input)="filterUsers()" placeholder="Select" matInput
+            [matAutocomplete]="auto" formControlName="userFormControlName"/>
+          <img matSuffix src="../assets/img/search.png" class="imgSearch" />
+
+          <mat-autocomplete #auto="matAutocomplete"  (optionSelected)="onSelectionChanged($event)">
+            <mat-option *ngFor="let option of filterdOptions" [value]="option.ntid">
+              {{ option.email }} ({{option.ntid}})
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-md-12 col-sm mt-2">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Remarks</mat-label>
+          <textarea matInput style="resize:none" formControlName="remarksFormControlName" (keypress)="restrictFirstChacterSpace($event)"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md col-sm" style="text-align:right">
+        <button mat-stroked-button class="cancelBtn" (click)="cancleBtn()">
+          Cancel
+        </button>
+        <button mat-stroked-button color="primary" class="submitBtn" (click)="submitBtn(createdForm)" [ngClass]="!createdForm.valid?'disableBtnClor':''"  [disabled]="!createdForm.valid">
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,560 @@
+<div *ngIf="srnJdDetail?.srnBillingPeriod?.sectionSpocApproval === 'No'">
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 1"
+  >
+    <div class="md-step active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step active second-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 5"
+  >
+    <div class="md-step active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step active second-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 4"
+  >
+    <div class="md-step active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Submit</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step in-active sent-back">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title sent-back">Sent back</div>
+      <div class="md-step-action-by-active">
+        <div>
+          {{ srnJdDetail?.approvalData.firstLevalUsername }}
+        </div>
+        <div class="md-step-action-on">
+          {{ srnJdDetail?.srnVendorDetails.modifiedOn | date : dateFormat }}
+        </div>
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 3"
+  >
+    <div class="md-step active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step active reject-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title reject">Rejected</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 6"
+  >
+    <div class="md-step active reject-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title reject">Withdrawn</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step in-active sent-back">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title sent-back">Sent back</div>
+      <div class="md-step-action-by-active">
+        <div class="md-step-action-by">
+          {{ srnJdDetail?.approvalData.firstLevalUsername }}
+        </div>
+        <div class="md-step-action-on">
+          {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+        </div>
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 7"
+  >
+    <div class="md-step active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.srnVendorDetails.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title success">Approved</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnSowjdDetails.approverName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.srnVendorDetails.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+</div>
+<div *ngIf="srnJdDetail?.srnBillingPeriod?.sectionSpocApproval === 'Yes'">
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 1"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active second-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active last-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.sendLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 5"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Re Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active second-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active last-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.sendLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 4"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Submit</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active sent-back">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title sent-back">Sent Back</div>
+      <div class="md-step-action-by-active">
+        <div>
+          {{ srnJdDetail?.approvalData.firstLevalUsername }}
+        </div>
+        <div class="md-step-action-on">
+          {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+        </div>
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active last-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.sendLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 2"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title success">Approved</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active second-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.sendLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 9"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Submit</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active last-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Yet to Approve</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active sent-back">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title sent-back">Sent Back</div>
+      <div class="md-step-action-by-active">
+        <div>
+          {{ srnJdDetail?.approvalData.sendLevalUsername }}
+        </div>
+        <div class="md-step-action-on">
+          {{ srnJdDetail?.approvalData.sendLevalActionOn | date : dateFormat }}
+        </div>
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 7"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title success">Approved</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title success">Approved</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.sendLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.sendLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 3"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active reject-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title reject">Rejected</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="srnJdDetail?.srnBillingPeriod?.statusId === 8"
+  >
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title">Submitted</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title success">Approved</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active reject-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title reject">Rejected</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.sendLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.sendLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="
+      srnJdDetail?.srnBillingPeriod?.statusId === 6 &&
+      srnJdDetail?.approvalData.isFirstLevelApproved
+    "
+  >
+    <div class="md-step md-step3 active reject-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title reject">Withdrawn</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title success">Approved</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.approvalData.firstLevalUsername }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active sent-back">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title sent-back">Sent back</div>
+      <div class="md-step-action-by-active">
+        <div class="md-step-action-by">
+          {{ srnJdDetail?.approvalData.sendLevalUsername }}
+        </div>
+        <div class="md-step-action-on">
+          {{ srnJdDetail?.approvalData.sendLevalActionOn | date : dateFormat }}
+        </div>
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div
+    class="md-stepper-horizontal"
+    *ngIf="
+      srnJdDetail?.srnBillingPeriod?.statusId === 6 &&
+      !srnJdDetail?.approvalData.isFirstLevelApproved
+    "
+  >
+    <div class="md-step md-step3 active reject-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title reject">Withdrawn</div>
+      <div class="md-step-action-by">
+        {{ srnJdDetail?.srnVendorDetails.vendorName }}
+      </div>
+      <div class="md-step-action-on">
+        {{ srnJdDetail?.approvalData.modifiedOn | date : dateFormat }}
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step md-step3 in-active sent-back">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title sent-back">Sent back</div>
+      <div class="md-step-action-by-active">
+        <div class="md-step-action-by">
+          {{ srnJdDetail?.approvalData.firstLevalUsername }}
+        </div>
+        <div class="md-step-action-on">
+          {{ srnJdDetail?.approvalData.firstLevalActionOn | date : dateFormat }}
+        </div>
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+</div>

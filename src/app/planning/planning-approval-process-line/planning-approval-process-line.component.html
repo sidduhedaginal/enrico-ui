@@ -1,0 +1,257 @@
+<div *ngIf="SecondLevelId">
+  <div class="md-stepper-horizontal" *ngIf="metadata?.status == 'Submitted'">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Submitted</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.submittedOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active second-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Approve</div>
+        <div class="md-step-action-by">
+          {{ metadata.finalApprovalName }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+    
+  <!-- <div class="md-stepper-horizontal" *ngIf="metadata?.status == 'Planning Initiated'">
+      <div class="md-step in-active last-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Submit</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step in-active last-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Approve</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div> -->
+    
+  <div class="md-stepper-horizontal" *ngIf="metadata?.status == 'Approved'">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Submitted</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.submittedOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title success">Approved</div>
+        <div class="md-step-action-by">
+          {{ metadata.finalApprovalName }}
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.actionOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+    
+  <div class="md-stepper-horizontal" *ngIf="metadata?.status === 'Rejected'">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Submit</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step in-active sent-back">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title sent-back">Sent Back</div>
+        <div class="md-step-action-by-active">
+          <div>
+            {{ metadata.finalApprovalName }}
+          </div>
+          <div class="md-step-action-on">
+            {{ metadata.actionOn | date : dateFormat }}
+          </div>
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+  <div
+      class="md-stepper-horizontal"
+      *ngIf="metadata?.status == 'Cancelled'"
+    >
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Submitted</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.submittedOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active reject-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title reject">Withdrawn</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.cancelledOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+</div>  
+
+<div *ngIf="planningid">
+  <div class="md-stepper-horizontal" *ngIf="metadata?.status == 'Submitted'">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Submitted</div>
+        <div class="md-step-action-by">
+          {{ metadata.ownerName }}
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.submittedOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active second-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Approve</div>
+        <div class="md-step-action-by">
+          {{ metadata.activitySpocName }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+    
+  <!-- <div class="md-stepper-horizontal" *ngIf="metadata?.status == 'Planning Initiated'">
+      <div class="md-step in-active last-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Submit</div>
+        <div class="md-step-action-by">
+          {{ metadata.ownerName }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step in-active last-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Approve</div>
+        <div class="md-step-action-by">
+          {{ metadata.activitySpocName }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div> -->
+    
+  <div class="md-stepper-horizontal" *ngIf="metadata?.status == 'Approved'">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Submitted</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.submittedOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title success">Approved</div>
+        <div class="md-step-action-by">
+          {{ metadata.activitySpocName }}
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.actionOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+    
+  <div class="md-stepper-horizontal" *ngIf="metadata?.status === 'Rejected'">
+      <div class="md-step in-active last-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Yet to Submit</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step in-active sent-back">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title sent-back">Sent Back</div>
+        <div class="md-step-action-by-active">
+          <div>
+            {{ metadata.activitySpocName }}
+          </div>
+          <div class="md-step-action-on">
+            {{ metadata.actionOn | date : dateFormat }}
+          </div>
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+  <div class="md-stepper-horizontal" *ngIf="metadata?.status == 'Cancelled'">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title">Submitted</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.submittedOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active reject-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title reject">Withdrawn</div>
+        <div class="md-step-action-by">
+          {{metadata?.ownerName}}  ({{metadata?.ownerNtid}})
+        </div>
+        <div class="md-step-action-on">
+          {{ metadata.cancelledOn | date : dateFormat }}
+        </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+  </div>
+</div> 
+  
+
+  

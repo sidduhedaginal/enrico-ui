@@ -1,0 +1,109 @@
+<!-- disabled="disabled" -->
+
+<!-- <div class="formspinner" *ngIf="showloader">
+  <lib-spinner></lib-spinner>
+</div> -->
+
+<div class="main_block">
+
+  <div class="grid_header">
+    <div class="left_title">
+      <h1 class="grid_title">{{title}} </h1>
+    </div>
+    <div class="right_buttons">
+
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-secondary"        
+      >
+      Cancel
+
+      </button>
+
+
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-primary"
+
+        (click)="saveMaster()"
+      >
+
+      Save
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="errorMessage.length>0">
+
+  <div class="grid_header">
+    <span style="color:red">{{ errorMessage}}</span>
+
+  </div>
+
+</div>
+<div class="row">
+    <mat-form-field 
+      class="example-full-width"
+      style="width: 30%"
+      appearance="fill"
+    >
+      <mat-label>Vendor Name</mat-label>
+      <input matInput placeholder="Vendor Name" [(ngModel)]="vendorName" />
+    </mat-form-field>
+
+
+    <mat-form-field
+      class="example-full-width"
+      style="width: 30%"
+      appearance="fill"
+    >
+      <mat-label>Vendor Code(SAP ID)</mat-label>
+      <input matInput placeholder="Vendor Code" [(ngModel)]="vendorCode" />
+    </mat-form-field>
+
+    
+  <mat-form-field appearance="fill" style="width: 30%">
+      <mat-label>Classification</mat-label>
+        <mat-select
+          [(ngModel)]="classification"
+          (selectionChange)="onClassificationChange()"
+        >
+        <mat-option *ngFor="let class of classifications" >
+          {{ class }}
+        </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+
+</div>
+
+<div>
+    <span style="color: #123453; cursor: pointer" (click)="toggal('contact')">
+      <span *ngIf="showContactDetails">-</span>
+      <span *ngIf="!showContactDetails">+</span>
+      Contact Details</span
+    >
+    <button (click)="addNewContact()" *ngIf="showContactDetails">+ Add</button
+    ><br />
+
+</div>
+
+<div  *ngIf="showContactDetails">
+    <ag-grid-angular
+      style="width: 100%; height: 30vh; margin-top: 2%"
+      class="ag-theme-alpine"
+
+      [rowData]="rowDataContactDetails"
+      [columnDefs]="columnDefsContactDetails"
+      (gridReady)="onGridReadyContactDetails($event)"
+
+    >
+  </ag-grid-angular>
+</div>
+

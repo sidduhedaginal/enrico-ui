@@ -1,0 +1,44 @@
+.tab-title {
+  text-align: left;
+  font: normal normal bold 26px/60px Bosch Sans;
+}
+
+* {
+  font-family: Bosch Sans;
+  letter-spacing: 0px;
+  opacity: 1;
+}
+.tab-title {
+  text-align: left;
+  font: normal normal bold 26px/60px Bosch Sans;
+}
+.columnmargin {
+  margin: auto;
+}
+.select-column-save {
+  display: flex;
+  justify-content: space-between;
+}
+.save-config-checkBox {
+  width: 540px;
+  height: 155px;
+}
+.reset-filter {
+  display: flex;
+  justify-content: flex-end;
+}
+.padding {
+  padding: 15px;
+}
+.highLightCls {
+  color: #007bc0;
+}
+.save-button1{
+  cursor: pointer;
+  color: #007bc0;
+  padding-right: 15px;
+  
+}
+.save-button1:hover{
+text-decoration: underline;
+}

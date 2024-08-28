@@ -1,0 +1,63 @@
+.edit-vendor{
+    font-family: Bosch Sans !important;
+}
+.row{
+    display:flex;
+    gap:30px;
+    padding-bottom: 5px;
+}
+.page-header{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    font-weight: 600;
+}
+:host::ng-deep.mat-form-field-appearance-fill .mat-form-field-flex{
+    height: 50px;
+    background-color: #e0e2e5;
+    border-radius:0px;
+    font-family: Bosch Sans !important;
+}
+.mat-button.mat-primary.mat-button-disabled, .mat-button.mat-accent.mat-button-disabled, .mat-button.mat-warn.mat-button-disabled, .mat-button.mat-button-disabled.mat-button-disabled, .mat-icon-button.mat-primary.mat-button-disabled, .mat-icon-button.mat-accent.mat-button-disabled, .mat-icon-button.mat-warn.mat-button-disabled, .mat-icon-button.mat-button-disabled.mat-button-disabled, .mat-stroked-button.mat-primary.mat-button-disabled, .mat-stroked-button.mat-accent.mat-button-disabled, .mat-stroked-button.mat-warn.mat-button-disabled, .mat-stroked-button.mat-button-disabled.mat-button-disabled{
+    background-color: rgba(0,0,0,.26);
+}
+.mat-select{
+    font-family: Bosch Sans !important;
+}
+
+.form-field{
+    width: 250px;
+}
+.form-field-notes{
+    width: 720px;
+}
+:host ::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+    border-color: #007bc0;
+  }
+  :host ::ng-deep.mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple{
+    background-color: #007bc0;
+  }
+  :host::ng-deep.mat-form-field-subscript-wrapper{
+    margin-top: 0;
+}
+:host::ng-deep.mat-form-field-appearance-fill .mat-form-field-subscript-wrapper{
+    padding: 0;
+}
+
+  .buttons{
+    display: flex;
+    justify-content: end;
+    gap:30px
+}
+
+.address{
+    width: 100%;
+    height: 70px;
+}
+:host::ng-deep.mat-form-field-appearance-legacy .mat-form-field-infix{
+    background-color: #e0e2e5; 
+}
+/* :host::ng-deep.mat-form-field-appearance-legacy .mat-form-field-label{
+    padding-left: 10px;
+    padding-top: 10px;
+} */

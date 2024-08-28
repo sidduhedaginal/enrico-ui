@@ -1,0 +1,74 @@
+<div>
+  <div class="header">
+    <div class="title">Vendor Suggestions</div>
+    <div class="close-btn">
+      <mat-icon matTooltip="Close" (click)="onClose()">close</mat-icon>
+    </div>
+  </div>
+
+  <mat-dialog-content>
+    <div class="approval-section">
+      <div class="container-fluid">
+        <form
+          [formGroup]="myForm"
+          (ngSubmit)="createVenderSuggestion()"
+          class="action-form"
+        >
+          <app-search-bar-vendor
+            (selectionChangeEvent)="changedEventValue($event)"
+            [labelValue]="'Vendors'"
+            [sowJdId]="sowJdId"
+            [isRequired]="true"
+            [searchPlaceholder]="'vendorName'"
+            [searchPlaceholderId]="'vendorId'"
+          ></app-search-bar-vendor>
+          <mat-form-field>
+            <mat-label>Remarks</mat-label>
+            <textarea
+              matInput
+              placeholder="Remarks"
+              (keydown)="sowjdService.space($event)"
+              formControlName="remarks"
+            ></textarea>
+            <mat-error
+              *ngIf="
+                myForm.controls['remarks'].invalid &&
+                myForm.controls['remarks'].touched
+              "
+            >
+              Please add Remarks
+            </mat-error>
+          </mat-form-field>
+          <div class="button-wrappper pt-20">
+            <button
+              mat-button
+              class="btn-hover arrow space"
+              type="button"
+              (click)="onClose()"
+            >
+              <div class="btn-wrapper">
+                <!-- <div class="icon">
+                  <span class="cancel-icon"></span>
+                </div> -->
+                <div class="btn-name">Cancel</div>
+              </div>
+            </button>
+            <button
+              mat-button
+              class="btn-hover-primary arrow space"
+              type="submit"
+              [disabled]="myForm.invalid"
+            >
+              <div class="btn-wrapper">
+                <!-- <div class="icon">
+                  <span class="save-white-icon"></span>
+                </div> -->
+                <div class="btn-name">Submit</div>
+              </div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,33 @@
+.header{
+    display: flex;
+    justify-content: end;
+    padding-right: 10px;
+}
+.buttons{
+    display: flex;
+    justify-content: center;
+    gap:70px;
+    padding: 10px;
+}
+.success{
+    padding: 10px;
+    .success-message {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      .success-icon,
+      .success-mess,
+      .message {
+        font-family: Bosch Sans !important;
+        display: flex;
+        justify-content: center;
+      }
+      
+      .success-mess {
+        font-weight: bold;
+      }
+    }
+  }
+  img {
+    width: 48px;
+  }

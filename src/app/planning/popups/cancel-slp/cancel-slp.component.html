@@ -1,0 +1,76 @@
+<div class="main-form">
+    <div class="left-form">
+        <span class="titlebold">
+          <span class="titlebold" *ngIf="SendStatus == 'Cancelled'">
+            Withdraw
+          </span>
+          <span class="titlebold" *ngIf="SendStatus == 'Submitted'">
+            Submit
+          </span>
+          <span class="titlebold" *ngIf="SendStatus == 'Approved'">
+            Approv
+          </span>
+          <span class="titlebold" *ngIf="SendStatus == 'Rejected'">
+            Send Back
+          </span>
+          Second-Level Planning
+        </span>
+    </div>
+    <div class="right-form1">
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose($event)"
+      >close</mat-icon
+    >
+    </div>
+</div>
+<div class="right-form" *ngIf="SendStatus == 'Cancelled'">
+  <span class="warning_planning">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  <span class="warning_text">Warning. If you proceed with withdrawal, the planning will be cancelled permanently. Proceed with caution as this action cannot be undone.</span>
+</div>
+<div class="spinner_planning" *ngIf="showLoading">
+  <lib-spinner></lib-spinner>
+</div>
+<div class="erroMessageTag" *ngIf="showErroMessage">
+      <span>{{errorMessage}}</span>
+</div>
+  <mat-dialog-content>
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="SendStatus == 'Cancelled'">
+      <section class="example-section">
+        <mat-checkbox type="checkbox" class="example-margin"
+        (change)="setAll($event.checked)"
+        >I Agree to Above Warning </mat-checkbox>
+      </section>
+    </div>
+    <div *ngIf="SendStatus == 'Cancelled'">
+      <div *ngIf="warningcancel">
+        <mat-form-field style="width: 95%;padding: 0 0.75em;">
+          <mat-label class="popup-lebel">Remarks </mat-label>
+          <input maxlength="500" matInput placeholder="Remark" formControlName="Remark"
+          (keydown)="space($event)" />
+          <mat-error
+          *ngIf="
+          myForm.controls['Remark'].touched &&
+          myForm.controls['Remark'].invalid">Please Fill Remarks
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="SendStatus != 'Cancelled'">
+      <mat-form-field style="width: 95%;padding: 0 0.75em;">
+        <mat-label class="popup-lebel">Remarks </mat-label>
+        <input maxlength="500" matInput placeholder="Remark" formControlName="Remark"
+        (keydown)="space($event)" />
+        <mat-error
+        *ngIf="
+        myForm.controls['Remark'].touched &&
+        myForm.controls['Remark'].invalid">Please Fill Remarks
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="action-btn">
+      <button class="cancel-btn" mat-raised-button color="primary" type="button" (click)="onClose($event)">Cancel</button>
+      <button  class="save-btn" mat-raised-button color="primary" type="submit"
+      [disabled]="myForm.invalid && !showLoading">Save</button>
+    </div>
+  </form>
+</mat-dialog-content>

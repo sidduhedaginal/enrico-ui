@@ -1,0 +1,170 @@
+
+<app-loader></app-loader>
+<div class="add-rateCard">
+  <div class="header">
+      <div>{{title}}</div>
+      <div>
+        <mat-icon style="cursor: pointer;" (click)="cancel()">close</mat-icon>
+      </div>
+    </div>
+  <form [formGroup]="rateCardForm">
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Company Code</mat-label>
+        <input matInput placeholder="" formControlName="companyCode">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Vendor Name</mat-label>
+        <input matInput placeholder="" formControlName="vendor">
+        <!-- <mat-select formControlName="vendor" [disabled]="disabled">
+          <mat-option *ngFor="let vendor of vendor_list" [value]="vendor.id">{{vendor.vendorName}}</mat-option>
+        </mat-select> -->
+        <mat-error
+              *ngIf="rateCardForm.controls['vendor'].invalid &&
+                     rateCardForm.controls['vendor'].touched">
+              Please choose Vendor
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Vendor SAP ID</mat-label>
+        <input matInput placeholder="" formControlName="vendorSAPID">
+        <!-- <mat-error
+              *ngIf="ContactDeatilsForm.controls['contactName'].invalid &&
+                     ContactDeatilsForm.controls['contactName'].touched">
+              Please choose Contact Name
+          </mat-error> -->
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Skillset Name</mat-label>
+        <mat-select formControlName="skillset" (selectionChange)="skillsetChange($event)">
+          <mat-option *ngFor="let skillset of skillset_list" [value]="skillset.id">{{skillset.skillsetName}}</mat-option>
+        </mat-select>
+        <mat-error
+              *ngIf="rateCardForm.controls['skillset'].invalid &&
+                     rateCardForm.controls['skillset'].touched">
+              Please choose Skillset
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Location Mode</mat-label>
+        <mat-select formControlName="locationMode">
+          <mat-option *ngFor="let location of location_list" [value]="location.id">{{location.locationName}}</mat-option>
+        </mat-select>
+        <mat-error
+              *ngIf="rateCardForm.controls['locationMode'].invalid &&
+                     rateCardForm.controls['locationMode'].touched">
+              Please choose Location Mode
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Currency</mat-label>
+        <mat-select formControlName="currency">
+          <mat-option *ngFor="let currency of currency_list" [value]="currency.id">{{currency.currencyName}}</mat-option>
+        </mat-select>
+        <mat-error
+              *ngIf="rateCardForm.controls['currency'].invalid &&
+                     rateCardForm.controls['currency'].touched">
+              Please choose Currency
+          </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Validity Start</mat-label>
+        <input matInput [matDatepicker]="validity_startDate" formControlName="validityStart"
+          placeholder="Validity Start" [min]="minDate"/>
+        <mat-datepicker-toggle matSuffix [for]="validity_startDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #validity_startDate></mat-datepicker>
+        <mat-error
+              *ngIf="rateCardForm.controls['validityStart'].invalid &&
+                     rateCardForm.controls['validityStart'].touched">
+              Please choose Validity Start
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Validity End</mat-label>
+        <input matInput [matDatepicker]="validity_endDate"formControlName="validityEnd"
+          placeholder="Validity End" [min]="minDate"/>
+          <mat-datepicker-toggle matSuffix [for]="validity_endDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #validity_endDate></mat-datepicker>
+        <mat-error
+              *ngIf="rateCardForm.controls['validityEnd'].invalid &&
+                     rateCardForm.controls['validityEnd'].touched">
+              Please choose Validity End
+          </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="grade-row">
+      <div class="detail">Rate Details</div>
+      <div class="rate-details">
+      <mat-form-field appearance="fill" class="grade-field">
+        <mat-label>Grade 0</mat-label>
+        <input matInput placeholder="" formControlName="grade0" (keypress)="numberOnly($event)">
+        <mat-error
+              *ngIf="rateCardForm.controls['grade0'].invalid &&
+                     rateCardForm.controls['grade0'].touched">
+              Please Enter Grade 0 value
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="grade-field">
+        <mat-label>Grade 1</mat-label>
+        <input matInput placeholder="" formControlName="grade1" (keypress)="numberOnly($event)">
+        <mat-error
+              *ngIf="rateCardForm.controls['grade1'].invalid &&
+                     rateCardForm.controls['grade1'].touched">
+              Please Enter Grade 1 value
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="grade-field">
+        <mat-label>Grade 2</mat-label>
+        <input matInput placeholder="" formControlName="grade2" (keypress)="numberOnly($event)">
+        <mat-error
+              *ngIf="rateCardForm.controls['grade2'].invalid &&
+                     rateCardForm.controls['grade2'].touched">
+              Please Enter Grade 2 value
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="grade-field">
+        <mat-label>Grade 3</mat-label>
+        <input matInput placeholder="" formControlName="grade3" (keypress)="numberOnly($event)">
+        <mat-error
+              *ngIf="rateCardForm.controls['grade3'].invalid &&
+                     rateCardForm.controls['grade3'].touched">
+              Please Enter Grade 3 value
+          </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="grade-field">
+        <mat-label>Grade 4</mat-label>
+        <input matInput placeholder="" formControlName="grade4" (keypress)="numberOnly($event)">
+        <mat-error
+              *ngIf="rateCardForm.controls['grade4'].invalid &&
+                     rateCardForm.controls['grade4'].touched">
+              Please Enter Grade 4 value
+          </mat-error>
+      </mat-form-field>
+    </div>
+    </div>
+    <br>
+    <div style="display: flex;justify-content: end;">
+      <div class="buttons">
+        <button mat-button class="secondaryButton" (click)="cancel()">Cancel</button> 
+        <button mat-button class="primaryButton" [disabled]="rateCardForm.invalid" (click)="save()">{{button_name}}</button>
+      </div>
+    </div>
+    </form>
+  </div>

@@ -1,0 +1,139 @@
+<div>
+  <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+    <app-resource-loader-ui></app-resource-loader-ui>
+   </div>
+  <div class="row">
+    <div class="col-md col-sm">
+      <h3 class="title-head">
+     <b>{{initiateData.type}}  </b>   <b *ngIf="initiateData.type=='Re-Submit'">De-boarding  </b>
+        <mat-icon style="float: right;" class="curP" (click)="closeBtn()">close</mat-icon>
+      </h3>
+    </div>
+  </div>
+  <form [formGroup]="createdForm">
+  <div class="row">
+    <div class="col-md-4 col-sm">
+      <span class="spanLabel">Employee Number </span>
+      <span class="spanText">{{ viewData?.employeeNumber }} </span>
+    </div>
+    <div class="col-md-4 col-sm">
+      <span class="spanLabel"> Employee Name</span>
+      <span class="spanText">{{ viewData?.employeeName || resourceEmployeeName }} </span>
+    </div>
+    <div class="col-md-4 col-sm">
+      <span class="spanLabel">SOW JD </span>
+      <span class="spanText">{{ viewData?.sowJdID || sowJDViewData }}
+      
+      </span>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-4 col-sm">
+      <span class="spanLabel">Purchase Order </span>
+      <span class="spanText">{{ viewData?.purchaseOrder || resourcePurchaseOrder}} </span>
+    </div>
+    <div class="col-md-4 col-sm">
+      <span class="spanLabel">Delivery Manager </span>
+      <span class="spanText">{{ viewData?.deliveryManagerName ||  viewData.deliveryManager || '--'}} </span> 
+    </div>
+    <div class="col-md-4 col-sm">
+      <span class="spanLabel"> Date of Joining</span>
+      <span class="spanText">{{ viewData?.dateOfJoining || resourceDateOfJoining  |  date: 'dd-MMM-yyyy'  }} </span>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill">
+        <mat-label>Exit Reason </mat-label>
+        <mat-select formControlName="exitReason" (selectionChange)="exitReasonChange($event?.value)">
+         
+<mat-option *ngFor="let v of allExitOptionList" [value]="v.id"> {{v.exitReason}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+     
+    </div>
+    <div class="col-md-6 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill">
+        <mat-label>Last Working </mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerLastWorking"
+          placeholder="Choose a date"
+          readonly [matDatepickerFilter]="weekendsDatesFilter"
+          (click)="pickerLastWorking.open()" [min]="setMinDate" [max]="setMaxDate"
+          formControlName="lastWorking" [disabled]="isLWDDisabled"  
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerLastWorking"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerLastWorking></mat-datepicker>
+      </mat-form-field>
+     
+           </div>
+    </div>
+  
+  <div class="row mt-2">
+    <div class="col-md-6 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill">
+        <mat-label
+          >Requested Replacement </mat-label
+        >
+        <mat-select formControlName="reqReplacement" (selectionChange)="requestReplacementChange($event.value)">
+          <mat-option value="1" *ngIf="changeExitreasonValue !=8 && changeExitreasonValue !=6">Yes</mat-option>
+          <mat-option value="0">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+    </div>
+    <div class="col-md-6 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill">
+        <mat-label
+          >Date of Joining for Replacement Resource
+          </mat-label
+        >
+        <input
+          matInput
+          [matDatepicker]="pickerDoj"
+          placeholder="Choose a date"
+          readonly
+          (click)="pickerDoj.open()" formControlName="dojReplacement"  [min]="todayDateShowAfterSeven"
+          [matDatepickerFilter]="weekendsDatesFilter"  [disabled]="isreplacementDojDisabled"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerDoj"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerDoj></mat-datepicker>
+      </mat-form-field>
+    
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md col-sm">
+      <mat-form-field class="full-width gMFFInput" appearance="fill">
+        <mat-label>Remarks</mat-label>
+        <input matInput formControlName="remarks"/>
+      </mat-form-field>
+    
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md col-sm" style="text-align:right">
+      <button mat-stroked-button class="cancelBtn" (click)="cancleBtn()">
+        Cancel
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        class="submitBtn"
+        (click)="submitBtn(createdForm)"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+  </form>
+</div>

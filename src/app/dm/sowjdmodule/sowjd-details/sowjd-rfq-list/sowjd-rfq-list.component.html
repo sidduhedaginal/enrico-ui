@@ -1,0 +1,24 @@
+<div class="approval-section-heading">
+  <div class="approval-section-border">
+    <ag-grid-angular
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [rowData]="RFQList"
+      [paginationPageSize]="10"
+      [paginationAutoPageSize]="false"
+      [paginateChildRows]="true"
+      [animateRows]="true"
+      [pagination]="true"
+      [suppressAggFuncInHeader]="true"
+      (gridReady)="MysowjdRFQList($event)"
+      [autoGroupColumnDef]="autoGroupColumnDef"  
+  (firstDataRendered)="onFirstDataRendered($event)"
+    [suppressMenuHide]="true"
+    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+    (filterChanged)="onFilterChanged($event)"
+    (horizontalScroll)="onHorizontalScroll($event)"
+    (sortChanged)="onSortChanged($event)"
+    ></ag-grid-angular>
+  </div>
+</div>

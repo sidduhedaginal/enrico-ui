@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=IBM+Plex+Mono:wght@300&family=Josefin+Slab:wght@200;400;700&family=Poppins:wght@200&family=Space+Mono&display=swap");
+
+.ag-header-row {
+  position: absolute;
+  overflow: hidden;
+  background: white;
+}
+.ag-theme-alpine {
+  /* disable all borders */
+  --ag-borders: none;
+  /* then add back a border between rows */
+  --ag-row-border-style: solid;
+  --ag-row-border-width: 1px;
+  --ag-row-border-color: rgb(150, 150, 200);
+  --ag-checkbox-background-color: #007bc0;
+}
+.ag-row-no-animation .ag-row {
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.1s;
+}
+.ag-header {
+  background-color: var(--ag-header-background-color);
+  border-bottom: 1px solid #000;
+}
+.ag-theme-alpine .ag-paging-panel {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.ag-row{
+  border-bottom: 1px solid #ccc;
+}
+body {
+  background-color: #fff;
+}
+.main_block {
+  margin: 0px;
+  padding: 0px;
+  background-color: #fff;
+}
+.grid_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45em 1.75em;
+  margin-right: -32px;
+}
+.left_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.right_buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.button-secondary {
+  color: #007bc0;
+  font-family: Bosch-Sans;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  line-height: 24px;
+  cursor: pointer;
+  width: 120px;
+  border-width: 1px;
+  border-color: #007bc0;
+  border-style: solid;
+  border-radius: 0;
+  padding: 5px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.button-secondarylarg{
+  color: #007bc0;
+  font-family: Bosch-Sans;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  line-height: 24px;
+  cursor: pointer;
+  width: 200px;
+  border-width: 1px;
+  border-color: #007bc0;
+  border-style: solid;
+  border-radius: 0;
+  padding: 5px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+
+}
+// .button-secondary:hover{
+//   background-color: #004975;
+//   color: #fff;
+// }
+.button-secondary-disable {
+  color: grey;
+  font-family: Bosch-Sans;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  line-height: 24px;
+  cursor: pointer;
+  width: 120px;
+  border-width: 1px;
+  border-color: none;
+  border-style: solid;
+  border-radius: 0;
+  padding: 5px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.page_header {
+  cursor: pointer;
+  color: black;
+  font-weight: 600;
+  font-size: 20px;
+  cursor: pointer;
+  font-family: "sans-serif", "Poppins";
+   margin-left: -29px;
+}
+.bread_crum {
+  cursor: pointer;
+  color: #a7a7a7;
+  color: gray;
+  font-size: 20px;
+  font-weight: 400;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+}
+.grid_title {
+  color: #272d3b;
+}
+.block_button {
+  background-color: white;
+  border: 2px solid #71cbe9;
+  color: #71cbe9;
+  margin: 0.25em;
+  font-weight: 580;
+  font-size: 10px;
+}
+
+.ag-theme-alpine {
+  --ag-background-color: white;
+  --ag-odd-row-background-color: white;
+  --ag-font-siz: 12px;
+  --ag-header-foreground-color: black;
+}
+
+.formspinner {
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  z-index: 10;
+}
+.ag-theme-alpine {
+   --ag-odd-row-background-color: white;
+  --ag-font-siz: 40px;
+   --ag-header-foreground-color: gray;
+  --ag-header-background-color: white; 
+}
+
+.insertImport {
+  background-image: url("/assets/icons/addImport.svg");
+  height: 24px;
+  width: 24px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.updateImport {
+  background-image: url("/assets/icons/document-edit.svg");
+  height: 24px;
+  width: 24px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+.insertUpdateImport {
+  background-image: url("/assets/icons/document-settings.svg");
+  height: 24px;
+  width: 24px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}

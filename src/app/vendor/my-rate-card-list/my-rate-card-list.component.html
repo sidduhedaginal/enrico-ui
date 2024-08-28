@@ -1,0 +1,120 @@
+<div class="master-data">
+    <div class="header">
+        <div class="heading">Vendor Rate Card Master</div>
+        <div class="button-wrappper">
+          <button mat-button class="secondaryIconButton arrow space" (click)="export()">
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="exports"></span>
+              </div>
+              <div class="btn-name">Export</div>
+            </div>
+          </button>
+          <button mat-button class="secondaryIconButton arrow space" (click)="deleteMultipleRrecords()">
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="delete-icon"></span>
+              </div>
+              <div class="btn-name">Delete</div>
+            </div>
+          </button>
+          <button mat-button class="btn-hover-primary arrow space" (click)="AddRateCard()">
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="add-icon"></span>
+              </div>
+              <div class="btn-name">Add</div>
+            </div>
+          </button>
+        </div>
+    </div>
+    <div class="menus">
+      <div class="search-button">
+        <div style="margin-right: 30px;">
+        <span>Company Code : </span>
+        <span>{{ companyCode }}</span>
+      </div>
+      <div>
+        <span>Currency : </span>
+        <span>{{ currencyCode }}</span>
+      </div>
+      <!-- <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Company Code</mat-label>
+          <input matInput [(ngModel)]="companyCode" [disabled]="disabled">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Currency</mat-label>
+          <input matInput [(ngModel)]="currencyCode" [disabled]="disabled">
+        </mat-form-field> -->
+    </div>
+    <div style="display: flex">
+      <div class="search-button">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Search</mat-label>
+          <input matInput type="text" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Location Mode</mat-label>
+          <mat-select
+            [(ngModel)]="locationvalue"
+            (selectionChange)="location_mode_search()"
+          >
+          <mat-option>Select</mat-option>
+            <mat-option
+              *ngFor="let location of location_list"
+              [value]="location.id"
+              >{{ location.locationName }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="menu-items" style="align-self: center">
+        <div class="icon-class">
+          <span class="settings icon" (click)="toggleDropdown()"></span>
+            <span class="menu-items-text" (click)="toggleDropdown()">Column Settings({{selectedColumnNumber}})</span> 
+            <div class="popper" *ngIf="dropdownVisible">
+              <div style="display: flex; justify-content: space-between">
+                <div class="select-column">Select column</div>
+                <div class="save-button">Save Filter</div>
+              </div>
+              <div class="saveConfigCheckBox" style="width: 400px">
+                <div *ngFor="let option of columnDefs">
+                  <div class="custom__options" *ngIf="option.headerName != ''">
+                    <mat-checkbox
+                      class="small-checkbox"
+                      [(ngModel)]="!option.hide"
+                      (ngModelChange)="toggle(option.headerName)">
+                      {{ option.headerName }}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: flex-end">
+                <div class="save-button" (click)="resetAllColumnsInConfig()">
+                  Reset all filters
+                </div>
+              </div>
+            </div>         
+           </div>
+        </div>                    
+      </div>
+</div>
+<div>
+  <ag-grid-angular
+      [domLayout]="domLayout"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [rowData]="rateCard_list"
+      [rowSelection]="'multiple'"
+      [animateRows]="true"
+      [pagination]="true"
+      [paginationPageSize]="10"
+      (gridReady)="onGridReadyRateCardMaster($event)"
+    >
+    </ag-grid-angular>
+  </div>
+  <app-loader></app-loader>
+</div>

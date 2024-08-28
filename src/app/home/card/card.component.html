@@ -1,0 +1,24 @@
+<div class="card-container">
+  <div class="card-title-header">
+    <img
+      class="img"
+      src="../../../assets/images/{{ bgImg }}"
+      alt="{{ bgImg }}"
+    />
+    <div class="inner-header">
+      <img class="icon" src="../../../assets/images/{{ icon }}" />
+      <div class="title">{{ title }}</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <p>{{ contentDescription }}</p>
+    <div class="action">
+      <img
+        src="../../../assets/images/arrow-right-frame.svg"
+        alt=""
+        (click)="navigateTo(path)"
+      />
+    </div>
+  </div>
+</div>

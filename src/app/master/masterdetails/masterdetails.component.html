@@ -1,0 +1,30 @@
+<div class="main_block">
+  <div class="grid_header">
+    <div class="left_title"></div>
+    <div class="right_buttons"></div>
+  </div>
+  <div class="grid_header">
+    <div class="left_title">
+      <h3 style="margin-left: -10px" class="grid_title">History</h3>
+    </div>
+    <div class="right_buttons"></div>
+  </div>
+</div>
+
+<div [ngStyle]="style">
+  <ag-grid-angular
+    #masterGrid
+    id="masterGrid"
+    [ngStyle]="style"
+    class="ag-theme-alpine"
+    rowAnimation
+    pagination
+    [columnDefs]="columnDefs1"
+    [defaultColDef]="defaultColDef"
+    [rowSelection]="'multiple'"
+    [sideBar]="false"
+    [rowData]="rowData"
+    [paginationPageSize]="12"
+    (gridReady)="onGridReady1($event)"
+  ></ag-grid-angular>
+</div>

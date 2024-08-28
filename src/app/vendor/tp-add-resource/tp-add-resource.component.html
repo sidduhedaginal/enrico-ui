@@ -1,0 +1,108 @@
+<app-loader></app-loader>
+<div class="add-resource-page">
+  <div class="header">
+    <div>{{ title }}</div>
+    <div>
+      <mat-icon style="cursor: pointer" matTooltip="Close" (click)="cancel()"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <form [formGroup]="resorceForm">
+    <div class="row">
+      <mat-form-field appearance="fill" class="text-box">
+        <mat-label>Skill Set</mat-label>
+        <mat-select formControlName="skillset">
+          <mat-option>Select</mat-option>
+          <mat-option *ngFor="let s of skillsets" [value]="s.id ">{{s.skillSetName}}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            resorceForm.controls['skillset'].invalid &&
+            resorceForm.controls['skillset'].touched
+          "
+        >
+          Please choose Skillset
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="text-box">
+        <mat-label>Grade</mat-label>
+        <mat-select formControlName="grade">
+          <mat-option>Select</mat-option>
+          <mat-option *ngFor="let g of grades" [value]="g.id">{{
+            g.gradeName
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            resorceForm.controls['grade'].invalid &&
+            resorceForm.controls['grade'].touched
+          "
+        >
+          Please choose Grade
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="text-box">
+        <mat-label>PMO</mat-label>
+        <input matInput placeholder="" formControlName="pmo" />
+        <mat-error
+          *ngIf="
+            resorceForm.controls['pmo'].invalid &&
+            resorceForm.controls['pmo'].touched
+          "
+        >
+          Please Enter PMO
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="text-box">
+        <mat-label>Validity Start</mat-label>
+        <input
+          matInput
+          [matDatepicker]="resourceOnboardingDate"
+          formControlName="resourceOnboardingDate"
+          placeholder="Validity Start"
+          [min]="minDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="resourceOnboardingDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #resourceOnboardingDate></mat-datepicker>
+        <mat-error
+          *ngIf="
+            resorceForm.controls['resourceOnboardingDate'].invalid &&
+            resorceForm.controls['resourceOnboardingDate'].touched
+          "
+        >
+          Please choose Validity Start
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="button-wrappper" >
+      <button
+        mat-button
+        class="btn-hover arrow space" (click)="cancel()">
+        <div class="btn-wrapper">
+          <div class="btn-name" >Cancel</div>
+        </div>
+      </button>
+      
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        (click)="save()"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="save_white"></span>
+          </div>
+          <div class="btn-name" >Save</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,132 @@
+/** Aproval process line start **/
+
+.md-stepper-horizontal {
+    display: table;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #ffffff;
+  }
+  .md-stepper-horizontal .md-step {
+    display: table-cell;
+    position: relative;
+    padding: 24px;
+  }
+  
+  .md-stepper-horizontal .md-step:active {
+    border-radius: 15% / 75%;
+  }
+  .md-stepper-horizontal .md-step:first-child .md-step-bar-left,
+  .md-stepper-horizontal .md-step:last-child .md-step-bar-right {
+    display: none;
+  }
+  .md-stepper-horizontal .md-step .md-step-circle {
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+    background-color: #999999;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  .md-stepper-horizontal .md-step.active .md-step-circle {
+    background-color: #007bc0;
+  }
+  .md-stepper-horizontal .md-step.in-active .md-step-circle {
+    background-color: #c1c7cc;
+  }
+  .md-stepper-horizontal .md-step.first-done .md-step-circle {
+    background-image: url("../../../assets/icons/checkmark-white.svg");
+  }
+  .md-stepper-horizontal .md-step.reject-done .md-step-circle {
+    background-image: url("../../../assets/icons/close-white.svg");
+  }
+  
+  .md-stepper-horizontal .md-step.first-done .md-step-circle *,
+  .md-stepper-horizontal .second-done .md-step-circle *,
+  .md-stepper-horizontal .last-done .md-step-circle * {
+    display: none;
+  }
+  
+  .md-stepper-horizontal .md-step.second-done .md-step-circle {
+    background-image: url("../../../assets/icons/clock-24-7-white.svg");
+  }
+  
+  .md-stepper-horizontal .md-step.sent-back .md-step-circle {
+    background-image: url("../../../assets/icons/back-menu-gray.svg");
+  }
+  
+  .md-stepper-horizontal .md-step.last-done .md-step-circle {
+    background-image: url("../../../assets/icons//clock-24-7-gray.svg");
+  }
+  
+  .common-icon-align-center {
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position: center;
+  }
+  
+  .md-stepper-horizontal .md-step .md-step-title {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .md-stepper-horizontal .md-step .md-step-action-by-active {
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
+  }
+  
+  .md-stepper-horizontal .md-step .md-step-action-by,
+  .md-stepper-horizontal .md-step .md-step-action-on {
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  .md-stepper-horizontal .md-step .md-step-title.sent-back {
+    color: #eec100;
+  }
+  .md-stepper-horizontal .md-step .md-step-title.success {
+    color: #006249 !important;
+  }
+  
+  .md-stepper-horizontal .md-step .md-step-title.reject {
+    color: #ea0016 !important;
+  }
+  
+  .md-stepper-horizontal .md-step .md-step-title {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.26);
+  }
+  .md-stepper-horizontal .md-step.active .md-step-title {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .md-stepper-horizontal .md-step.active.first-done .md-step-title,
+  .md-stepper-horizontal .md-step.active.second-done .md-step-title {
+    font-weight: 600;
+  }
+  .md-stepper-horizontal .md-step.in-active {
+    color: #c1c7cc;
+  }
+  .md-stepper-horizontal .md-step .md-step-bar-left,
+  .md-stepper-horizontal .md-step .md-step-bar-right {
+    position: absolute;
+    top: 36px;
+    height: 1px;
+    border-top: 1px solid #6a6767;
+  }
+  .md-stepper-horizontal .md-step .md-step-bar-right {
+    right: 0;
+    left: 49%;
+    margin-left: 20px;
+  }
+  .md-stepper-horizontal .md-step .md-step-bar-left {
+    left: 0;
+    right: 49%;
+    margin-right: 20px;
+  }
+  
+  /** Aproval process line end **/
+  

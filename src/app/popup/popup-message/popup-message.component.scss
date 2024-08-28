@@ -1,0 +1,17 @@
+.approval-section {
+  margin: 16px 0;
+}
+.header {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  font-size: 18px;
+}
+.close-btn {
+  display: flex;
+  mat-icon {
+    cursor: pointer;
+  }
+}

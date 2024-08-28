@@ -1,0 +1,37 @@
+.contact-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .contact-container {
+    margin-top: 1.2rem;
+  }
+  .contact-title {
+    font-size: 0.8rem;
+    margin-left: 1rem;
+    font-weight: 600;
+  }
+  .add-contact {
+    font-size: 0.8rem;
+    background-color: #007bc0;
+    margin-right: 0.5rem;
+  }
+  .delete-contact {
+    font-size: 0.8rem;
+    background-color: #007bc0;
+    margin-right: 0.5rem;
+    border-radius: 0;
+    background-color: #ffffff;
+    color: #007bc0;
+    border: 1px solid #007bc0;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 1rem;
+  }
+  .spinner {
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    margin-top: 10vh;
+  }

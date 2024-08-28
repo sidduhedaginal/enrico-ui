@@ -1,0 +1,336 @@
+<div class="spinner_planning" *ngIf="showLoading">
+    <lib-spinner></lib-spinner>
+</div>
+<div class="mainMasterGrid">
+    <div class="commonstylemain">
+        <div class="titleblock">
+            <div class="lefttitle">
+                <span class="statusText Textuppercase">{{metadata?.annualPlanningId}} Details </span>
+            </div>
+            <!-- <div>
+                <div class="righticons1" *ngIf="metadata?.status == 'Cancelled'">
+                    <span class="statusText" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                        AOP is Withdrawn
+                    </span>
+                    <span class="statusText1" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                        Approver : {{metadata?.activitySpocName}}
+                      </span>
+                </div>
+                <div class="righticons1" *ngIf="metadata?.status == 'Submitted'">
+                    <span class="statusText" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                      AOP is Submitted
+                    </span>
+                    <span class="statusText1" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                        Approver : {{metadata?.activitySpocName}}
+                      </span>
+                </div>
+                <div class="righticons1" *ngIf="metadata?.status == 'Rejected'">
+                    <span class="statusText" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                        AOP is Rejected
+                    </span>
+                    <span class="statusText1" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                        Approver : {{metadata?.activitySpocName}}
+                      </span>
+                </div>
+                <div class="righticons1" *ngIf="metadata?.status == 'Approved'">
+                    <span class="statusText" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                        AOP is Approved
+                    </span>
+                    <span class="statusText1" [ngStyle]="{ color: getStatusColor(metadata.status) }">
+                        Approver : {{metadata?.activitySpocName}}
+                      </span>
+                </div>
+            </div> -->
+        </div>
+   
+        <div class="ownermainblock">
+          <div class="OwnerBlock">
+            <span class="onwer">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="statusText1">{{metadata?.ownerName}}  ({{metadata?.ownerNtid}})</span>&nbsp;
+            <span *ngIf="permissionDetails.ownershipChangePermission" class="blue-edit_planning" title="Edit" (click)="OpenOwnershipDialog('AOP',metadata?.ownerEno)">&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        </div>
+      </div>
+
+<div class="commonstylemain1">
+    <div class="commonstylemain">
+        <div class="righticons-nopadding" *ngIf="permissionDetails.exportPermission">
+            <button mat-button  class="button-secondary"  (click)="downloadTemplate('AOP')">
+              <div class="icon-class" style="margin-top: 0px">
+                <span class="export icon"></span> &nbsp;<span class="action_text">Export</span>
+              </div>
+            </button>
+        </div>
+        <div class="righticons" *ngIf="metadata?.duedays <= 0">
+            <!-- Finalapproverid -->
+            <div *ngIf="permissionDetails.rejectPermission && finalApprovalActivitySPOCId == Employnumber">
+                <button mat-button class="button-secondary" *ngIf="metadata?.status == 'Submitted'"
+                (click)="openapprovePlanning('Rejected')">
+                <span class="sendback_planning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="action_text"> Send back</span>           
+                </button>
+            </div>
+            <div *ngIf="permissionDetails.delegatePermission && finalApprovalActivitySPOCId == Employnumber || osmRoleAdmin">
+                <button mat-button class="button-secondary" *ngIf="metadata?.status == 'Submitted'"
+                (click)="openDelegate_secondLevel('aop')">
+                  <span class="planning_delegate" title="Delegate">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span class="action_text"> Delegate</span>
+                </button>
+              </div>
+            <div *ngIf="permissionDetails.withdrawPermission && finalApprovalActivitySPOCId == Employnumber">
+                <button mat-button class="button-secondary" *ngIf="metadata?.status != 'Cancelled' && metadata?.status != 'Approved'"
+                (click)="openapprovePlanning('Cancelled')">
+                    <span class="withdraw_planning" title="Cancel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="action_text"> Withdraw</span>
+                </button>
+            </div>
+            <div *ngIf="(permissionDetails.editPermission && ownerEno == Employnumber || osmRoleAdmin) && metadata?.childCount != null && metadata?.childCount > 0">
+                <button mat-button class="button-secondary" *ngIf="metadata?.status == 'Planning Initiated' || metadata?.status == 'Rejected'"
+                (click)="openWithdrawPlanning('Submitted')">
+                  <span class="submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span class="action_text"> Submit</span>
+                </button>
+            </div>
+            <div *ngIf="permissionDetails.approvePermission && finalApprovalActivitySPOCId == Employnumber">
+                <button mat-button class="button-secondary" *ngIf="metadata?.status == 'Submitted'"
+                (click)="openapprovePlanning('Approved')">
+                    <span class="submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="action_text"> Approve</span>
+                </button>
+            </div>
+        </div>
+        <div class="righticons" *ngIf="metadata?.duedays > 0 && metadata?.status != 'Approved' && metadata?.status != 'Cancelled'">
+            <h3><b>&nbsp;&nbsp;Planning window closed &nbsp;&nbsp;&nbsp;</b></h3>
+        </div>
+
+    </div>
+</div>
+<!-- <div class="py-3">
+  <div *ngIf="aopLevelId">
+    <app-planning-approval-process-line
+      [planningid]="aopLevelId"
+    ></app-planning-approval-process-line>
+  </div>
+</div> -->
+    <br/>
+    <div class="greybackground">
+    <div class="commonstyle">
+        <div class="spantitle">
+            <span><b> Planning Year ID: </b></span><br/>
+            <span class="Textuppercase">{{metadata?.planningYearId}}</span>  
+        </div>
+        
+    
+        <div class="spantitle">
+            <div>
+            <span><b>Company Code: </b></span><br/> 
+            <span class="Textuppercase">{{metadata?.companyCode}}</span>  
+            </div>      
+        </div>
+        <div class="spantitle">
+            <span><b>Company Name: </b></span><br/>  
+            <span class="pointer Textuppercase"> 
+                {{metadata?.companyName}}
+               </span>      
+        </div>
+        <div class="spantitle">
+            <span><b>Planning Year: </b></span><br/>  
+            <span class="Textuppercase">{{metadata?.planningYear}}</span>       
+        </div>
+    </div>
+    <br/>
+
+    <div class="commonstyle">
+        <div class="spantitle">
+            <span><b>Purchase Order Planning Level: </b></span><br/>
+            <span class="Textuppercase">{{metadata?.planningOrganizationUnitLevel}}</span>        
+        </div>
+    
+        <div class="spantitle">
+            <span><b>CF Cycle: </b></span><br/>   
+            <span class="Textuppercase">{{metadata?.cfCycle}}</span> 
+        </div>
+        <div class="spantitle">
+            <span><b>Start Date: </b></span><br/>  
+            <span class="Textuppercase">{{metadata?.startDate}}</span>   
+        </div>
+        <div class="spantitle">
+            <span><b>End Date: </b></span><br/>
+            <span class="Textuppercase">{{metadata?.endDate}}</span>   
+        </div>
+    </div>
+    <br/>
+
+    <div class="commonstyle">
+        <div class="spantitle">
+            <span><b>Value In: </b></span><br/>
+            <span class="Textuppercase">{{metadata?.valueIn}}</span>        
+        </div>
+        <div class="spantitle">
+            <span><b>Currency: </b></span><br/>
+            <span class="Textuppercase">{{metadata?.currency}}</span>       
+        </div>
+        <div class="spantitle">
+            <span><b>USD Exchange: </b></span><br/> 
+            <span class="Textuppercase">{{metadata?.usdExchange | countryCurrency : companyCurrencyName : companyLocale}}</span>      
+        </div>
+        <div class="spantitle">
+            <span><b>Status: </b></span><br/>
+            <span>{{metadata?.status}}</span>    
+        </div>
+    </div>
+    <br/>
+
+    <div class="commonstyle">
+        <div class="spantitle" *ngIf="metadata?.activitySpocName != null">
+            <span><b>Final Approver: </b></span><br/>
+            <span title="{{metadata?.activitySpocName}}">
+                {{metadata?.activitySpocName.substring(0, 26)}}...</span>    
+        </div>
+        <div class="spantitle" *ngIf="metadata?.createdByName">
+            <span><b>Activity SPOC name: </b></span><br/>
+            <span title="{{metadata?.createdByName}}">
+                {{metadata?.createdByName.substring(0, 26)}}...</span>    
+        </div>
+    </div>
+    <br/>
+    </div>
+
+    <div class="commonstyle1">
+        <div class="spantitle1">
+            <span>Initial Capacity</span>
+            &nbsp;&nbsp;&nbsp;
+            <span> <b>
+              {{
+                metadata?.startCapacity
+                | numberFormat : companyLocale : companyNumericFormat
+              }}
+            </b></span>
+          </div>
+          <div class="spantitle1">
+            <span>End capacity</span>
+            &nbsp;&nbsp;&nbsp;
+            <span> <b>{{ metadata?.endCapacity | numberFormat : companyLocale : companyNumericFormat}}</b></span>
+          </div>
+        <div class="spantitle1">
+            <span>Equivalent Capacity</span>
+            &nbsp;&nbsp;&nbsp;
+            <span> <b>{{metadata?.equivalent_Capacity | numberFormat : companyLocale : companyNumericFormat}}</b> </span>      
+        </div>
+        <div class="spantitle1">
+            <span>Projected PO </span>
+            &nbsp;&nbsp;&nbsp;
+            <span> <b>{{metadata?.projected_PO | countryCurrency : companyCurrencyName : companyLocale}}</b></span>      
+        </div>
+   </div>
+    <br/>
+    <div class="commonstyle1">
+      <div class="spantitle1">
+        <span>Projected Revenue</span>
+        &nbsp;&nbsp;&nbsp;
+        <span> <b>{{metadata?.projected_Revenue | countryCurrency : companyCurrencyName : companyLocale}}</b></span> 
+      </div>
+      <div class="spantitle2">
+          <div class="filterTopPortion1"> 
+            <div style="padding: 0 10px">
+              <mat-form-field style="width: 35%; float: right;padding-right: 8px;">
+                <mat-label style="font-size: 12px;padding-left: 8px;padding-top: 8px;">
+                  Page Size</mat-label>
+                <mat-select style="padding-left: 8px;" [(ngModel)]="paginationPageSize" (selectionChange)="OnPageSizeChange($event)">
+                  <mat-option [value]=5>5 </mat-option>
+                  <mat-option [value]=10>10 </mat-option>
+                  <mat-option [value]=15>15 </mat-option>
+                  <mat-option [value]=20>20 </mat-option>
+                  <mat-option [value]=25>25 </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+      </div>
+    </div>
+    <br />
+    <div class="belowblocks">
+                <span class="gridTitle">First level Planning Status</span>
+                <div> 
+                    <ag-grid-angular
+                    #planningGrid
+                    id="planningGrid"
+                    class="ag-theme-alpine"
+                    rowAnimation
+                    pagination
+                    [paginationPageSize]="5"
+                    class="ag-theme-alpine"
+                    [rowData]="rowData_1st"
+                    [columnDefs]="columnDefs_1st"
+                    [defaultColDef]="defaultColDef"
+                    [autoGroupColumnDef]="autoGroupColumnDef"
+                    (gridReady)="onGridReady_1st($event)"
+                    (cellClicked)="onCellClicked_Aop_detail($event)"
+                    (firstDataRendered)="onFirstDataRendered($event)"
+                    [suppressMenuHide]="true"
+                    (filterChanged)="onFilterChanged($event)"
+                    (horizontalScroll)="onHorizontalScroll($event)"
+                    (sortChanged)="onSortChanged($event)">
+                    </ag-grid-angular>
+                </div>
+        <mat-expansion-panel style="margin-top: 0.75em;">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="gridTitle">Skillset Planning</mat-panel-title>
+            </mat-expansion-panel-header>
+    
+            <mat-panel-description>
+                <div class="mainMasterGrid"> 
+                    <ag-grid-angular
+                    #planningGrid
+                    id="planningGrid"
+                    class="ag-theme-alpine"
+                    rowAnimation
+                    [pagination]="true"
+                    [paginationPageSize]="paginationPageSize"
+                    [rowData]="rowData"
+                    [columnDefs]="columnDefs"   
+                    [defaultColDef]="defaultColDef"
+                    [autoGroupColumnDef]="autoGroupColumnDef"
+                    [groupDefaultExpanded]="groupDefaultExpanded"
+                    [masterDetail]="true"
+                    (gridReady)="onGridReady($event)"
+                    (firstDataRendered)="onFirstDataRendered($event)"
+                    [suppressMenuHide]="true"
+                    [detailCellRendererParams]="detailCellRendererParams"
+                    (rowGroupOpened)="onRowGroupOpened($event)"
+                    [detailRowAutoHeight]="true"
+                    (filterChanged)="onFilterChanged($event)"
+                    (horizontalScroll)="onHorizontalScroll($event)"
+                    (sortChanged)="onSortChanged($event)"
+                    ></ag-grid-angular>
+        
+                </div>
+            </mat-panel-description>
+        </mat-expansion-panel>
+
+
+
+        <mat-expansion-panel (opened)="onPanelOpened()" style="margin-top: 1.75em;">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="gridTitle">Remarks</mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+              <div class="remarksList">
+                <div class="mainpanel" *ngFor="let item of remarksList">
+                  <div class="subpanel">
+                    <div>{{item.fullname}} ({{ item.createdBy }})</div>
+                    <div [ngStyle]="{ color: getStatusColor(item.status) }"> {{ item.status }}</div>
+                  </div>
+                  <div class="date">{{ item?.createdOn | date : "dd-MMM-yyyy" }}</div>
+                  <div class="remarktext">
+                    {{ item.description }}
+                  </div>
+                </div>
+              </div>
+          
+              <br />
+            </mat-panel-description>
+        </mat-expansion-panel>
+    </div>
+</div>
+

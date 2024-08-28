@@ -1,0 +1,64 @@
+ {
+    "status": "success",
+    "actionDate": "2023-08-08T06:09:38.1933444Z",
+    "data": {
+      "resourceDeboardDeatils": [
+        {
+          "id": "ba4d2b38-e3e1-438c-bf54-69d415f84f8e",
+          "changeRequestID": "1111-01",
+          "employeeNumber": 765656,
+          "fullname": "Shrikant ji",
+          "vendorName": "SubsidiaryManpowerGroup Services India Pvt Lt",
+          "effectiveFrom": "24/04/2023",
+          "deliveryManager": "xx",
+          "statusDescription": "Initiated"
+        },
+        {
+          "id": "c8eb5ae8-470f-434f-b3ad-7fa9b033787a",
+          "changeRequestID": "7676-001",
+          "employeeNumber": 7676,
+          "fullname": "Guru N",
+          "vendorName": "Update manpower group",
+          "effectiveFrom": "24/04/2023",
+          "deliveryManager": "xx",
+          "statusDescription": "Initiated"
+        },
+        {
+          "id": "58a2a6ca-87f0-463f-84a1-a3de7137a873",
+          "changeRequestID": "765657-001",
+          "employeeNumber": 765657,
+          "fullname": "Guru N",
+          "vendorName": "Update manpower group",
+          "effectiveFrom": "24/04/2023",
+          "deliveryManager": "xx",
+          "statusDescription": "Initiated"
+        },
+        {
+          "id": "58a2a6ca-87f0-463f-84a1-a3de7137a888",
+          "changeRequestID": "765007-002",
+          "employeeNumber": 700657,
+          "fullname": "Guru Ap",
+          "vendorName": "Update manpower group",
+          "effectiveFrom": "24/04/2023",
+          "deliveryManager": "xx",
+          "statusDescription": "Approved"
+        },
+        {
+          "id": "58a2a6ca-87f0-463f-84a1-a3de7137a898",
+          "changeRequestID": "765007-092",
+          "employeeNumber": 700650,
+          "fullname": "Guru Re",
+          "vendorName": "Update manpower group",
+          "effectiveFrom": "24/04/2023",
+          "deliveryManager": "xx",
+          "statusDescription": "Rejected"
+        }
+
+      ]
+
+    },
+
+    "requestToken": "0YT52qNMpncHyixbR21CiwfhtUq2xN4u"
+
+  }
+

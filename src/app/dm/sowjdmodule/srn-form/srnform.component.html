@@ -1,0 +1,247 @@
+
+
+
+  <div class="body">
+
+    <div class="department__title">SRN_2023_24-03-2023_24-04-2023</div>
+    <div class="sowjd__row1">
+          <mat-form-field class="example-full-width">
+            <mat-label>Billing Month</mat-label>
+            <input
+              matInput
+              placeholder="Billing Month"
+              value="Billing Month"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>From Date</mat-label>
+            <input
+              matInput
+              placeholder="From date"
+              value="dd-mm-yyyy"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>To Date</mat-label>
+            <input
+              matInput
+              placeholder="To date"
+              value="dd-mm-yyyy"
+              disabled="disabled"
+            />
+          </mat-form-field>
+    </div>
+    <div class="sowjd__row1">
+          <mat-form-field class="example-full-width">
+            <mat-label>Purchase Order</mat-label>
+            <input
+              matInput
+              placeholder="Purchase Order"
+              value="Purchase order"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Country</mat-label>
+            <input
+              matInput
+              placeholder="Country"
+              value="Country"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Order currency</mat-label>
+            <input
+              matInput
+              placeholder="Order currency"
+              value="Order currency"
+              disabled="disabled"
+            />
+          </mat-form-field>
+    </div>
+    <div class="sowjd__row1">
+          <mat-form-field class="example-full-width">
+            <mat-label>PO Type</mat-label>
+            <input
+              matInput
+              placeholder="PO Type"
+              value="PO Type"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>PO Validity Start</mat-label>
+            <input
+              matInput
+              placeholder="PO validity Start"
+              value="PO Validity Start"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>PO Validity End</mat-label>
+            <input
+              matInput
+              placeholder="PO validity End"
+              value="PO Validity End"
+              disabled="disabled"
+            />
+          </mat-form-field>
+    </div>
+    <div class="sowjd__row1">
+          <mat-form-field class="example-full-width">
+            <mat-label>DM Name</mat-label>
+            <input
+              matInput
+              placeholder="DM Name"
+              value="DM Name"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>DM EMail</mat-label>
+            <input
+              matInput
+              placeholder="DM EMail"
+              value="DM Email"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Invoice</mat-label>
+            <input
+              matInput
+              placeholder="Invoice"
+              value="Invoice"
+              disabled="disabled"
+            />
+          </mat-form-field>
+    </div>
+    <div class="sowjd__row1">
+          <mat-form-field class="example-full-width">
+            <mat-label>Vendor Name</mat-label>
+            <input
+              matInput
+              placeholder="Vendor Name"
+              value="Vendor Name"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Vendor Id</mat-label>
+            <input
+              matInput
+              placeholder="Vendor Id"
+              value="Vendor Id"
+              disabled="disabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Vendor Email</mat-label>
+            <input
+              matInput
+              placeholder="Vendor Email"
+              value="Vendor Email"
+              disabled="disabled"
+            />
+          </mat-form-field>
+    </div>
+
+    <div class="department__title">Resource Plan</div>
+     <div>
+      <ag-grid-angular
+        
+        class="ag-theme-alpine grid"
+        [columnDefs]="rpColumnDefs"
+        [defaultColDef]="rpDefaultColDef"
+        [rowData]="rpRowData"
+        [rowSelection]="'single'"
+        [animateRows]="true"
+        [pagination]="true"
+        [paginationPageSize]="6"
+        [editType]="editType"
+        (cellClicked)="onCellClicked($event)"
+      ></ag-grid-angular>
+    </div>
+
+    <br />
+    <div class="sowjd__row1">
+     <mat-form-field class="example-full-width">
+          <mat-label>Equivalent Capacity</mat-label>
+          <input
+            matInput
+            placeholder="Equivalent Capacity"
+            value="Equivalent Capacity"
+            disabled="disabled"
+          />
+        </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Rate Card </mat-label>
+            <input
+              matInput
+              placeholder="Rate Card "
+              value="Rate Card "
+              disabled="disabled"
+            />
+          </mat-form-field><div class="extra">
+          </div>
+    </div>
+    <div class="sowjd__row1">
+         <mat-form-field class="example-full-width">
+          <mat-label>Equivalent PMO </mat-label>
+          <input
+            matInput
+            placeholder="Equivalent PMO "
+            value="Equivalent PMO "
+            disabled="disabled"
+          />
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Total cost </mat-label>
+          <input
+            matInput
+            placeholder="Total cosr "
+            value="Total cost"
+            disabled="disabled"
+          />
+        </mat-form-field><div class="extra">
+        </div>
+        </div>
+
+
+
+        <div class="department__title">Document</div>
+ 
+    <a class="link" href="/">a link </a><br />
+    <a class="link" href="/">a link </a> <br />
+    <div class="department__title">Vendor Remarks</div>
+ 
+    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, 
+      or randomised words which don't look even slightly believable.</p>
+  
+    <div class="department__title">DM Remarks</div>
+
+     <mat-form-field class="example-full-width remarks">
+      <mat-label>Remarks </mat-label>
+      <input
+        matInput
+     
+        
+        
+      />
+    </mat-form-field>
+  </div>
+

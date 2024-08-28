@@ -1,0 +1,83 @@
+
+<div>
+  <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+    <app-resource-loader-ui></app-resource-loader-ui>
+   </div>
+    <div class="row">
+      <div class="col-md col-sm">
+        <h3 class="title-head">
+         <span *ngIf="viewData.type !='submit'"> <b class="mr-2">  <span *ngIf="viewData.type=='Reject'|| viewData.type=='Rejected'"> Send Back</span>
+          <span *ngIf="viewData.type !='Reject' && viewData.type !='Submit' && viewData.type !='Rejected'"> {{ viewData.type }} </span></b> </span>
+         <b  *ngIf="(viewData.type != 'Change Effective Date') && (viewData.type != 'Cancel Request')"> Change Request</b>
+          <mat-icon style="float: right;" (click)="closeBtn()">close</mat-icon>
+        </h3>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-12 col-sm mt-2" *ngIf="viewData.type == 'Approve' && viewData?.checkSowJDDDl=='SOW JD'">
+        <div  *ngIf="viewData.element.status=='Initiated' ||viewData.element.status=='ReSubmitted' || viewData?.element?.status=='Submit'">       
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>GB Business Area</mat-label>          
+            <mat-select [(ngModel)]="gbBusinessModelCM">
+            <mat-option [value]="v.gbCode" *ngFor="let v of viewDataGBbusinessList"> {{v.gbCode}}-{{v.gbDescription}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        </div>
+      <div class="col-md-12 col-sm mt-2" *ngIf="viewData.type == 'Delegate'">
+             <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Choose User</mat-label>
+          <input [(ngModel)]="selectedUser" (input)="filterUsers()" placeholder="Select" matInput
+            [matAutocomplete]="auto" />
+            <img matSuffix src="../assets/img/search.png" class="imgSearch" />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+          <mat-option *ngFor="let option of filterdOptions" [value]="option.ntid">
+              {{ option.email }} ({{option.ntid}})
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+<div class="col-md-12 col-sm mt-2" *ngIf="viewData.type == 'Change Effective Date'">
+  <mat-form-field class="full-width gMFFSelect" appearance="fill">
+    <mat-label>Effective Date</mat-label>
+    <input matInput [matDatepicker]="pickerEffectiveDate" [(ngModel)]="effectiveDateModel" placeholder="Choose a date" readonly (click)="pickerEffectiveDate.open()" />
+    <mat-datepicker-toggle matSuffix [for]="pickerEffectiveDate"></mat-datepicker-toggle>
+    <mat-datepicker #pickerEffectiveDate></mat-datepicker>
+  </mat-form-field>
+</div>
+<div class="col-md-12 col-sm mb-2" *ngIf="viewData.type=='Reject'|| viewData.type=='Rejected'">
+  <div style="background-color: #FFDF95;">
+          <table class="warnTbl">
+            <tr>
+              <td class="td1">  <img src="../assets/icons/warning_iconImg.svg"> </td>
+              <td> 
+              <div>   Warning. If you choose to send back the change request, the recipient will have the option to resubmit it. Please consider carefully before proceeding with this action.
+              </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        </div>
+
+
+      <div class="col-md-12 col-sm mt-2">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Remarks<span class="colorStart">*</span></mat-label>
+          <textarea matInput style="resize:none" [(ngModel)]="remarksModel" (keydown)="restrictFirstSpace($event)"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="row mt-3">
+      <div class="col-md col-sm" style="text-align:right">
+        <button mat-stroked-button class="cancelBtn" (click)="cancleBtn()">
+          Cancel
+        </button>
+        <button mat-stroked-button color="primary" class="submitBtn" (click)="submitBtn()"   [disabled]="(remarksModel=='' || remarksModel==undefined || remarksModel==null )?true:false" [ngClass]="(remarksModel=='' || remarksModel==undefined || remarksModel==null )?'disableBtnClor':'submitBtn'">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>

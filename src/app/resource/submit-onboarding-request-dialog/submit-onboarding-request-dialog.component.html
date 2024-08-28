@@ -1,0 +1,53 @@
+<div>
+    <form [formGroup]="createdForm">
+    <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+        <app-resource-loader-ui></app-resource-loader-ui>
+    </div>
+    <div class="row">
+        <div class="col-md col-sm">
+            <h3 class="title-head" *ngIf="viewData.type=='Submit' || (viewData.type=='Resubmit' && viewData.checkButtonType=='EDIT')"><b>Submit Onboarding Request</b> </h3>
+            <h3 class="title-head"  *ngIf="viewData.type=='Resubmit'  && viewData.checkButtonType !='EDIT'"><b>Re-Submit Onboarding Form</b> </h3>
+           
+        </div>
+    </div>
+
+    <div class="row" *ngIf="(viewData.type=='Submit') || (viewData.type== 'Resubmit' && viewData.checkButtonType=='EDIT')">
+        <div class="col-md-12 col-sm mt-1">
+         <mat-checkbox class="submitCheckbox" formControlName="checkboxOne"> 
+              <span *ngIf="flagBGVSCB==false">
+                I hereby confirm the completion of Information Security Policy (ISP) training by the resource, with the attached acknowledgement as proof.
+              </span>  
+              <span *ngIf="flagBGVSCB==true">
+                I hereby confirm the completion of Bosch Rules, Device Usage and Service Providers ISMS policy training by the resource.
+              </span>
+            </mat-checkbox>
+        </div>
+        <div class="col-md-12 col-sm mt-3" *ngIf="flagBGVSCB==false">
+            <mat-checkbox class="submitCheckbox" formControlName="checkboxtwo">I hereby confirm that background verification has been completed and
+                passed. </mat-checkbox>
+        </div>
+        <div class="col-md-12 col-sm mt-3">
+            <mat-checkbox class="submitCheckbox" formControlName="checkboxThree"> I hereby declare that the information furnished above is true,
+                complete and correct to the best of my knowledge and belief. I understand that in the event of my
+                information being found false or incorrect at any stage, my candidature shall be liable to termination
+                without notice or any compensation in lieu thereof.</mat-checkbox>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm mt-3">
+            <mat-form-field class="full-width gMFFInput" appearance="fill">
+                <mat-label>Remarks</mat-label>
+                <textarea matInput style="resize:none" formControlName="remarksFormControlName"  (keypress)="restrictFirstChacterSpace($event)"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md col-sm" style="text-align:right">
+            <button mat-stroked-button class="cancelBtn" (click)="cancleBtn()">Cancel</button>
+            <button mat-stroked-button color="primary" class="submitBtn" (click)="submitBtn(createdForm)" [ngClass]="!createdForm.valid?'disableBtnClor':''"  [disabled]="!createdForm.valid">Submit</button>
+        </div>
+    </div>
+</form>
+</div>

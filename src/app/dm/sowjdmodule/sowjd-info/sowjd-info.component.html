@@ -1,0 +1,129 @@
+<div
+  class="ownermainblock"
+  *ngIf="permissionDetails?.ownershipChangePermission"
+>
+  <div class="OwnerBlock">
+    <span class="onwer">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span class="statusText1"
+      >{{ sowjddetaildata?.recordOwnerName }} ({{
+        sowjddetaildata?.recordOwner
+      }})</span
+    >&nbsp;
+    <span
+      *ngIf="osmRoleAdmin && sowjddetaildata?.status !== 6"
+      class="blue-edit_planning"
+      title="Edit"
+      (click)="OpenOwnershipDialog('sowjd', sowjddetaildata?.recordOwnerNumber)"
+      >&nbsp;&nbsp;&nbsp;</span
+    >
+  </div>
+</div>
+<div class="sowjd-details">
+  <div class="main__form">
+    <div class="right__portion">
+      <div>
+        <app-sowjd-common-info [sowJdId]="sowjd"></app-sowjd-common-info>
+
+        <div class="approval-section-heading">
+          <div class="approval-content-heading">Vendor Suggestions</div>
+
+          <!--Non Rate Card-->
+          <div
+            class="approval-section"
+            *ngIf="
+              sowjddetaildata?.sowJdTypeId ===
+              'c65aaf67-071a-4b0f-95d0-9f6af420fb35'
+            "
+          >
+            <ag-grid-angular
+              class="ag-theme-alpine"
+              pagination
+              [paginationPageSize]="5"
+              [rowData]="vendorRowData"
+              [columnDefs]="columnDefsVendorNRC"
+              [defaultColDef]="defaultColDef"
+              (gridReady)="onGridReadyVendors($event, 1)"
+              [autoGroupColumnDef]="autoGroupColumnDef"
+              (firstDataRendered)="onFirstDataRendered($event)"
+              [suppressMenuHide]="true"
+              [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+              (filterChanged)="onFilterChanged($event)"
+              (horizontalScroll)="onHorizontalScroll($event)"
+              (sortChanged)="onSortChanged($event)"
+            >
+            </ag-grid-angular>
+          </div>
+          <!--Rate Card-->
+          <div
+            class="approval-section"
+            *ngIf="
+              sowjddetaildata?.sowJdTypeId ===
+              'dacd2c78-8fde-4ab8-91c5-fa4b2faa4a71'
+            "
+          >
+            <ag-grid-angular
+              class="ag-theme-alpine"
+              pagination
+              [paginationPageSize]="5"
+              [rowData]="vendorRowData"
+              [columnDefs]="columnDefsVendorRC"
+              [defaultColDef]="defaultColDef"
+              (gridReady)="onGridReadyVendors($event, 2)"
+              [autoGroupColumnDef]="autoGroupColumnDef"
+              (firstDataRendered)="onFirstDataRendered($event)"
+              [suppressMenuHide]="true"
+              [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+              (filterChanged)="onFilterChanged($event)"
+              (horizontalScroll)="onHorizontalScroll($event)"
+              (sortChanged)="onSortChanged($event)"
+            >
+            </ag-grid-angular>
+          </div>
+        </div>
+      </div>
+      <mat-expansion-panel class="mt-3">
+        <mat-expansion-panel-header>
+          <div class="approval-section-heading">
+            <mat-panel-title class="approval-content-heading"
+              >Remarks</mat-panel-title
+            >
+          </div>
+        </mat-expansion-panel-header>
+        <div>
+          <div
+            *ngIf="approvedStatusData?.length > 0; else noRemarksFound"
+            class="remarks-section"
+          >
+            <div
+              class="approval-section-remarks"
+              *ngFor="let item of approvedStatusData"
+            >
+              <div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+                      <div>
+                        {{ item.name }}
+                        <span
+                          style="float: right"
+                          [ngClass]="sowjdService.getStatusColor(item.statusId)"
+                          >{{ item.status }}</span
+                        >
+                      </div>
+                      <div>{{ item.actionOn | date : dateFormat }}</div>
+                      <div>{{ item.remarks }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noRemarksFound>
+          <p class="px-4">No remarks found</p>
+        </ng-template>
+      </mat-expansion-panel>
+      <hr />
+    </div>
+  </div>
+</div>

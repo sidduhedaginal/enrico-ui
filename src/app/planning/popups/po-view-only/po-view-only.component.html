@@ -1,0 +1,114 @@
+<div>
+    <h2>
+        View Purchase Order
+    </h2>
+</div>
+
+<form [formGroup]="myForm" (ngSubmit)="submitForm()" >
+    <div class="poForm">
+
+    <mat-form-field class="field">
+        <mat-label>Purchase Order Number:</mat-label>
+        <input matInput type="text" formControlName="purchaseOrderNumber" >
+        <mat-error *ngIf="myForm.get('purchaseOrderNumber')?.invalid && myForm.get('purchaseOrderNumber')?.touched">purchaseOrderNumber is required</mat-error>
+    </mat-form-field> 
+
+    <mat-form-field class="field">
+      <mat-label>Vendor:</mat-label>
+      <input matInput type="text" formControlName="vendor" >
+      <mat-error *ngIf="myForm.get('vendor')?.invalid && myForm.get('vendor')?.touched">Vendor is required</mat-error>
+    </mat-form-field> 
+  
+    <mat-form-field class="field">
+      <mat-label>Location:</mat-label>
+      <input matInput type="text" formControlName="location" >
+      <mat-error *ngIf="myForm.get('location')?.invalid && myForm.get('location')?.touched">Location is required</mat-error>
+    </mat-form-field> 
+    
+   
+  
+    <mat-form-field class="field">
+      <mat-label>Created Date:</mat-label>
+      <input matInput [matDatepicker]="createdDatePicker" formControlName="createdDate" >
+      <mat-datepicker-toggle matSuffix [for]="createdDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #createdDatePicker></mat-datepicker>
+      <mat-error *ngIf="myForm.get('createdDate')?.invalid && myForm.get('createdDate')?.touched">Created Date is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Changed Date:</mat-label>
+      <input matInput [matDatepicker]="changedDatePicker" formControlName="changedDate" >
+      <mat-datepicker-toggle matSuffix [for]="changedDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #changedDatePicker></mat-datepicker>
+      <mat-error *ngIf="myForm.get('changedDate')?.invalid && myForm.get('changedDate')?.touched">Changed Date is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Delivery Date:</mat-label>
+      <input matInput [matDatepicker]="deliveryDatePicker" formControlName="deliveryDate">
+      <mat-datepicker-toggle matSuffix [for]="deliveryDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #deliveryDatePicker></mat-datepicker>
+      <mat-error *ngIf="myForm.get('deliveryDate')?.invalid && myForm.get('deliveryDate')?.touched">Delivery Date is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Validity Start:</mat-label>
+      <input matInput [matDatepicker]="validityStartPicker" formControlName="validityStart" >
+      <mat-datepicker-toggle matSuffix [for]="validityStartPicker"></mat-datepicker-toggle>
+      <mat-datepicker #validityStartPicker></mat-datepicker>
+      <mat-error *ngIf="myForm.get('validityStart')?.invalid && myForm.get('validityStart')?.touched">Validity Start is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Validity End:</mat-label>
+      <input matInput [matDatepicker]="validityEndPicker" formControlName="validityEnd" >
+      <mat-datepicker-toggle matSuffix [for]="validityEndPicker"></mat-datepicker-toggle>
+      <mat-datepicker #validityEndPicker></mat-datepicker>
+      <mat-error *ngIf="myForm.get('validityEnd')?.invalid && myForm.get('validityEnd')?.touched">Validity End is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Fund Center:</mat-label>
+      <input matInput type="text" formControlName="fundCenter" >
+      <mat-error *ngIf="myForm.get('fundCenter')?.invalid && myForm.get('fundCenter')?.touched">Fund Center is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Cost Center:</mat-label>
+      <input matInput type="text" formControlName="costCenter">
+      <mat-error *ngIf="myForm.get('costCenter')?.invalid && myForm.get('costCenter')?.touched">Cost Center is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Fund:</mat-label>
+      <input matInput type="text" formControlName="fund" >
+      <mat-error *ngIf="myForm.get('fund')?.invalid && myForm.get('fund')?.touched">Fund is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Budget Code:</mat-label>
+      <input matInput type="text" formControlName="budgetCode" >
+      <mat-error *ngIf="myForm.get('budgetCode')?.invalid && myForm.get('budgetCode')?.touched">Budget Code is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>Currency:</mat-label>
+      <input matInput type="text" formControlName="currency">
+      <mat-error *ngIf="myForm.get('currency')?.invalid && myForm.get('currency')?.touched">Currency is required</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field class="field">
+      <mat-label>PO Value:</mat-label>
+      <input matInput type="text" formControlName="poValue" >
+      <mat-error *ngIf="myForm.get('poValue')?.invalid && myForm.get('poValue')?.touched">PO Value is required</mat-error>
+    </mat-form-field>
+    </div>
+
+    <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" type="button" (click)="onClose($event)" >Cancel</button>
+        <!-- <button  class="save-btn" mat-raised-button color="primary" type="submit" [disabled]="myForm.invalid && !showLoading">Save</button> -->
+        
+    </div>
+
+  </form>
+  

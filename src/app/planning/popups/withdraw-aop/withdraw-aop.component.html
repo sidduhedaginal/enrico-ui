@@ -1,0 +1,73 @@
+<div class="main-form">
+    <div class="left-form">
+        <span class="titlebold">
+          <span class="titlebold" *ngIf="SendStatus == 'Cancelled'">
+            Withdraw
+          </span>
+          <span class="titlebold" *ngIf="SendStatus == 'Submitted'">
+            Submit
+          </span>
+          <span class="titlebold" *ngIf="SendStatus == 'Approved'">
+            Approv
+          </span>
+          <span class="titlebold" *ngIf="SendStatus == 'Rejected'">
+            Send Back
+          </span>
+          AOP Planning
+        </span>
+    </div>
+    <div class="right-form1">
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose($event)"
+      >close</mat-icon
+    >
+    </div>
+  </div>
+  <div class="spinner_planning" *ngIf="showLoading">
+    <lib-spinner></lib-spinner>
+  </div>
+  <div class="erroMessageTag" *ngIf="showErroMessage">
+        <span>{{errorMessage}}</span>
+  </div>
+  <mat-dialog-content>
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field *ngIf="SendStatus == 'Submitted'" style="width: 50%;text-align: left;">
+        <mat-label  style="font-size: 12px;padding-left: 8px;padding-top: 8px;">PO Planning level</mat-label>
+        <mat-select style="padding-left: 8px;" formControlName="poPlanning">
+          <mat-option *ngFor="let AOP of AOPSubmitList" [value]="AOP.id">
+            {{AOP.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field  *ngIf="SendStatus == 'Submitted'" style="width: 50%;text-align: left;padding: 0 0 0 8px;">
+        <mat-label style="font-size: 12px;padding-left: 8px;padding-top: 8px;">Final Approval</mat-label>
+        <mat-select style="padding-left: 8px;" formControlName="activitySop">
+          <input [hidden]="Approver" class="inputsearch" type="text" autocomplete="on"  matInput placeholder="Search" 
+          (keydown)="handleInput($event)"
+           (input)="OnEmploySearch($event)">
+          <mat-option *ngFor="let option of dropdownList"  [value]="option.id">{{option.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%;padding: 0;">
+        <mat-label class="popup-lebel">Remarks </mat-label>
+        <input maxlength="500" matInput placeholder="Remark" formControlName="Remark"
+        (keydown)="space($event)" />
+        <mat-error
+        *ngIf="
+        myForm.controls['Remark'].touched &&
+        myForm.controls['Remark'].invalid">Please Fill Remarks
+        </mat-error>
+      </mat-form-field>
+  
+    </div>
+    <div class="action-btn">
+      <button class="cancel-btn" mat-raised-button color="primary" type="button" (click)="onClose($event)">Cancel</button>
+      <button  class="save-btn" mat-raised-button color="primary" type="submit"
+      [disabled]="myForm.invalid">Save</button>
+    </div>
+  </form>
+  
+</mat-dialog-content>

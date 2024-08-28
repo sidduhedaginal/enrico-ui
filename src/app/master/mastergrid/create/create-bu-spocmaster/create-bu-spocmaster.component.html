@@ -1,0 +1,88 @@
+<div class="myForm">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="header-items">
+      <div class="title">
+        <p>{{title}}</p>
+      </div>
+      <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" type="submit" (click)="cancel()">Cancel</button>
+        <button class="save-btn" mat-raised-button color="primary" type="submit">Save</button>
+      </div>
+    </div>
+    <mat-form-field>
+      <mat-label>BU SPOC Id</mat-label>
+      <input matInput formControlName="buspocId" placeholder="BU Hot Id" readonly />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>BU Name</mat-label>
+      <input matInput formControlName="buName" placeholder="BU Name"  />
+      <mat-error *ngIf="myForm.get('buName')?.hasError('pattern')">Please enter AlphaNumeric only.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Spoc Name</mat-label>
+      <input matInput formControlName="spocName" placeholder="Spoc Name"  />
+      <mat-error *ngIf="myForm.get('spocName')?.hasError('pattern')">Please enter AlphaNumeric only.</mat-error>
+    </mat-form-field>
+
+    <!-- <mat-form-field>
+      <mat-label>Company Code</mat-label>
+      <input matInput formControlName="companyCode" placeholder="Company Code" readonly />
+      <mat-error *ngIf="myForm.get('companyCode')?.hasError('pattern')">Please enter numbers only.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Business Unit</mat-label>
+      <mat-select formControlName="businessUnit" placeholder="Business Unit">
+        <mat-option *ngFor="let buName of buNameList" [value]="buName">{{ buName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Location Mode</mat-label>
+      <mat-select formControlName="locationMode" placeholder="Location Mode">
+        <mat-option *ngFor="let mode of locationModeList" [value]="mode">{{ mode }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Cost Difference</mat-label>
+      <input matInput formControlName="costDifference" placeholder="Cost Difference"
+        (keypress)="limitDecimalPlaces($event, 3)" />
+      <mat-error *ngIf="myForm.get('costDifference')?.hasError('pattern')">Please enter numbers or decimals
+        only.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Currency</mat-label>
+      <mat-select formControlName="currency" placeholder="Currency">
+        <mat-option *ngFor="let currency of currencyList" [value]="currency">{{ currency }}</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <mat-form-field>
+      <input matInput [matDatepicker]="startDatePicker" formControlName="validityStart" placeholder="Validity Start">
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDatePicker" formControlName="validityEnd" placeholder="Validity End"
+        [min]="getValidityEndMinDate()">
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+      <mat-error *ngIf="myForm.controls['validityEnd'].invalid">
+        Please provide a valid date.
+      </mat-error>
+    </mat-form-field>
+    
+    <mat-form-field>
+      <mat-label>Approve Status</mat-label>
+      <input matInput formControlName="approveStatus" placeholder="Approve Status"  />
+      <!-- <mat-error *ngIf="myForm.get('spocName')?.hasError('pattern')">Please enter AlphaNumeric only.</mat-error> -->
+    </mat-form-field>
+
+    <button class="cancel-btn" mat-raised-button color="primary" type="submit" (click)="cancel()">Cancel</button>
+    <button class="save-btn" mat-raised-button color="primary" type="submit" [disabled]="myForm.invalid">Save</button>
+  </form>
+</div>

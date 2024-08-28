@@ -1,0 +1,58 @@
+.myForm {
+  margin-top: 4rem;
+}
+.mat-form-field {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+  padding: 2rem;
+  min-width: 20%;
+}
+
+::ng-deep .mat-form-field-label-wrapper {
+  padding: 6px;
+  margin-left: 2px;
+}
+
+::ng-deep.mat-form-field-appearance-legacy .mat-form-field-infix {
+  background: #e0e2e5;
+  padding: 6px;
+  color: gray;
+}
+::ng-deep .mat-form-field-flex {
+  background: #e0e2e5 !important;
+}
+
+::ng-deep
+  .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label,
+.mat-form-field-appearance-legacy.mat-form-field-can-float
+  .mat-input-server:focus
+  + .mat-form-field-label-wrapper
+  .mat-form-field-label {
+  padding: 3px;
+}
+.save-btn {
+  margin-right: 5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 1.5rem;
+  height: 2.5rem;
+  width: 5rem;
+  border-radius: 0;
+  background-color: #007bc0;
+}
+.cancel-btn {
+  margin-right: 11.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 1.5rem;
+  height: 2.5rem;
+  width: 5rem;
+  border-radius: 0;
+  background-color: #ffffff;
+  color: #007bc0;
+  border: 1px solid #007bc0;
+}

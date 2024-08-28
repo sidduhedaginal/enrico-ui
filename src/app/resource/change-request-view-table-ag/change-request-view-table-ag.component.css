@@ -1,0 +1,124 @@
+.save-config-checkBox {
+  flex-direction: column;
+  height: 110px;  
+  overflow-x: auto;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 10px 10px 0;  
+  scrollbar-width: thin!important;
+  margin-right: 10px;
+}
+.save-config-checkBox div{
+  min-width: 80px;
+  max-width: 220px;
+  cursor: pointer;
+}
+.imgSearch{
+  position: relative;
+  white-space: nowrap;
+  display: inline;
+  bottom: 12px;
+  width: 18px;
+  padding: 0.95em 0 0.25em 0;
+
+}
+.csm1{
+  position: absolute;
+  top: 26px;
+}
+.refreshtableRM{
+position: relative;
+cursor: pointer;
+left:10px;
+width:24px;
+bottom:8px;
+}
+.custom__options_R{
+  margin: 5px 15px;
+}
+::ng-deep .custom__options_R .small-checkbox.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #007bc0!important;
+}
+::ng-deep .custom__options_R .small-checkbox .mat-checkbox-label {
+  font-size: 11px!important;
+}
+.saveConfigResetFilters-RM {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #007bc0;
+  padding: 20px 0 0 0;
+}
+
+.saveConfigResetFilters-RM > span {
+  font-size: 12px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.saveConfigResetFilters-RM > span:hover {
+  background-color: #007bc0;
+  color: white;
+  padding: 6px;
+}
+.save-btn-RM {
+  color: #fff;
+  background: #007bc0;
+  font-family: Bosch-Sans;
+  font-weight: 400;
+  font-size: 14px;
+    line-height: 22px;
+  cursor: pointer;
+  width: 50px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0;
+  padding: 2px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+
+}
+.close-RM{
+  font-size: 20px;
+  position: absolute;
+  right: 10px;
+  top: 16px;
+}
+.select-column-RM {
+  font-weight: 600;
+  padding-left: 15px;
+}
+.save-button1{
+  cursor: pointer;
+  color: #007bc0;
+  padding-right: 15px;
+  
+}
+.save-button1:hover{
+text-decoration: underline;
+}
+.psb1{
+  padding-right: 55px;
+}
+.triangle-RM {
+  position: absolute;
+  left: 65px;
+  width: 0;
+  height: 0;
+  border-left: 35px solid transparent;
+  border-right: 35px solid transparent;
+  border-bottom: 60px solid #fffffe;
+  z-index: 20;
+  
+}
+.popRm{
+  box-shadow: #64646f33 0 7px 29px;
+}
+@media screen and (min-width:1500px){
+  ::ng-deep .custom__options_R .small-checkbox .mat-checkbox-label {
+    font-size: 13px!important;
+  }
+}

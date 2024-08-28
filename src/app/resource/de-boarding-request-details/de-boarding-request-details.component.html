@@ -1,0 +1,888 @@
+<div *ngIf="showLoading">
+  <app-resource-loader-ui></app-resource-loader-ui>
+ </div>
+<div class="row">
+  <div class="col-md-4 col-sm">
+    <h3 class="title-head"> 
+     <span  *ngIf="getElementData.module!='De-boarding Request'">  {{getElementData.deboardingRequestID}}</span>
+     <span  *ngIf="getElementData.module=='De-boarding Request'">  {{getElementData.requestId}}</span>
+      Details
+      <span class="ssp1" *ngIf="_exitInfoStatus=='ECL Completed'"> Deboarding Completed </span>    
+    </h3> 
+  </div>
+  <div class="col-md col-sm" style="text-align:right" *ngIf="isEclSubmitBtn">
+<span *ngIf="userDetailsRoles=='/EnricoUsers' &&
+(      
+
+(getElementData.firstApprover== userDetails.employeeNumber  && getElementData.isFirstLevelApproved==false) 
+|| 
+(getElementData.secondApprover== userDetails.employeeNumber && getElementData.isFirstLevelApproved==true )
+  
+|| 
+( getElementData.module=='De-boarding Request' && getElementData.status=='Submitted')
+|| 
+(getElementData.module=='De-boarding Request' && getElementData.status=='Submitted2') 
+
+
+)">
+    <button *ngIf="permissionsBehaviorSubjectDeboarding?.delegatePermission && (getElementData.firstApprover== userDetails.employeeNumber  && getElementData.isFirstLevelApproved==false) && (checkDelegateOneTime?.isFirstLevel==false || checkDelegateArray?.length==0)" mat-stroked-button id="delegateBtnID" class="m-2 actionBtn" (click)="onActionClick('Delegate')" [ngClass]="{ selectedBtn: 'delegate' == selectedItem }"><img src="./assets/img/arrow-right-frame.png" class="gapSpace"/> Delegate</button>
+
+    <button *ngIf="permissionsBehaviorSubjectDeboarding?.delegatePermission && (getElementData.secondApprover== userDetails.employeeNumber && getElementData.isFirstLevelApproved==true ) && (checkDelegateOneTime?.isSecondLevel==false || checkDelegateArray?.length==0)" mat-stroked-button id="delegateBtnID" class="m-2 actionBtn" (click)="onActionClick('Delegate')" [ngClass]="{ selectedBtn: 'delegate' == selectedItem }"><img src="./assets/img/arrow-right-frame.png" class="gapSpace"/> Delegate</button>
+   
+    <button  *ngIf="permissionsBehaviorSubjectDeboarding?.rejectPermission" mat-stroked-button id="sendBackBtnID" class="m-2 actionBtn" (click)="onActionClick('Reject')" [ngClass]="{ selectedBtn: 'reject' == selectedItem }"><img src="./assets/img/back-menu.png" class="gapSpace"/> Send Back </button>
+
+   
+    <span *ngIf="permissionsBehaviorSubjectDeboarding?.approvePermission" >
+    <button  id="approveBtnID" mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="onActionClick('Approve')"> <img src="./assets/img/checkmark-frame.png" class="gapSpace"/> Approve
+    </button>
+    </span>
+  </span>
+  
+  </div>
+
+  <div class="col-md col-sm" style="text-align:right" *ngIf="isEclInitiateBtn">
+    <span  *ngIf="((userDetailsRoles=='/EnricoUsers'))">
+    <button *ngIf="permissionsBehaviorSubjectDeboarding?.editPermission && (deboardingSPOCInfoData?.spocEmployeeNumber == userDetails.employeeNumber)" mat-stroked-button id="initiateEcllID" class="m-2 actionBtn selectedDefaultItem initiateEclIDbtnCsDefault12" (click)="onInitiateECLClick('Initiate ECL')" style="width:auto"><img src="./assets/img/checklist.png" class="gapSpace"/>
+    Initiate ECL
+  </button>
+
+
+
+
+
+
+</span>
+ 
+  </div>
+  <div class="col-md col-sm" style="text-align:right" *ngIf="isEclCompleteBtn" >
+
+    <span  *ngIf="userDetailsRoles=='/EnricoUsers'">
+      <!-- <button mat-stroked-button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="(gcnSpocInfoData?.spocEmployeeNumber== userDetails.employeeNumber)  && (isGCNBtn==true) && (checkGCNSubmit==false) && permissionsBehaviorSubjectDeboarding?.editPermission"   (click)="gcnSapTransportClick('GCN Access')" > <img src="./assets/img/keySapIdmImg.svg" class="gapSpace"/>GCN Access </button> -->
+      <button mat-stroked-button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="(sapIdmSpocInfoData?.spocEmployeeNumber== userDetails.employeeNumber)  && (isSAPBtn==true) && (checkSAPSubmit==false) && permissionsBehaviorSubjectDeboarding?.editPermission && (getElementData.companyCode !='38F0')"     (click)="gcnSapTransportClick('SAP IdM')" > <img src="./assets/img/keySapIdmImg.svg" class="gapSpace"/>SAP IdM </button>
+      <button mat-stroked-button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="(transportIdmSpocInfoData?.spocEmployeeNumber== userDetails.employeeNumber)  && (isTransportBtn==true) && (checkTransportSubmit==false) && permissionsBehaviorSubjectDeboarding?.editPermission  && (getElementData.companyCode !='38F0')"   (click)="gcnSapTransportClick('Transport')" ><img src="./assets/img/busTransportImg.svg" class="gapSpace"/> Transport </button>
+  
+<button *ngIf="(
+( permissionsBehaviorSubjectDeboarding?.editPermission  &&
+ ((getElementData.companyCode=='6520' && isAccessoriesBtn==true && isDeviceBtn==false &&  isEmployeeCardBtn==false && checkAccesoriedCollectedSubmit==false && checkDeviceCollectedSubmit==true &&  checkEmployeeCardSubmit==true )
+
+|| (isAccessoriesBtn==false  && isDeviceBtn==false &&  isEmployeeCardBtn==false &&  getElementData.companyCode=='38F0')))
+
+|| (permissionsBehaviorSubjectDeboarding?.editPermission &&  isEmployeeCardBtn==false  && checkEmployeeCardSubmit==true) ) ||
+  (((checkSAPSubmit && checkTransportSubmit  && getElementData.companyCode !='38F0') || ( checkSAPSubmit==false && checkTransportSubmit==false && getElementData.companyCode =='38F0'))  && checkAccesoriedCollectedSubmit && checkDeviceCollectedSubmit && checkEmployeeCardSubmit )
+
+&& (completeEclSpocInfoData?.spocEmployeeNumber== userDetails.employeeNumber)"
+
+mat-stroked-button  class="m-2 actionBtn selectedDefaultItem" (click)="onInitiateECLClick('Complete ECL')" style="width:auto"><img src="./assets/img/checklist.png" class="gapSpace"/>Complete ECL</button>
+
+<button *ngIf="permissionsBehaviorSubjectDeboarding?.editPermission && isAccessoriesBtn==true && checkAccesoriedCollectedSubmit==false && (accessorySPOCInfoData?.spocEmployeeNumber== userDetails.employeeNumber) " mat-stroked-button class="m-2 actionBtn selectedDefaultItem"  id="accesoriesCollectedID" (click)="onAccessoriesCollectedClick('Accessories Collected')" style="width:auto"><img src="./assets/img/keys.png" class="gapSpace"/>Accessories Collected
+</button>
+
+<button *ngIf="permissionsBehaviorSubjectDeboarding?.editPermission && isDeviceBtn==true && checkDeviceCollectedSubmit==false && (assestSpocInfoData?.spocEmployeeNumber== userDetails.employeeNumber)" mat-stroked-button class="m-2 actionBtn selectedDefaultItem" id="deviceCollectedID" (click)="onDeviceCollectedClick('Device Collected')" style="width:auto"><img src="./assets/img/laptop.png" class="gapSpace"/>Device Collected
+</button>
+<span *ngIf="(getElementData.companyCode !='38F0' && checkSAPSubmit && checkTransportSubmit && checkAccesoriedCollectedSubmit && checkDeviceCollectedSubmit && checkNtidDeactivatedSubmit) || (getElementData.companyCode =='38F0' && checkAccesoriedCollectedSubmit && checkDeviceCollectedSubmit && checkNtidDeactivatedSubmit )">
+  <!-- checkGCNSubmit &&  -->
+<button  *ngIf="permissionsBehaviorSubjectDeboarding?.editPermission &&  isEmployeeCardBtn==true && checkEmployeeCardSubmit==false && (employeeCardSpocInfoData?.spocEmployeeNumber== userDetails.employeeNumber)" mat-stroked-button class="m-2 actionBtn selectedDefaultItem"  id="employeeCardID" (click)="onEmployeeCardCollectedClick('Employee Card Collected')" style="width:auto"><img src="./assets/img/address-consumer-data-upright.png" class="gapSpace"/>
+  <!-- Employee Card Collected -->
+  Access Card Deactivate
+</button>
+</span>
+<button *ngIf="permissionsBehaviorSubjectDeboarding?.editPermission  && isNtidDeactivatedBtn==true && checkNtidDeactivatedSubmit==false" mat-stroked-button class="m-2 actionBtn selectedDefaultItem"  id="ntIdID"
+(click)="onNTIDDeactivatedCollectedClick('NTID Deactivated')" style="width:auto"><img src="./assets/img/abort-frame.png" class="gapSpace"/>NTID Deactivated
+</button>
+
+</span>
+  </div>
+
+
+  <div class="col-md-8 col-sm" style="text-align:right" *ngIf="isRejectedBtn && userDetailsRoles=='/Vendors'">
+ 
+  <button mat-stroked-button class="m-2 actionBtn"  *ngIf="beforeFiveDaysBtnShowHide" (click)="onWidthdrawClick('Withdraw')" style="width:auto">
+  <img src="./assets/img/subtract-frame.png" class="gapSpace"/>
+  Withdraw</button>
+  
+  <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem"   (click)="onReSubmitClick('Re-Submit')" style="width:auto"><img src="./assets/img/resubmit-frame.png" class="gapSpace"/>  Re-Submit  </button>
+  </div>
+
+  <div class="col-md-8 col-sm" style="text-align:right" *ngIf="isDeboardingCompleted">
+  <p class="comtxt">Deboarding Completed</p>
+  </div>
+
+  <!--Start widhdraw button for vendor login-->
+  <div class="col-md-12 col-sm" style="text-align:right" *ngIf="((getElementData.statusDescription=='Approved' || getElementData.status=='Approved') &&  (userDetailsRoles=='/Vendors'))">
+  <!-- <button mat-stroked-button class="m-2 actionBtn" *ngIf="beforeFiveDaysBtnShowHide" (click)="onWidthdrawClick('Withdraw')" style="width:auto">
+  <img src="./assets/img/subtract-frame.png" class="gapSpace"/> Withdraw </button> -->
+
+  <button *ngIf="resourceDetails?.isResourceExtendLWD==false"   mat-stroked-button class="m-2 actionBtn" (click)="onExtendLastWorkingDayClick('Extend Last Working Day')" style="width:auto" id="extendLWDid"><img src="./assets/img/dateSingleIcon.png" class="gapSpace"/>Extend Last Working Day
+  </button>
+ 
+  <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="beforeFiveDaysBtnShowHide && resourceDetails?.isResoucreretain==false"  id="retainResourceID" (click)="onRetainResourceClick('Retain Resource')" style="width:auto"><img src="./assets/img/user-hand.png" class="gapSpace"/>Retain Resource
+  </button>
+</div>
+ <!--End widhdraw button for vendor login-->
+
+</div>
+
+
+  <div class="status-details" *ngIf="!showLoading" [ngStyle]="{color:getStatusTopColor(_exitInfoStatus)}" style="display: none;">
+    <div> De-boarding Status :
+      <span *ngIf="_exitInfoStatus=='ECL Completed'"> Deboarding Completed </span>
+      <span *ngIf="_exitInfoStatus=='Rejected'"> Send Back </span>
+      <span *ngIf="getElementData.isFirstLevelApproved==true  && _exitInfoStatus=='Submitted'">  First Approval </span>
+      <span *ngIf="getElementData.isFirstLevelApproved==false && _exitInfoStatus=='Submitted'">  De-boarding Initiated </span>     
+      <span *ngIf="_exitInfoStatus !='Submitted' && _exitInfoStatus !='Rejected' && _exitInfoStatus !='ECL Completed'">{{_exitInfoStatus || '--'}}</span>
+
+    </div>
+    <div> First Level Approver : {{getElementData?.firstApproverName  +' (' + getElementData?.sowjdOwnerNtid + ')' |  titlecase }}</div>
+    <div> Second Level Approver : {{getElementData?.secondApproverName  +' (' + getElementData?.sectionSpocNtid + ')'  | titlecase}} </div>  
+  </div>
+
+
+
+
+
+<!--Start progress line-->
+<div *ngIf="(getElementData.isFirstLevelApproved==false && _exitInfoStatus=='Submitted') || (getElementData.module=='De-boarding Request' && getElementData.status=='Submitted')" class="mb-4">    
+  <div class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span>  De-boarding Initiated  </span></div>
+    <div class="md-step-action-by" *ngIf="getElementData.module!='De-boarding Request'">{{getElementData?.vendorName || '--'}}</div>
+    <div class="md-step-action-by" *ngIf="getElementData.module=='De-boarding Request'">{{_vendorDetailsInfo.vendorName || '--'}}</div>
+    <div class="md-step-action-on">{{getElementData.createdOn|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span>Yet to Approve</span></div>       
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.firstApproverName  |  titlecase }}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done in-active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span> Yet to Approve</span></div>
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.secondApproverName  | titlecase}} </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+
+<div *ngIf="getElementData.isFirstLevelApproved==true  && _exitInfoStatus=='Submitted'">    
+  <div class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span>  De-boarding Initiated </span></div>
+    <div class="md-step-action-by" *ngIf="getElementData.module!='De-boarding Request'">{{getElementData?.vendorName || '--'}}</div>
+    <div class="md-step-action-by" *ngIf="getElementData.module=='De-boarding Request'">{{_vendorDetailsInfo.vendorName || '--'}}</div>
+    <div class="md-step-action-on">{{getElementData.createdOn|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step first-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span>Approved</span></div>       
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.firstApproverName |  titlecase }}</div>
+      <div class="md-step-action-on">{{getinitiateDeboardSubmitDateFLA|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span>Yet to Approve</span></div>       
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.secondApproverName  | titlecase}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+
+<div *ngIf="_exitInfoStatus=='Approved'">    
+  <div class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span>   De-boarding Initiated </span></div>
+    <div class="md-step-action-by" *ngIf="getElementData.module!='De-boarding Request'">{{getElementData?.vendorName || '--'}}</div>
+    <div class="md-step-action-by" *ngIf="getElementData.module=='De-boarding Request'">{{_vendorDetailsInfo.vendorName || '--'}}</div>
+    <div class="md-step-action-on">{{getElementData.createdOn|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step first-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span>Approved</span></div>       
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.firstApproverName  |  titlecase }}</div>
+      <div class="md-step-action-on">{{getinitiateDeboardSubmitDateFLA|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step first-done active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span> Approved</span></div>
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.secondApproverName  | titlecase}}</div>
+      <div class="md-step-action-on">{{getDateSecondApprovedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+
+<!-- <div *ngIf="_exitInfoStatus=='Rejected' && getElementData.isFirstLevelApproved==false"  class="md-stepper-horizontal">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span>   De-boarding Initiated </span></div>
+    <div class="md-step-action-by">{{_sowJdDetails.deliveryManager || '--'}}</div>
+    <div class="md-step-action-on">{{getElementData.createdOn|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step active reject-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title reject">Rejected</div>
+    <div class="md-step-action-by">{{getElementData?.firstApproverName |  titlecase }}</div>
+    <div class="md-step-action-on">{{getDateFirstRejectedDate|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> -->
+
+<div  *ngIf="_exitInfoStatus=='Rejected' && getElementData.isFirstLevelApproved==false">  
+  <div class="md-stepper-horizontal">
+  <div class="md-step active second-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Yet to Submit  </span></div>
+    <div class="md-step-action-by" *ngIf="getElementData.module!='De-boarding Request'">{{getElementData?.vendorName || '--'}}</div>
+    <div class="md-step-action-by" *ngIf="getElementData.module=='De-boarding Request'">{{_vendorDetailsInfo.vendorName || '--'}}</div>
+    <div class="md-step-action-on">{{getElementData.createdOn|date:'dd-MMM-yyyy'}}</div>  
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+   <div class="md-step in-active sent-back">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title sent-back"  style=" color: #eec100;">Sent Back</div>
+    <div class="md-step-action-by-active">
+       <div>{{deboardingApproveListInfo?.firstApproverName |  titlecase }}</div>
+      <div class="md-step-action-on">{{getDateFirstRejectedDate|date:'dd-MMM-yyyy'}}</div>
+    </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step second-done in-active">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"><span> Yet to Approve</span></div>
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.secondApproverName  | titlecase}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div> 
+</div>
+
+
+
+
+<div
+  class="md-stepper-horizontal" *ngIf="_exitInfoStatus=='Rejected' && getElementData.isFirstLevelApproved==true">
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title"> <span> Yet to Submit </span></div>
+    <div class="md-step-action-by" *ngIf="getElementData.module!='De-boarding Request'">{{getElementData?.vendorName || '--'}}</div>
+    <div class="md-step-action-by" *ngIf="getElementData.module=='De-boarding Request'">{{_vendorDetailsInfo.vendorName || '--'}}</div>
+    <div class="md-step-action-on">{{getElementData.createdOn|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step active first-done">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title tgrin"><span>Approved</span></div>       
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.firstApproverName |  titlecase }}</div>
+      <div class="md-step-action-on">{{getinitiateDeboardSubmitDateFLA|date:'dd-MMM-yyyy'}}</div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+  <div class="md-step in-active sent-back">
+    <div class="md-step-circle common-icon-align-center"></div>
+    <div class="md-step-title sent-back">Sent Back</div>
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.secondApproverName  | titlecase}}</div>
+    <div class="md-step-action-on">
+      {{getDateFirstRejectedDate | date:'dd-MMM-yyyy' }}
+    </div>
+    <div class="md-step-bar-left"></div>
+    <div class="md-step-bar-right"></div>
+  </div>
+</div>
+
+
+<div class="md-stepper-horizontal"  *ngIf="_exitInfoStatus=='Withdrawn' && getElementData.isFirstLevelApproved==false">
+<div class="md-step md-step3 active reject-done">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title reject">Withdrawn</div>
+  <div class="md-step-action-by" *ngIf="getElementData.module!='De-boarding Request'">{{getElementData?.vendorName || '--'}}</div>
+  <div class="md-step-action-by" *ngIf="getElementData.module=='De-boarding Request'">{{_vendorDetailsInfo.vendorName || '--'}}</div>
+  <div class="md-step-action-on">    {{filterWithdrawRemarks?.createdOn|date:'dd-MMM-yyyy'}}  </div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+<div class="md-step md-step3 in-active sent-back">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title sent-back">Sent back</div>
+  <div class="md-step-action-by-active">
+    <div class="md-step-action-by"> {{deboardingApproveListInfo?.firstApproverName |  titlecase }}</div>
+    <div class="md-step-action-on">{{getDateFirstRejectedDate|date:'dd-MMM-yyyy'}}</div>
+  </div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+</div>
+
+<div
+class="md-stepper-horizontal" *ngIf="_exitInfoStatus=='Withdrawn' && getElementData.isFirstLevelApproved==true">
+<div class="md-step md-step3 active reject-done">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title reject">Withdrawn</div>
+  <div class="md-step-action-by" *ngIf="getElementData.module!='De-boarding Request'">{{getElementData?.vendorName || '--'}}</div>
+  <div class="md-step-action-by" *ngIf="getElementData.module=='De-boarding Request'">{{_vendorDetailsInfo.vendorName || '--'}}</div>
+  <div class="md-step-action-on">    {{filterWithdrawRemarks?.createdOn|date:'dd-MMM-yyyy'}}  </div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+<div class="md-step md-step3 in-active first-done">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title tgrin"><span>Approved</span></div>       
+    <div class="md-step-action-by">{{deboardingApproveListInfo?.firstApproverName  |  titlecase }}</div>
+      <div class="md-step-action-on">{{getinitiateDeboardSubmitDateFLA|date:'dd-MMM-yyyy'}}</div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+<div class="md-step md-step3 in-active sent-back">
+  <div class="md-step-circle common-icon-align-center"></div>
+  <div class="md-step-title sent-back">Sent Back</div>
+  <div class="md-step-action-by">{{deboardingApproveListInfo?.secondApproverName  | titlecase}}</div>
+  <div class="md-step-action-on"> {{getDateFirstRejectedDate | date:'dd-MMM-yyyy' }}</div>
+  <div class="md-step-bar-left"></div>
+  <div class="md-step-bar-right"></div>
+</div>
+</div>
+
+
+<!--End Progress line-->
+
+
+<h3>Resource Details</h3>
+
+<div class="bgClr">
+  <div class="row mt-1">
+    
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Sign Off ID </span>
+      <span class="spanText">{{getSignOffID || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Employee Number </span>
+      <span class="spanText">{{resourceDetails?.employeeNumber || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel"> Employee Name</span>
+      <span class="spanText">{{resourceDetails?.employeeName || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Email ID</span>
+      <span class="spanText">{{resourceDetails?.emailID || '--'}}</span>
+    </div>
+  
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">NT ID</span>
+      <span class="spanText">{{resourceDetails?.ntID || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Company</span>
+      <span class="spanText">{{resourceDetails?.company || '--' }} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel"> Personnel Sub-Area</span>
+      <span class="spanText">{{resourceDetails?.personnelSubArea || '--' }}</span>
+    </div>
+        <div class="col-md-3 col-sm">
+      <span class="spanLabel">Date of Joining</span>
+      <span class="spanText">{{resourceDetails?.dateOfJoining  |  date: 'dd-MMM-yyyy' || '--'  }} </span>
+    </div>
+ 
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Contract End Date</span>
+      <span class="spanText">{{resourceDetails?.contractEndDate  |  date: 'dd-MMM-yyyy' || '--'  }} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Purchase Order</span>
+      <span class="spanText">{{resourceDetails?.purchaseOrder || '--' }} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Group</span>
+      <span class="spanText">{{resourceDetails?.grup || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Department</span>
+      <span class="spanText">{{resourceDetails?.department || '--'}} </span>
+    </div>
+
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Section</span>
+      <span class="spanText">{{resourceDetails?.section || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Business Unit</span>
+      <span class="spanText">{{resourceDetails?.businessUnit || '--'}} </span>
+    </div>
+  </div>
+</div>
+<div class="hrLine">&nbsp;</div>
+<h3>Vendor Details</h3>
+<div class="bgClr">
+  <div class="row mt-1">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Vendor ID </span>
+      <span class="spanText">{{_vendorDetailsInfo?.vendorSAPID || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel"> Vendor Name</span>
+      <span class="spanText">{{_vendorDetailsInfo?.vendorName || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Contact Name</span>
+      <span class="spanText">{{_vendorDetailsInfo?.contactName || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Vendor Email ID</span>
+      <span class="spanText">{{_vendorDetailsInfo?.email || '--'}}</span>
+    </div>
+  </div>
+</div>
+<div class="hrLine">&nbsp;</div>
+<h3>SOW JD Details</h3>
+<div class="bgClr">
+  <div class="row mt-1">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">SOW JD ID </span>
+      <span class="spanText">{{_sowJdDetails.sowJdId || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel"> SOW JD Description</span>
+      <span class="spanText">{{_sowJdDetails.sowJdDescription || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Skillset </span>
+      <span class="spanText">{{_sowJdDetails.skillset || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Grade</span>
+      <span class="spanText">{{_sowJdDetails.grade || '--'}} </span>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Delivery Manager </span>
+      <span class="spanText">{{_sowJdDetails.deliveryManager || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel"> Department SPOC </span>
+      <span class="spanText"> {{_sowJdDetails.departmentSPOC || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Section SPOC </span>
+      <span class="spanText">{{_sowJdDetails.sectionSPOC || '--'}}  </span>
+    </div>
+  </div>
+</div>
+<div class="hrLine">&nbsp;</div>
+<h3>Exit Information</h3>
+<div class="bgClr">
+  <div class="row mt-1">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Exit Reason </span>
+      <span class="spanText">{{_exitInfoReason || '--'}} </span>
+     
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel"> Last Working Date</span>
+      <span class="spanText">{{getDDMMYYYYDateFormat(_exitInfoLWD) || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Requested Replacement </span>
+      <span class="spanText" *ngIf="_exitInfoisReplaceRequest==true">Yes</span>
+      <span class="spanText" *ngIf="_exitInfoisReplaceRequest==false">No</span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Date of Joining for Replacement Resource </span>
+      <span class="spanText"  *ngIf="_exitInfoisReplaceRequest==true">{{getDDMMYYYYDateFormat(_exitInfoDojRequestReplace)|| '--'}}</span>
+      <span class="spanText" *ngIf="_exitInfoisReplaceRequest==false">--</span>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Status </span>
+      <span class="spanText" *ngIf="_exitInfoStatus=='ECL Completed'"> Deboarding Completed </span>
+      <span class="spanText" *ngIf="_exitInfoStatus=='Rejected'"> Send Back </span>
+
+      <span *ngIf="getElementData.isFirstLevelApproved==true  && _exitInfoStatus=='Submitted'">  First Approval </span>
+      <span *ngIf="getElementData.isFirstLevelApproved==false && _exitInfoStatus=='Submitted'">  De-boarding Initiated </span>
+     
+      <span class="spanText" *ngIf="_exitInfoStatus !='Submitted' && _exitInfoStatus !='Rejected' && _exitInfoStatus !='ECL Completed'">{{_exitInfoStatus || '--'}}</span>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="isDeboardingCompleted || isEclDeactivateResourceBtn ||checkAccesoriedCollectedSubmit || checkDeviceCollectedSubmit || checkEmployeeCardSubmit|| checkNtidDeactivatedSubmit|| checkGCNSubmit || checkSAPSubmit || checkTransportSubmit">
+  <div class="hrLine">&nbsp;</div>
+<h3>Exit Checklist</h3>
+<div class="bgClr">
+  <div class="row mt-1">
+    <div class="col-md-3 col-sm"> 
+      <span class="spanLabel">Initiated By </span>
+      <span class="spanText">{{resourceExitCheckListStatus.initiatedBy || '--'}} </span>
+     
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel"> Initiated On</span>
+      <span class="spanText">{{getDDMMYYYYDateFormat(resourceExitCheckListStatus.initiatedOn) || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Completed By </span>
+      <span class="spanText">{{resourceExitCheckListStatus.completedBy || '--'}} </span>
+    </div>
+    <div class="col-md-3 col-sm">
+      <span class="spanLabel">Completed On</span>
+      <span class="spanText">{{getDDMMYYYYDateFormat(resourceExitCheckListStatus.completedOn) || '--'}}</span>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-12 col-sm">
+      <span class="spanLabel">Remarks </span>
+      <span class="spanText">
+        {{exitChecklist.remarks || '--'}} </span>
+      </div>
+  </div>
+</div>
+
+
+
+<div class="mt-4">
+<mat-accordion class="exitCheckDetails">
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header class="curp">
+      <mat-panel-title> Exit Checklist Details </mat-panel-title>     
+    </mat-expansion-panel-header>
+   <div>
+    <table class="checkDetailsTbl">
+      <tr *ngIf="checkAccesoriedCollectedSubmit">
+        <td>
+          <span class="spanLabel">Accessories </span>
+        </td>
+        <td>
+          <div class="row mt-1">
+            <div class="col-md-3 col-sm"> 
+              <span class="spanLabel">Collected on </span>
+              <span class="spanText">{{ _accessoriesFilter.collectedOn | date:'dd-MMM-YYYY' || '--'}} </span>
+             
+            </div>
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel"> Collected by</span>
+              <span class="spanText"> {{_accessoriesFilter.collectedBy || '--' }}</span>
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanLabel">Remarks </span>
+              <span class="spanText">
+                {{_accessoriesFilter.remark || '--'}}
+              </span>
+             </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="checkDeviceCollectedSubmit">
+        <td>
+          <span class="spanLabel">Device </span>        
+        </td>
+        <td>
+          <div class="row mt-1">
+            <div class="col-md-3 col-sm"> 
+              <span class="spanLabel">Collected on </span>
+              <span class="spanText">  {{getDDMMYYYYDateFormat(_deviceFilter.collectedOn) || '--' }} </span>
+             
+            </div>
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel"> Collected by</span>
+              <span class="spanText"> {{_deviceFilter.collectedBy || '--'}} </span>
+            </div>
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel">Asset Number</span>
+              <span class="spanText"> {{_deviceFilter.assetNumber || '--'}} </span>
+            </div>
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel">IT Ticket Number </span>
+              <span class="spanText">{{_deviceFilter.itTicketNumber || '--'}}</span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanLabel">Remarks </span>
+              <span class="spanText">
+                {{_deviceFilter.remark || '--'}}    </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="checkEmployeeCardSubmit">
+        <td>
+          <span class="spanLabel">
+            <!-- Employee Card -->
+            Access Card 
+          </span>
+        </td>
+        <td>  
+          <div class="row mt-1">
+            <!-- <div class="col-md-3 col-sm"> 
+              <span class="spanLabel">
+                Employee Card Collected
+               
+              </span>
+              <span class="spanText"> {{_employeeCardFilter?.isEmployeeCardCollected==true?'Yes':'No' || '--'}}  </span>
+             
+            </div>-->
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel">Deactivated on</span>
+              <span class="spanText"> {{getDDMMYYYYDateFormat(_employeeCardFilter?.collectedOn) || '--'}}  </span>
+            </div> 
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel">Deactivated by</span>
+              <span class="spanText">  {{_employeeCardFilter?.collectedBy || '--'}}  </span>
+            </div>
+            <!-- <div class="col-md-3 col-sm">
+              <span class="spanLabel">
+                Employee Card Deactivated
+           
+                </span>
+              <span class="spanText"> {{_employeeCardFilter.isEmployeeCardDeactivated || '--'}} </span>
+            </div> -->
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanLabel">Remarks </span>
+              <span class="spanText">
+                {{_employeeCardFilter.remark || '--'}}   
+              </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="checkNtidDeactivatedSubmit">
+        <td>
+          <span class="spanLabel">NT ID </span>
+        </td>
+        <td>
+          <div class="row mt-1">
+            <div class="col-md-3 col-sm"> 
+              <span class="spanLabel">Deactivated on   </span>
+              <span class="spanText"> {{getDDMMYYYYDateFormat(_ntIDFilter?.ntidDeactivateDt) || '--'}} </span>
+             
+            </div>
+            <!-- <div class="col-md-3 col-sm">
+              <span class="spanLabel"> Deleted on</span>
+              <span class="spanText">  {{getDDMMYYYYDateFormat(_ntIDFilter?.ntidDeleteDt) || '--'}}</span>
+            </div> -->
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel">Confirmed by</span>
+              <span class="spanText"> {{_ntIDFilter?.collectedBy || '--' }} </span>
+            </div>
+            <div class="col-md-3 col-sm">
+             
+            </div>
+            <div class="col-md-3 col-sm">
+             
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanLabel">Remarks </span>
+              <span class="spanText">
+                {{_ntIDFilter?.remark || '--'}}</span>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="checkGCNSubmit">
+        <td>
+          <span class="spanLabel">GCN Access </span>
+        </td>
+        <td>
+          <div class="row mt-1">
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel">Acces Removed on </span>
+              <span class="spanText">{{getDDMMYYYYDateFormat(_gcnAccessFilter?.itTicketNumber) || '--'}} </span>
+            </div>
+            <div class="col-md-3 col-sm"> 
+              <span class="spanLabel">Updated on </span>
+              <span class="spanText">{{getDDMMYYYYDateFormat(_gcnAccessFilter?.collectedOn) || '--'}} </span>
+             
+            </div>
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel"> Updated by</span>
+              <span class="spanText"> {{_gcnAccessFilter?.collectedBy || '--' }}</span>
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanLabel">Remarks </span>
+              <span class="spanText">
+                {{_gcnAccessFilter.remark || '--'}}
+              </span>
+             </div>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="checkSAPSubmit && (getElementData.companyCode !='38F0')">
+        <td>
+          <span class="spanLabel">SAP IdM </span>
+        </td>
+        <td>
+          <div class="row mt-1">
+            <div class="col-md-3 col-sm"> 
+              <span class="spanLabel">Updated on </span>
+              <span class="spanText">{{getDDMMYYYYDateFormat(_sapIdmFilter?.collectedOn) || '--'}} </span>
+             
+            </div>
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel"> Updated by</span>
+              <span class="spanText"> {{_sapIdmFilter?.collectedBy || '--' }}</span>
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanLabel">Remarks </span>
+              <span class="spanText">
+                {{_sapIdmFilter?.remark || '--'}}
+              </span>
+             </div>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="checkTransportSubmit && (getElementData.companyCode !='38F0')">
+        <td>
+          <span class="spanLabel">Transport </span>
+        </td>
+        <td>
+          <div class="row mt-1">
+            <div class="col-md-3 col-sm"> 
+              <span class="spanLabel">Updated on </span>
+              <span class="spanText">{{getDDMMYYYYDateFormat(_transportFilter?.collectedOn) || '--'}} </span>
+             
+            </div>
+            <div class="col-md-3 col-sm">
+              <span class="spanLabel"> Updated by</span>
+              <span class="spanText"> {{_transportFilter?.collectedBy || '--' }}</span>
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+            <div class="col-md-3 col-sm">
+              
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanLabel">Remarks </span>
+              <span class="spanText">
+                {{_transportFilter?.remark || '--'}}
+              </span>
+             </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+   </div>
+  </mat-expansion-panel>
+</mat-accordion>
+</div>
+
+
+</div>
+
+
+
+<div class="hrLine">&nbsp;</div>
+<!-- <h3>Remarks</h3> -->
+<mat-accordion>   
+  <mat-expansion-panel class="remarksColapse" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>        
+      <h3 class="m-0">Remarks</h3>
+      </mat-panel-title>    
+    </mat-expansion-panel-header>
+<div class="bgClr mb-2" *ngFor="let v of remarksList">
+  <div class="row mt-1">
+    <div class="col-md-9 col-sm">
+      <span class="spanLabel">{{v.createdBy || '--'}} 
+     
+      </span>
+      <span class="spanText">{{v.createdOn.replace('+00:00','') | date:'dd-MMM-yyyy' || '--'}}</span>
+    </div>
+    <div class="col-md-3 col-sm" style="text-align:right">
+  
+      <span class="spanLabel" [ngClass]="{'text-green': v.statusDescription=='Approved' || v.statusDescription== 'ECL Initiated' || v.statusDescription== 'ECL Completed' || v.statusDescription== 'Submitted', 'text-orange': v.statusDescription=='Rejected' || v.statusDescription== 'Withdrawn'}">
+        <span *ngIf="v.statusDescription=='Rejected'" style="color:#eec100"> Send Back</span>
+        <span  *ngIf="v.statusDescription !='Rejected' && !getRemarksStatus(v.remark) && !getRemarksDeleagteStatus(v.remark)"> {{v.statusDescription ||'--'}}</span>
+        <span  *ngIf="v.statusDescription !='Rejected' && getRemarksStatus(v.remark)" style="color:darkgreen"> First Level Approved</span>
+        <span  *ngIf="v.statusDescription !='Rejected' && getRemarksDeleagteStatus(v.remark)" style="color:blue"> Delegate</span>
+      </span>
+
+      
+
+
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-12 col-sm">
+      <span *ngIf="getRemarksDeleagteStatus(v.remark)" class="spanText">{{v.remark.split('Delegate-Remarks: ')[1] || '--'}}</span>
+      <span *ngIf="getRemarksStatus(v.remark)" class="spanText">{{v.remark.split('FLA: ')[1] || '--'}}</span>
+      <span  *ngIf="!getRemarksStatus(v.remark) && !getRemarksDeleagteStatus(v.remark)" class="spanText">{{v.remark || '--'}}</span>
+    </div>
+  </div>
+</div>
+</mat-expansion-panel>
+</mat-accordion>
+<br /><br /><br /><br /><br />

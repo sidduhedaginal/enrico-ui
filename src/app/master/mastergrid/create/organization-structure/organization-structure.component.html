@@ -1,0 +1,471 @@
+<div class="main_block">
+
+    <div class="grid_header">
+      <div class="left_title">
+        <h1 class="grid_title">{{title}}</h1>
+      </div>
+      <div class="right_buttons">
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-secondary"
+          (click)="cancel()"
+         
+        >
+        Cancel
+
+        </button>
+
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-primary"
+          (click)= "saveMaster()"
+        >
+        Save
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="errorMessage.length>0">
+    <div class="grid_header">
+      <span style="color:red">{{ errorMessage}}</span>
+
+    </div>
+  </div>
+
+
+  
+  <!-- row1 -->
+  <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>Id</mat-label>
+        <input
+
+          matInput
+          placeholder="Id"
+          [(ngModel)]="id"
+          readonly
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>BuName</mat-label>
+        <input
+
+          matInput
+          placeholder="BuName"
+          [(ngModel)]="buName"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>Buid</mat-label>
+        <input
+
+          matInput
+          placeholder="Buid"
+          [(ngModel)]="buid"
+
+        />
+    </mat-form-field>
+
+
+
+    <!-- <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Vendor Invoice Date</mat-label>
+
+        <input matInput [matDatepicker]="vendorInvoiceDate" placeholder="Vendor Invoice Date" [(ngModel)]="vendorInvoice_Date">
+        <mat-datepicker-toggle matSuffix [for]="vendorInvoiceDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #vendorInvoiceDate></mat-datepicker>
+      </mat-form-field> -->
+
+</div>
+
+  <!-- row2 -->
+  <div class="row">
+
+
+    <!-- <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>BUHeadENo</mat-label>
+        <input
+
+          matInput
+          placeholder="BUHeadENo"
+          [(ngModel)]="buHeadENo"
+
+        />
+    </mat-form-field> -->
+
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>BUHeadName</mat-label>
+        <input
+
+          matInput
+          placeholder="BUHeadName"
+          [(ngModel)]="buHeadName"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>BUHeadEmail</mat-label>
+        <input
+
+          matInput
+          placeholder="BUHeadEmail"
+          [(ngModel)]="buHeadEmail"
+
+        />
+    </mat-form-field>
+
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+      <mat-label>SectionName</mat-label>
+      <input
+
+        matInput
+        placeholder="SectionName"
+        [(ngModel)]="sectionName"
+
+      />
+  </mat-form-field>
+
+
+
+    <!-- <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Vendor Invoice Date</mat-label>
+
+        <input matInput [matDatepicker]="vendorInvoiceDate" placeholder="Vendor Invoice Date" [(ngModel)]="vendorInvoice_Date">
+        <mat-datepicker-toggle matSuffix [for]="vendorInvoiceDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #vendorInvoiceDate></mat-datepicker>
+      </mat-form-field> -->
+
+</div>
+
+  <!-- row3 -->
+  <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>SectionID</mat-label>
+        <input
+
+          matInput
+          placeholder="SectionID"
+          [(ngModel)]="sectionID"
+
+        />
+    </mat-form-field>
+
+    <!-- <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>SectionHeadENo</mat-label>
+        <input
+
+          matInput
+          placeholder="SectionHeadENo"
+          [(ngModel)]="sectionHeadENo"
+
+        />
+    </mat-form-field> -->
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+      <mat-label>SectionHeadName</mat-label>
+      <input
+
+        matInput
+        placeholder="SectionHeadName"
+        [(ngModel)]="sectionHeadName"
+
+      />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+    <mat-label>SectionHeadEmail</mat-label>
+    <input
+
+      matInput
+      placeholder="SectionHeadEmail"
+      [(ngModel)]="sectionHeadEmail"
+
+    />
+</mat-form-field>
+
+
+
+</div>
+
+  <!-- row4 -->
+  <div class="row">
+
+    <!-- <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>SectionHeadName</mat-label>
+        <input
+
+          matInput
+          placeholder="SectionHeadName"
+          [(ngModel)]="sectionHeadName"
+
+        />
+    </mat-form-field> -->
+
+    <!-- <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>SectionHeadEmail</mat-label>
+        <input
+
+          matInput
+          placeholder="SectionHeadEmail"
+          [(ngModel)]="sectionHeadEmail"
+
+        />
+    </mat-form-field> -->
+
+    <!-- <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>DepartmentName</mat-label>
+        <input
+
+          matInput
+          placeholder="DepartmentName"
+          [(ngModel)]="departmentName"
+
+        />
+    </mat-form-field> -->
+
+    
+
+
+    <!-- <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Vendor Invoice Date</mat-label>
+
+        <input matInput [matDatepicker]="vendorInvoiceDate" placeholder="Vendor Invoice Date" [(ngModel)]="vendorInvoice_Date">
+        <mat-datepicker-toggle matSuffix [for]="vendorInvoiceDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #vendorInvoiceDate></mat-datepicker>
+      </mat-form-field> -->
+
+</div>
+
+  <!-- row5 -->
+  <!-- <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>DepartmentID</mat-label>
+        <input
+
+          matInput
+          placeholder="DepartmentID"
+          [(ngModel)]="departmentID"
+
+        />
+    </mat-form-field>
+
+    
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>DepartmentHeadENo</mat-label>
+        <input
+
+          matInput
+          placeholder="DepartmentHeadENo"
+          [(ngModel)]="departmentHeadENo"
+
+        />
+    </mat-form-field>
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>DepartmentHeadName</mat-label>
+        <input
+
+          matInput
+          placeholder="DepartmentHeadName"
+          [(ngModel)]="departmentHeadName"
+
+        />
+    </mat-form-field>
+
+
+
+    <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Vendor Invoice Date</mat-label>
+
+        <input matInput [matDatepicker]="vendorInvoiceDate" placeholder="Vendor Invoice Date" [(ngModel)]="vendorInvoice_Date">
+        <mat-datepicker-toggle matSuffix [for]="vendorInvoiceDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #vendorInvoiceDate></mat-datepicker>
+      </mat-form-field>
+
+</div> -->
+
+  <!-- row6 -->
+  <!-- <div class="row">
+
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>DepartmentHeadEmail</mat-label>
+        <input
+
+          matInput
+          placeholder="DepartmentHeadEmail"
+          [(ngModel)]="departmentHeadEmail"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>GroupName</mat-label>
+        <input
+
+          matInput
+          placeholder="GroupName"
+          [(ngModel)]="groupName"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>GroupId</mat-label>
+        <input
+
+          matInput
+          placeholder="GroupId"
+          [(ngModel)]="groupId"
+
+        />
+    </mat-form-field>
+
+
+
+
+</div> -->
+
+  <!-- row7 -->
+  <!-- <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>GroupManagerENo</mat-label>
+        <input
+
+          matInput
+          placeholder="GroupManagerENo"
+          [(ngModel)]="groupManagerENo"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>GroupManagerName</mat-label>
+        <input
+
+          matInput
+          placeholder="GroupManagerName"
+          [(ngModel)]="groupManagerName"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>GroupManagerEmail</mat-label>
+        <input
+
+          matInput
+          placeholder="GroupManagerEmail"
+          [(ngModel)]="groupManagerEmail"
+
+        />
+    </mat-form-field>
+
+</div> -->
+
+  <!-- row8 -->
+  <!-- <div class="row">
+
+
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>Source</mat-label>
+        <input
+
+          matInput
+          placeholder="Source"
+          [(ngModel)]="source"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>IsActive</mat-label>
+        <input
+
+          matInput
+          placeholder="IsActive"
+          [(ngModel)]="isActive"
+
+        />
+    </mat-form-field>
+
+
+
+    <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>CreatedDate</mat-label>
+
+        <input matInput [matDatepicker]="CreatedDatePicker" placeholder="CreatedDate" [(ngModel)]="createdDate">
+        <mat-datepicker-toggle matSuffix [for]="CreatedDatePicker">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #CreatedDatePicker></mat-datepicker>
+      </mat-form-field>
+
+</div> -->
+
+  <!-- row9 -->
+  <!-- <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>CreatedBy</mat-label>
+        <input
+
+          matInput
+          placeholder="CreatedBy"
+          [(ngModel)]="createdBy"
+
+        />
+    </mat-form-field>
+
+
+     <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>UpdatedDate</mat-label>
+
+        <input matInput [matDatepicker]="UpdatedDatePicker" placeholder="UpdatedDate" [(ngModel)]="updatedDate">
+        <mat-datepicker-toggle matSuffix [for]="UpdatedDatePicker">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #UpdatedDatePicker></mat-datepicker>
+      </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>UpdatedBy</mat-label>
+        <input
+
+          matInput
+          placeholder="UpdatedBy"
+          [(ngModel)]="updatedBy"
+
+        />
+    </mat-form-field>
+   
+</div> -->
+

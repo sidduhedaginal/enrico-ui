@@ -1,0 +1,48 @@
+.title-head {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .colorStart {
+    color: red;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: -6px;
+  }
+  
+  ::ng-deep .gMFFInput.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  ::ng-deep .gMFFSelect.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  .cancelBtn {
+    border-radius: 0;
+    width: 100px;
+    color: #008ECF;
+    border: 1px solid #008ECF;
+    font-size: 14px;
+    margin-right: 1rem;
+  }
+  
+  .submitBtn {
+    border-radius: 0;
+    width: 100px;
+    color: #fff;
+    border: 1px solid #008ECF;
+    font-size: 14px;
+    background-color: #007BC0;
+  }
+  .imgSearch{
+    position: relative;
+    white-space: nowrap;
+    display: inline;
+    bottom: 12px;
+    width: 18px;
+
+  }

@@ -1,0 +1,196 @@
+<div class="formspinner" *ngIf="showloader">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="main_block">
+
+  <div class="grid_header">
+    <div class="left_title">
+      <h1 class="grid_title">{{ title }}</h1>
+    </div>
+    <div class="right_buttons">
+
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-secondary"
+        (click)="cancelCompanyMaster()"
+      >
+      Cancel
+
+      </button>
+
+
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-primary"
+        (click)="saveData()"
+      >
+      Save
+
+      </button>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row" *ngIf="errorMessage.length>0">
+  <div class="grid_header">
+    <span style="color:red">{{ errorMessage}}</span>
+
+  </div>
+</div>
+<div class="row" style="margin-top: 3%;">
+<div class="col-md-4">
+  <mat-form-field class="example-full-width" style="width: 80%;" appearance="fill">
+    <mat-label>Company Code</mat-label>
+    <input
+    [(ngModel)]="companyCode"
+      matInput
+      placeholder="Company Code"
+      (keypress)="numberOnly($event)"
+      required
+      [readonly]="!isCreate"
+          />
+</mat-form-field>
+</div>
+
+<div class="col-md-4">
+  <mat-form-field class="example-full-width"  style="width: 80%;margin-left: 10%"  appearance="fill">
+    <mat-label>Name 1</mat-label>
+    <input
+    [(ngModel)]="name1"
+
+      matInput
+      placeholder="Name 1"
+      required
+    />
+</mat-form-field>
+</div>
+
+<div class="col-md-4">
+
+  <mat-form-field class="example-full-width"  style="width: 80%;margin-left: 20%"  appearance="fill">
+    <mat-label>Name 2</mat-label>
+    <input
+    [(ngModel)]="name2"
+    required
+      matInput
+      placeholder="Name 2"
+
+
+    />
+</mat-form-field>
+</div>
+
+
+</div>
+
+
+<div class="row" >
+
+  <div class="col-md-4">
+
+  <mat-form-field
+  class="example-full-width"
+  style="width: 80%;"
+  appearance="fill"
+>
+  <mat-label>Country</mat-label>
+
+  <mat-select
+    [(ngModel)]="country"
+    (selectionChange)="onCountryChange()"
+    required
+  >
+    <mat-option
+      *ngFor="let countrys of CountryList"
+      [value]="countrys.name"
+    >
+      {{ countrys.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+  </div>
+
+  <div class="col-md-4">
+    <mat-form-field class="example-full-width" style="width: 80%;margin-left: 10%"  appearance="fill">
+      <mat-label>Currency</mat-label>
+      <input
+        [(ngModel)]="currency"
+        matInput
+        placeholder="Currency"
+        readonly
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="col-md-4">
+    <mat-form-field class="example-full-width" style="width: 80%;margin-left: 20%"  appearance="fill">
+      <mat-label>Street</mat-label>
+      <input
+        [(ngModel)]="street"
+        matInput
+        placeholder="Street"
+        required
+      />
+  </mat-form-field>
+
+  </div>
+
+
+</div>
+
+<div class="row">
+
+<div class="col-md-4">
+  <mat-form-field class="example-full-width" style="width: 80%;"  appearance="fill">
+    <mat-label>Region</mat-label>
+    <input
+    [(ngModel)]="region"
+      matInput
+      placeholder="Region"
+      required
+    />
+</mat-form-field>
+</div>
+
+<div class="col-md-4">
+  <mat-form-field class="example-full-width" style="width: 80%;margin-left: 10%"  appearance="fill">
+    <mat-label>City</mat-label>
+    <input
+    [(ngModel)]="city"
+    required
+      matInput
+      placeholder="City"
+
+    />
+</mat-form-field>
+</div>
+
+<div class="col-md-4">
+  <mat-form-field class="example-full-width" style="width: 80%;margin-left: 20%"  appearance="fill">
+    <mat-label>Postal Code</mat-label>
+    <input
+    [(ngModel)]="postalCode"
+    required
+      matInput
+      placeholder="Postal Code"
+
+    />
+</mat-form-field>
+</div>
+
+
+
+</div>
+
+
+

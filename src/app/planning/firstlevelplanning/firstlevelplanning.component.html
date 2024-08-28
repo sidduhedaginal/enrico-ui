@@ -1,0 +1,137 @@
+<div>
+  <div class="spinner_planning" *ngIf="showLoading">
+    <lib-spinner></lib-spinner>
+  </div>
+  <div class="filterTopPortion">
+    <div class="searchOptions">
+      <div class="textBox">
+        <input type="text" [(ngModel)]="searchText" placeholder="Search" (input)="onSearch()">
+        <span class="searchgrey_planning">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      </div>
+      <div
+      class="multiSelectDropDownSearch"
+      (click)="onDropdownClick($event)"
+    >
+      <div class="dropdown">
+        <button class="button-columnsettings" (click)="toggleDropdown()">
+          <div
+            class="columnSettingsSection"
+            (click)="setActiveItem('MD-info')"
+            [ngClass]="activeItem === 'MD-info' ? 'highLightCls' : ''"
+          >
+            <span class="settingsblack_planning"
+              >&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            <span>Column Settings</span>
+          </div>
+        </button>
+        <div
+          class="triangle"
+          [ngClass]="{ show: dropdownVisible }"
+          *ngIf="dropdownVisible"
+        ></div>
+
+        <div
+          class="dropdown-menu"
+          [ngClass]="{ show: dropdownVisible }"
+          *ngIf="dropdownVisible"
+        >
+          <div class="saveConfigHeader">
+            <span class="selectColoumnTitle">Select Column</span>
+            <div class="save-button" (click)="SaveSelectedGrid()">
+              Save Filter
+            </div>
+          </div>
+          <div class="saveConfigCheckBox">
+            <div *ngFor="let option of columnDefs_1st_level_Planning">
+              <div class="custom__options" *ngIf="option.field">
+                <span *ngIf="!option.disable">
+                  <mat-checkbox
+                    class="small-checkbox"
+                    [(ngModel)]="!option.hide"
+                    (ngModelChange)="toggle(option.headerName)"
+                  >
+                    {{ option.headerName }}
+                  </mat-checkbox>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="saveConfigResetFilters">
+            <div class="column-settings-footer">
+              <div class="save-button" (click)="selectAllColumns()">
+                Select All
+              </div>
+              <div class="save-button" (click)="unSelectAllColumns()">
+                Unselect All
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <div class="filterTopPortion1"> 
+     
+      <div style="display: flex;justify-content:space-between;align-items: center;">
+        <button mat-button class="button-secondary" *ngIf="selectedMasterAccessRoles?.exportPermission" (click)="onBtnExport('Firstlevel_Planning')">
+          <span class="export icon">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span class="action_text"> Export</span> 
+        </button>
+        <div style="width: 83px;margin:0 10px -16px 10px">
+        <mat-form-field class="pagesize-dropdown">
+          <mat-label style="font-size: 12px;padding-left: 8px;padding-top: 8px;">
+            Page Size</mat-label>
+          <mat-select style="padding-left: 8px;" [(ngModel)]="paginationPageSize" (selectionChange)="OnPageSizeChange($event)">
+            <mat-option [value]=5>5 </mat-option>
+            <mat-option [value]=10>10 </mat-option>
+            <mat-option [value]=15>15 </mat-option>
+            <mat-option [value]=20>20 </mat-option>
+            <mat-option [value]=25>25 </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+        <div style="padding: 0 0.95em;">
+          <span class="refresh" title="Refresh data" (click)="getFLAOP()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div style="display:inline-flex" *ngIf="filterChipsSets && filterChipsSets.length>0">
+    <div class="p-2"><b>Filter applied on: </b> </div>
+   <div>  <mat-chip-list #chipList>
+      <mat-chip *ngFor="let f of filterChipsSets" (removed)="removeChips(f)">
+        {{ getCapitalize(f)  }} 
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>   
+    </mat-chip-list>
+  </div>
+    <div class="save-button1 p-2" (click)=" saveChipsFilters()">  Save Filters </div>
+    <div class="save-button1 p-2" (click)=" ClearAllChipsFilters()">  Clear Filters </div>
+  </div>
+  <div class="mainMasterGrid">
+    <ag-grid-angular
+    class="ag-theme-alpine"
+    rowAnimation
+    [pagination]="true"
+    [defaultColDef]="defaultColDef"
+    [gridOptions]="gridOptions"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs_1st_level_Planning"
+    (gridReady)="onGridReady_1st_level_Planning($event)"
+    (cellClicked)="onCellClicked_SLP($event)"
+    [autoGroupColumnDef]="autoGroupColumnDef"
+    [paginationPageSize]="paginationPageSize"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    [suppressMenuHide]="true"
+    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+    (filterChanged)="onFilterChanged($event)"
+    (horizontalScroll)="onHorizontalScroll($event)"
+    (sortChanged)="onSortChanged($event)"
+    ></ag-grid-angular>
+  </div>
+</div>

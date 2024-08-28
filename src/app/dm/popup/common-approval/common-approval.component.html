@@ -1,0 +1,75 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div class="title">{{ type }} SoW JD</div>
+    <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose()"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+
+  <form [formGroup]="commonApprovalForm" (ngSubmit)="onSubmit()">
+    <div class="row" *ngIf="data.type === 'sendback'">
+      <div class="col">
+        <div class="warning-design">
+          <span class="warning_planning">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span class="warning_text"
+            >Warning. If you choose to send back the SoW JD request, the
+            recipient will have the option to resubmit it. Please consider
+            carefully before proceeding with this action.</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Remarks</mat-label>
+          <textarea
+            matInput
+            (keydown)="sowjdService.space($event)"
+            placeholder="Remarks"
+            formControlName="remarks"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              commonApprovalForm.controls['remarks'].invalid &&
+              commonApprovalForm.controls['remarks'].touched
+            "
+          >
+            Please add remarks
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose()"
+      >
+        <div class="btn-wrapper">
+          <!-- <div class="icon">
+            <span class="cancel-icon"></span>
+          </div> -->
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="commonApprovalForm.invalid"
+      >
+        <div class="btn-wrapper">
+          <!-- <div class="icon">
+            <span class="checkmark-icon"></span>
+          </div> -->
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

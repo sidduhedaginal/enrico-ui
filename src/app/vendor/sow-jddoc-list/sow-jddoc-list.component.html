@@ -1,0 +1,69 @@
+<div>
+    <div class="header">
+      <div class="title">Documents</div>
+      <div class="close-btn">
+        <mat-icon matTooltip="Close" (click)="onClose()">close</mat-icon>
+      </div>
+    </div>
+  </div>
+  
+  <mat-dialog-content>
+    <div class="approval-section">
+      <div class="container-fluid">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">File</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <span
+              *ngIf="
+                documentsList.data.length > 0;
+                then dataExists1;
+                else noDataExists1
+              "
+            ></span>
+            <ng-template #dataExists1>
+              <tr *ngFor="let doc of documentsList.data; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  {{ doc.documentName }}
+                </td>
+                <td>
+                  <a href="{{ doc.documentUrl }}{{ documentsList.sasToken }}"
+                    ><div class="cloud-download"></div>
+                  </a>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #noDataExists1
+              ><tr>
+                No documents found.
+              </tr></ng-template
+            >
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="button-wrappper">
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        (click)="onClose()"
+        type="button"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="cancel-icon-white"></span>
+          </div>
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+    </div>
+  </mat-dialog-actions>
+  

@@ -1,0 +1,28 @@
+{
+  "status": 0,
+  "statusStr": "string",
+  "actionDate": "2023-05-23T07:42:13.433Z",
+  "data": [
+    {
+      "id": "guid",
+      "path": "",
+      "moduleId": "",
+      "title": "Successful",
+      "description": "Company master data Successfully updated",
+      "status": "success",
+      "modifiedBy": "Siddappa Hedaginal",
+      "modifiedDate": "11/05/2023"
+    },
+    {
+      "id": "guid",
+      "path": "",
+      "moduleId": "",
+      "title": "New Vendor request",
+      "description": "New XYZ vendor request has been arrived",
+      "status": "success",
+      "modifiedBy": "Siddappa Hedaginal",
+      "modifiedDate": "10/05/2023"
+    }
+  ],
+  "requestToken": "string"
+}

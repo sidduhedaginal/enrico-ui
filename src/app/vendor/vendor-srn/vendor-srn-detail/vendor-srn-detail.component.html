@@ -1,0 +1,827 @@
+<div *ngIf="srnData">
+  <div class="justify-space-btw">
+    <div class="approve-title">{{ srnData.srnDetails.srnNumber }} Details</div>
+
+    <div
+      class="button-wrappper"
+      *ngIf="srnData.srnBillingPeriod.statusId !== 3"
+    >
+      <button
+        *ngIf="
+          !isEditSRN &&
+          (srnData.srnBillingPeriod.statusId === 4 ||
+            srnData.srnBillingPeriod.statusId === 9)
+        "
+        mat-button
+        class="btn-hover arrow space"
+        type="submit"
+        (click)="doWithdraw()"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="withdraw icon"></span>
+          </div>
+          <div class="btn-name">Withdraw</div>
+        </div>
+      </button>
+
+      <button
+        *ngIf="
+          !isEditSRN &&
+          (srnData.srnBillingPeriod.statusId === 4 ||
+            srnData.srnBillingPeriod.statusId === 9)
+        "
+        mat-button
+        class="btn-hover arrow space"
+        type="submit"
+        (click)="doEditSRN()"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="blue-edit icon"></span>
+          </div>
+          <div class="btn-name">Edit</div>
+        </div>
+      </button>
+      <div
+        *ngIf="
+          isEditSRN &&
+          (srnData.srnBillingPeriod.statusId === 4 ||
+            srnData.srnBillingPeriod.statusId === 9)
+        "
+      >
+        <button
+          mat-button
+          class="btn-hover arrow space mx-3"
+          (click)="goToSRNView()"
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="cancel-icon"></span>
+            </div>
+            <div class="btn-name">Cancel</div>
+          </div>
+        </button>
+        <button
+          mat-button
+          class="btn-hover-primary arrow space"
+          type="submit"
+          [disabled]="
+            isValid ||
+            isWPValid ||
+            !isValidAbsentDays ||
+            !isValidRegExAbsentDays ||
+            !isValidWorkingHours
+          "
+          (click)="ReSubmitSRN()"
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="save-white-icon"> </span>
+            </div>
+            <div class="btn-name">Re-Submit</div>
+          </div>
+        </button>
+      </div>
+      <button
+        *ngIf="
+          srnData.srnBillingPeriod.statusId === 7 &&
+          !srnData.srnDetails.invoiceNumber
+        "
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        (click)="updateInvoice()"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="save-white-icon"> </span>
+          </div>
+          <div class="btn-name">Update Invoice Number</div>
+        </div>
+      </button>
+      <button
+        *ngIf="
+          srnData.srnBillingPeriod.statusId === 7 &&
+          srnData.srnDetails.invoiceNumber
+        "
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        (click)="Print()"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="save-white-icon"> </span>
+          </div>
+          <div class="btn-name">Print</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="py-3">
+    <div *ngIf="srnId && !isEditSRN">
+      <app-srn-approval-process-info
+        [srnId]="srnId"
+      ></app-srn-approval-process-info>
+    </div>
+  </div>
+
+  <div class="approval-section-heading">
+    <div class="approval-section">
+      <div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-3">
+              <div>Billing Month</div>
+              <div>{{ srnData.srnBillingPeriod.billingMonth }}</div>
+            </div>
+            <div class="col-3">
+              <div>Billing Period ID</div>
+              <div>{{ srnData.srnBillingPeriod.billingPeriodId }}</div>
+            </div>
+            <div class="col-3">
+              <div>From Date</div>
+              <div>
+                {{
+                  srnData.srnBillingPeriod.billingFromDate | date : dateFormat
+                }}
+              </div>
+            </div>
+            <div class="col-3">
+              <div>To Date</div>
+              <div>
+                {{ srnData.srnBillingPeriod.billingToDate | date : dateFormat }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div>Delivery Manager</div>
+              <div>{{ srnData.srnBillingPeriod.deliveryManager }}</div>
+            </div>
+            <div class="col-3">
+              <div>Company</div>
+              <div>{{ srnData.srnBillingPeriod.companyCode }}</div>
+            </div>
+            <div class="col-3">
+              <div>Status</div>
+              <div>{{ srnData.srnBillingPeriod.status }}</div>
+            </div>
+            <div class="col-3">
+              <div>Invoice Number</div>
+              <div>{{ srnData.srnDetails.invoiceNumber }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <div class="approval-content-heading">SOW JD Details</div>
+    <div class="approval-section">
+      <div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-3">
+              <div>SOW JD ID</div>
+              <div>{{ srnData.srnSowjdDetails.sowjdNumber }}</div>
+            </div>
+            <div class="col-3">
+              <div>Description</div>
+              <div>{{ srnData.srnSowjdDetails.sowjdDescription }}</div>
+            </div>
+            <div class="col-3">
+              <div>Location Mode</div>
+              <div>{{ srnData.srnSowjdDetails.locationMode }}</div>
+            </div>
+            <div class="col-3">
+              <div>SOW JD Type</div>
+              <div>{{ srnData.srnSowjdDetails.sowjdType }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div>Outsourcing Mode</div>
+              <div>{{ srnData.srnSowjdDetails.outSourcingMode }}</div>
+            </div>
+            <div class="col-3">
+              <div>Section SPOC</div>
+              <div>{{ srnData.srnSowjdDetails.sectionSpoc }}</div>
+            </div>
+            <div class="col-3" *ngIf="srnData.srnDetails.managedCapacity">
+              <div>Managed Capacity</div>
+              <div>{{ srnData.srnDetails.managedCapacity }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <div class="approval-content-heading">Vendor Details</div>
+    <div class="approval-section">
+      <div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <div>Vendor Name</div>
+              <div>{{ srnData.srnVendorDetails.vendorName }}</div>
+            </div>
+            <div class="col">
+              <div>Vendor ID</div>
+              <div>{{ srnData.srnVendorDetails.vendorSapId }}</div>
+            </div>
+            <div class="col">
+              <div>Vendor Email</div>
+              <div>{{ srnData.srnVendorDetails.vendorEmail }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <div class="approval-section-heading">
+      <div class="approval-content-heading">Purchase Order Details</div>
+      <div class="approval-section">
+        <div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-3">
+                <div>PO Number</div>
+                <div>{{ srnData.srnPoDetails.poNumber }}</div>
+              </div>
+              <div class="col-3">
+                <div>PO Start Date</div>
+                <div>
+                  {{ srnData.srnPoDetails.poStartDate | date : dateFormat }}
+                </div>
+              </div>
+              <div class="col-3">
+                <div>PO End Date</div>
+                <div>
+                  {{ srnData.srnPoDetails.poEndDate | date : dateFormat }}
+                </div>
+              </div>
+              <div class="col-3">
+                <div>Order Currency</div>
+                <div>{{ srnData.srnPoDetails.orderCurrency }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col float-end" *ngIf="isValid">
+          <p class="error-message">{{ errorMessage }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col float-end" *ngIf="isWPValid">
+          <p class="error-message">{{ errorMessageWP }}</p>
+        </div>
+      </div>
+
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="purchageOrdercolumnDefs"
+          [defaultColDef]="defaultColDef"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowData]="srnLineItemsList"
+          [aggFuncs]="aggFuncs"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [singleClickEdit]="true"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="myPurchageOrder($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="container-fluid" *ngIf="!isEditSRN">
+      <div class="row">
+        <div class="col-6 half-way-left">
+          <div class="row">
+            <div class="col-6">SRN Value</div>
+            <div class="col-6 allign-right">
+              {{
+                srnData.srnSummary.poTotalSRNValue
+                  | countryCurrency : companyCurrencyName : companyLocale
+              }}
+            </div>
+          </div>
+        </div>
+        <div class="col-6 half-way-right" *ngIf="showPOBalance">
+          <div class="row">
+            <div class="col-6">PO Balance</div>
+            <div class="col-6 allign-right">
+              {{
+                srnData.srnSummary.poBalance
+                  | countryCurrency : companyCurrencyName : companyLocale
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" *ngIf="isEditSRN">
+      <div class="row">
+        <div class="col-6 half-way-left">
+          <div class="row">
+            <div class="col-6">SRN Value</div>
+            <div class="col-6 allign-right">
+              {{
+                poTotalSRNValue
+                  | countryCurrency : companyCurrencyName : companyLocale
+              }}
+            </div>
+          </div>
+        </div>
+        <div class="col-6 half-way-right" *ngIf="showPOBalance">
+          <div class="row">
+            <div class="col-6">PO Balance</div>
+            <div class="col-6 allign-right">
+              {{
+                poBalance
+                  | countryCurrency : companyCurrencyName : companyLocale
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <div class="approval-section-heading" *ngIf="showWorkPackegeDetails">
+      <div class="approval-content-heading">Work Package Details</div>
+
+      <div class="row">
+        <div class="col float-end" *ngIf="isValidWPQty">
+          <p class="error-message">{{ errorMessageWPQty }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col float-end" *ngIf="isActivityDeliveredExistValid">
+          <p class="error-message">{{ wpActivityDeliveredMessage }}</p>
+        </div>
+      </div>
+
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="workingPackegecolumnDefs"
+          [defaultColDef]="defaultColDef"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowData]="srnWorkPackageList"
+          [aggFuncs]="aggFuncs"
+          [paginationPageSize]="5"
+          (input)="onInputNumber($event)"
+          [singleClickEdit]="true"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="workPackageDetails($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+      <hr />
+    </div>
+
+    <div class="approval-section-heading" *ngIf="showOdcDetails">
+      <div class="align-single-line">
+        <div class="approval-content-heading">ODC Details</div>
+        <div
+          class="button-wrappper"
+          *ngIf="
+            srnData.srnBillingPeriod.statusId !== 1 &&
+            srnData.srnBillingPeriod.statusId !== 5 &&
+            srnData.srnBillingPeriod.statusId !== 2
+          "
+        >
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            mat-button
+            (click)="addODC()"
+          >
+            <div class="btn-wrapper">
+              <div class="icon">
+                <span class="add-icon"></span>
+              </div>
+              <div class="btn-name">Add ODC</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="odcDetailscolumnDefs"
+          [defaultColDef]="defaultColDef"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowData]="odcList"
+          [aggFuncs]="aggFuncs"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="odcDetails($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+      <hr />
+    </div>
+
+    <div class="approval-section-heading">
+      <div class="approval-content-heading">Resource Details</div>
+
+      <div class="row">
+        <div class="col float-end" *ngIf="isAbsentDaysExistValid">
+          <p class="error-message">{{ tamAbsentDaysMessage }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col float-end" *ngIf="isWorkingHoursExistValid">
+          <p class="error-message">{{ tamWorkingHourssMessage }}</p>
+        </div>
+      </div>
+
+      <div class="approval-section-border">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          [columnDefs]="resourceDetailscolumnDefs"
+          [defaultColDef]="defaultColDef"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowData]="srnGetResourceList"
+          [aggFuncs]="aggFuncs"
+          (input)="onInput($event)"
+          [paginationPageSize]="5"
+          [paginationAutoPageSize]="false"
+          [singleClickEdit]="true"
+          [paginateChildRows]="true"
+          [animateRows]="true"
+          [pagination]="true"
+          [suppressAggFuncInHeader]="true"
+          (gridReady)="myResourceDetails($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [suppressMenuHide]="true"
+          (filterChanged)="onFilterChanged($event)"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        ></ag-grid-angular>
+      </div>
+      <hr />
+    </div>
+
+    <div class="approval-section-heading" *ngIf="showResourceEffort">
+      <div class="approval-content-heading">Resource Effort</div>
+      <div class="row" *ngIf="!isEditSRN">
+        <div class="col-4" *ngIf="showTotalEffortHours">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Total Effort Hours</mat-label>
+            <input
+              matInput
+              [value]="srnData.srnSummary.totalEffortHours"
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div
+          class="col-4"
+          *ngIf="showTotalWorkingDays && SRNTypeSelected === 2"
+        >
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Total Working Days</mat-label>
+            <input
+              matInput
+              [value]="srnData.srnSummary.totalWorkingDays"
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showTotalEffortPMO">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Total Effort PMO</mat-label>
+            <input
+              matInput
+              [value]="
+                srnData.srnSummary.totalEffortPMO
+                  | numberFormat : companyLocale : companyNumericFormat
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showWorkpackageCost">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Workpackage Cost</mat-label>
+            <input
+              matInput
+              [value]="
+                srnData.srnSummary.totalWorkPackageCost
+                  | countryCurrency : companyCurrencyName : companyLocale
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showODCCost">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>ODC Cost</mat-label>
+            <input
+              matInput
+              [value]="
+                srnData.srnSummary.totalODCCost
+                  | countryCurrency : companyCurrencyName : companyLocale
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showRateCardValue">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Rate Card Value</mat-label>
+            <input
+              matInput
+              [value]="
+                srnData.srnSummary.totalRateCardValue
+                  | countryCurrency : companyCurrencyName : companyLocale
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row" *ngIf="isEditSRN">
+        <div class="col-4" *ngIf="showTotalEffortHours">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Total Effort Hours</mat-label>
+            <input matInput [value]="totalEffortHours" disabled />
+          </mat-form-field>
+        </div>
+        <div
+          class="col-4"
+          *ngIf="showTotalWorkingDays && SRNTypeSelected === 2"
+        >
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Total Working Days</mat-label>
+            <input matInput [value]="totalWorkingDays" disabled />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showTotalEffortPMO">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Total Effort PMO</mat-label>
+            <input
+              matInput
+              [value]="
+                totalEffortPmo
+                  | numberFormat : companyLocale : companyNumericFormat
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showWorkpackageCost">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Workpackage Cost</mat-label>
+            <input
+              matInput
+              [value]="
+                workpackageCost
+                  | countryCurrency : companyCurrencyName : companyLocale
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showODCCost">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>ODC Cost</mat-label>
+            <input
+              matInput
+              [value]="
+                odcTotalCost
+                  | countryCurrency : companyCurrencyName : companyLocale
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-4" *ngIf="showRateCardValue">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Rate Card Value</mat-label>
+            <input
+              matInput
+              [value]="
+                rateCardValue
+                  | countryCurrency : companyCurrencyName : companyLocale
+              "
+              disabled
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <div class="approval-content-heading">Support Document</div>
+
+    <div *ngIf="isEditSRN">
+      <div class="form-group">
+        <div class="imgstyle2">
+          <div class="ImgContainer imgstyle" (click)="fileInput.click()">
+            <div>
+              <input
+                type="file"
+                #fileInput
+                id="file"
+                hidden
+                (change)="uploadFile($event)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="approval-section-heading">
+        <div class="approval-section-doc">
+          <div class="container-fluid">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">File</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <span
+                  *ngIf="
+                    myFiles.length > 0;
+                    then dataExists1;
+                    else noDataExists1
+                  "
+                ></span>
+                <ng-template #dataExists1>
+                  <tr *ngFor="let doc of myFiles; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      {{ doc.Filename }}
+                    </td>
+
+                    <td>
+                      <div style="display: flex">
+                        <a (click)="deleteFile(i)"
+                          ><div class="deleteblue"></div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template #noDataExists1
+                  ><tr>
+                    No documents found.
+                  </tr></ng-template
+                >
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <hr />
+      </div>
+    </div>
+
+    <div class="approval-content-heading" *ngIf="isEditSRN">
+      Attached Document
+    </div>
+    <div class="container-fluid approval-section">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">File</th>
+            <th scope="col">Document</th>
+            <th scope="col" *ngIf="isEditSRN">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <span
+            *ngIf="
+              documentsList?.data?.length > 0;
+              then dataExists1;
+              else noDataExists1
+            "
+          ></span>
+          <ng-template #dataExists1>
+            <tr *ngFor="let doc of documentsList?.data; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                {{ doc.fileName }}
+              </td>
+              <td>
+                <a
+                  href="{{ doc.url }}{{ documentsList.sasToken }}"
+                  title="Download"
+                  ><div class="cloud-download"></div>
+                </a>
+              </td>
+              <td *ngIf="isEditSRN">
+                <div style="display: flex">
+                  <a (click)="deleteDocument(doc.id)"
+                    ><div class="deleteblue"></div>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #noDataExists1>
+            <tr>
+              No documents found.
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+
+    <mat-expansion-panel class="mt-3" *ngIf="!isEditSRN">
+      <mat-expansion-panel-header>
+        <div class="approval-section-heading">
+          <mat-panel-title class="approval-content-heading"
+            >Remarks</mat-panel-title
+          >
+        </div>
+      </mat-expansion-panel-header>
+      <div>
+        <div
+          *ngIf="srnRemarks?.length > 0; else noRemarksFound"
+          class="remarks-section"
+        >
+          <div class="approval-section-remarks" *ngFor="let item of srnRemarks">
+            <div>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col">
+                    <div>
+                      {{ item.createdBy }}
+                      <span
+                        style="float: right"
+                        [ngClass]="
+                          sowjdService.getSRNStatusColor(item.commentId)
+                        "
+                      >
+                        <span *ngIf="item.commentId === 2; else otherComment">
+                          {{ "Approved" }}
+                        </span>
+                        <ng-template #otherComment>
+                          {{ item.commentType }}
+                        </ng-template>
+                      </span>
+                    </div>
+                    <div>{{ item.createdOn | date : dateFormat }}</div>
+                    <div>{{ item.comments }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noRemarksFound>
+        <p class="px-4">No remarks found</p>
+      </ng-template>
+      <hr />
+    </mat-expansion-panel>
+  </div>
+</div>

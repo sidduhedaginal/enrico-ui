@@ -1,0 +1,81 @@
+<div>
+    <ng-container *ngIf="receivedData.operation != 'delete'">
+        <div>
+            <h1 class="title" *ngIf="receivedData.operation == 'create'">Create Feature </h1>
+            <h1 class="title" *ngIf="receivedData.operation == 'update'"> Update Feature </h1>
+            <h3 class="error"> {{errorMsg}}</h3>
+        </div>
+      <form [formGroup]="myForm" class="Form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field class="field">
+            <mat-select placeholder="Select Module" formControlName="moduleId">
+            <mat-option *ngFor="let module of moduleList" [value]="module.id">{{ module.moduleName }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="myForm?.get('moduleId')?.hasError('required')">Module is required</mat-error>
+          </mat-form-field>
+
+        <mat-form-field class="field">
+            <input matInput placeholder="Feature Name" formControlName="featureName" />
+            <mat-error *ngIf="myForm?.get('featureName')?.hasError('required')">Feature Name is
+              required</mat-error>
+            
+            <mat-error *ngIf="myForm.get('featureName').hasError('maxlength')">
+                Maximum length for Feature Name is 50 characters.
+            </mat-error>
+            
+        </mat-form-field>
+
+
+        <mat-form-field class="field">
+            <input matInput placeholder="Feature Description" formControlName="featureDescription" />
+            <mat-error *ngIf="myForm?.get('featureDescription')?.hasError('required')">Feature Description is
+              required</mat-error>
+            <mat-error *ngIf="myForm.get('featureDescription').hasError('maxlength')">
+                Maximum length for Feature Description is 500 characters.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <input matInput placeholder="URL Path" formControlName="urlPath" />
+          <mat-error *ngIf="myForm?.get('urlPath')?.hasError('required')">URL Path is
+            required</mat-error>
+          <mat-error *ngIf="myForm.get('urlPath').hasError('maxlength')">
+              Maximum length for Url Path is 100 characters.
+          </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="field">
+        <input matInput placeholder="Feature Code" formControlName="featureCode" />
+        <mat-error *ngIf="myForm?.get('featureCode')?.hasError('required')">Feature Code is
+          required</mat-error>
+        <mat-error *ngIf="myForm.get('featureCode').hasError('maxlength')">
+            Maximum length for Feature Code is 50 characters.
+        </mat-error>
+      </mat-form-field>
+      
+      </form>
+
+      <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+          Cancel
+        </button>
+        <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+          Save
+        </button>
+      </div>
+
+    </ng-container>
+  
+    <ng-container *ngIf="receivedData.operation == 'delete'" >
+      <h3 class="title">Are you sure want to delete</h3>
+      <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+          Cancel
+        </button>
+        <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+          Delete
+        </button>
+      </div>
+    </ng-container>
+  </div>

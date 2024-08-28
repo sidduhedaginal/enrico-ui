@@ -1,0 +1,146 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div>Add Resource</div>
+    <div>
+      <mat-icon style="cursor: pointer" matTooltip="Close" (click)="cancel()"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <div class="remarks-red py-2">{{ errorMessage }}</div>
+  <form [formGroup]="resorceForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>SkillSet</mat-label>
+          <input matInput placeholder="" formControlName="skillset" readonly />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Grade</mat-label>
+          <input matInput placeholder="" formControlName="grade" readonly />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>No.of Resource</mat-label>
+          <input
+            matInput
+            placeholder=""
+            formControlName="quantity"
+            type="number"
+            min="1"
+            onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+          />
+          <mat-error
+            *ngIf="
+              resorceForm.controls['quantity'].invalid &&
+              resorceForm.controls['quantity'].touched
+            "
+          >
+            Please enter no.of resource
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Quantity</mat-label>
+          <input matInput placeholder="" formControlName="duration" readonly />
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Unit of Measurement</mat-label>
+          <input
+            matInput
+            placeholder=""
+            formControlName="unitOfMeasurement"
+            readonly
+          />
+          <mat-error
+            *ngIf="
+              resorceForm.controls['unitOfMeasurement'].invalid &&
+              resorceForm.controls['unitOfMeasurement'].touched
+            "
+          >
+            Please enter unit Of Measurement
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Unit Price</mat-label>
+          <input
+            matInput
+            placeholder=""
+            formControlName="unitRate"
+            type="number"
+            min="1"
+            (keypress)="isNumberKey($event, 'three')"
+          />
+          <mat-error
+            *ngIf="
+              resorceForm.controls['unitRate'].invalid &&
+              resorceForm.controls['unitRate'].touched
+            "
+          >
+            Please enter Unit Price
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <mat-form-field class="matform">
+          <mat-label>Resource Onboarding Date</mat-label>
+          <input
+            class="inputmat"
+            [matDatepickerFilter]="weekendsDatesFilter"
+            matInput
+            [min]="minDate"
+            [matDatepicker]="picker"
+            placeholder="Resource Onboarding Date"
+            formControlName="resourceOnboardingDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="
+              resorceForm.controls['resourceOnboardingDate'].touched &&
+              resorceForm.controls['resourceOnboardingDate'].invalid
+            "
+          >
+            Please select Resource Onboarding Date
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="cancel()"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="resorceForm.invalid"
+      >
+        <div class="btn-wrapper">
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

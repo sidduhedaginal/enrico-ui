@@ -1,0 +1,15 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab label="Entities">
+        <app-entity *ngIf="selectedTab == 0"></app-entity>
+    </mat-tab>
+    <mat-tab label="Modules">   
+        <app-modules *ngIf="selectedTab == 1"></app-modules>
+    </mat-tab>
+    <mat-tab label="Feature">   
+        <app-feature *ngIf="selectedTab == 2"></app-feature>
+    </mat-tab>
+    <mat-tab label="Entity Admins">
+        <app-entity-admin *ngIf="selectedTab == 3"></app-entity-admin>
+    </mat-tab>
+</mat-tab-group>
+  

@@ -1,0 +1,57 @@
+  <div class="body"></div>
+  <div class="title">
+  <div class="department__title">Delegation Dialog</div>
+  </div>
+  <div class="subtitle">
+  <div class="department__title"><mat-icon>lock_open</mat-icon>SRN ID or RFQ ID</div>
+  </div>
+  <mat-dialog-content class="mat-typography dialog_content">
+   <div class="sowjd__row1">
+     <mat-form-field style="width: 50%" >
+       <mat-label>Vendor (*)</mat-label>
+       <input matInput placeholder="">
+     </mat-form-field>
+
+     <mat-form-field
+     
+     class="example-full-width vendor-form"
+   >
+     <mat-label>Due Date (*) </mat-label>
+     <input matInput placeholder="">
+   </mat-form-field>
+   </div>
+
+
+   <div class="sowjd__row1">
+     <mat-form-field
+     
+     class="example-full-width name"
+   >
+     <mat-label >Name </mat-label><mat-icon matSuffix>search</mat-icon>
+     <input matInput placeholder="">
+   </mat-form-field>
+   </div>
+ 
+   <div class="sowjd__row1">
+    <mat-form-field
+    
+    class="example-full-width remarks"
+  >
+    <mat-label >Remarks </mat-label>
+    <input matInput placeholder="">
+  </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="button-secondary" mat-button [mat-dialog-close]="true">Cancel</button>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    
+
+    class="button-primary"
+  >
+    Save
+  </button>
+</mat-dialog-actions>
+

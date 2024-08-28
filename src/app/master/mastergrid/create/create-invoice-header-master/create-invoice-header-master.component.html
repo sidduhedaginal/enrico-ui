@@ -1,0 +1,129 @@
+<div class="main_block">
+
+    <div class="grid_header">
+      <div class="left_title">
+        <h1 class="grid_title">{{title}}</h1>
+      </div>
+      <div class="right_buttons">
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-secondary"
+          (click)="cancelMaster()"
+        >
+        Cancel
+
+        </button>
+
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-primary"
+          (click)="saveMaster()"
+
+        >
+        Save
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="errorMessage.length>0">
+    <div class="grid_header">
+      <span style="color:red">{{ errorMessage}}</span>
+
+    </div>
+  </div>
+
+  <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>VendorNumber</mat-label>
+        <input
+
+          matInput
+          placeholder="VendorNumber"
+          [(ngModel)]="vendorNumber"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>Vendor Invoice No</mat-label>
+        <input
+
+          matInput
+          placeholder="VendorInvoiceNo"
+          [(ngModel)]="vendorInvoiceNo"
+
+        />
+    </mat-form-field>
+
+
+
+    <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Vendor Invoice Date</mat-label>
+
+        <input matInput [matDatepicker]="vendorInvoiceDate" placeholder="Vendor Invoice Date"   [(ngModel)]="vendorInvoice_Date">
+        <mat-datepicker-toggle matSuffix [for]="vendorInvoiceDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #vendorInvoiceDate></mat-datepicker>
+      </mat-form-field>
+
+</div>
+
+ <div class="row">
+
+    <mat-form-field class="example-full-width" style= "width: 30%;" appearance="fill">
+        <mat-label>InvoiceNo</mat-label>
+        <input
+
+          matInput
+          placeholder="InvoiceNo"
+          [(ngModel)]="invoiceNo"
+
+        />
+    </mat-form-field>
+
+    <mat-form-field style="width: 30%" appearance="fill">
+      <mat-label>Posting Date</mat-label>
+
+        <input matInput [matDatepicker]="postingDate" placeholder="Posting Date" [(ngModel)]="postingdate">
+        <mat-datepicker-toggle matSuffix [for]="postingDate">
+          <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #postingDate></mat-datepicker>
+      </mat-form-field>
+
+
+
+      <mat-form-field appearance="fill" style= "width: 30%;">
+        <mat-label>Currency</mat-label>
+
+        <mat-select
+        [(ngModel)]="currency"
+
+        >
+            <mat-option
+                *ngFor="let name of currencys"
+                [value]="name"
+            >
+
+                {{ name }}
+
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+</div>
+
+
+

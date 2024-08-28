@@ -1,0 +1,1563 @@
+<!-- Onboarding request Details Page -->
+<div>
+    <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+      <app-resource-loader-ui></app-resource-loader-ui>
+     </div>
+    <div class="row">
+      <div class="col-md-4 col-sm">
+        <h3 class="title-head mt-2"  *ngIf="getElementData && getElementData.module!='On-boarding Request'">{{getElementData.onboardingRequestId}}</h3>
+        <h3 class="title-head mt-2" *ngIf=" getElementData && getElementData.module=='On-boarding Request'">{{getElementData.requestId}}</h3>
+        
+      </div>
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="((userDetailsRoles == '/EnricoUsers') && (getElementData.statusdescription=='Submitted' &&  showHideSowJdRemarksForSendBack==false  &&  showHideOrganizationRemarksForSendBack==false)) || (getElementData && getElementData.module=='On-boarding Request' && getElementData.status=='Submitted' && (userDetailsRoles == '/EnricoUsers') &&  showHideSowJdRemarksForSendBack==false  &&  showHideOrganizationRemarksForSendBack==false)">
+        <button mat-stroked-button *ngIf="showFirstApproveButton==true && permissionsBehaviorSubjectOnboarding?.delegatePermission  && (checkDelegateOneTime?.isFirstLevel==false || checkDelegateArray?.length==0)" class="m-2 actionBtn" (click)="onboardDelegateButton()"> <img src="./assets/img/arrow-right-frame.png" class="gapSpace" /> Delegate </button>
+        <button mat-stroked-button *ngIf="showFirstApproveButton==true && permissionsBehaviorSubjectOnboarding?.withdrawPermission" class="m-2 actionBtn" (click)="onboardRejectButton('FirstRejectedButtonOB')"> <img src="./assets/icons/cancel-blue.svg" style="width: 21px;" class="gapSpace" /> Reject </button>
+       
+        <button mat-stroked-button *ngIf="showFirstApproveButton==true && permissionsBehaviorSubjectOnboarding?.approvePermission" class="m-2 actionBtn selectedDefaultItem" (click)="onboardApproveButton()"> <img src="./assets/img/checkmark-frame.png" class="gapSpace" /> Approve </button>
+  
+      </div>
+  
+  
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(userDetailsRoles == '/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'|| (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')))">
+  
+        <div *ngIf=" (showHideVendorDetailsRemarksForSendBack==false &&  showHidePersonalInrmationDetailsRemarksForSendBack==false &&  showHideContactInrmationDetailsRemarksForSendBack==false &&  showHideIdentityInrmationDetailsRemarksForSendBack==false  &&  showHideResidenceRemarksForSendBack==false  &&   showHideWorkExpRemarksForSendBack==false &&  showHidePreviousWorkedBoschRemarksForSendBack==false &&  showHidePhotoRemarksForSendBack==false  &&     showHideParentOrgRemarksForSendBack==false &&   showHideIspCertificateRemarksForSendBack==false )">
+  
+        <button *ngIf="showSecondApproveButton==true  && permissionsBehaviorSubjectOnboarding?.delegatePermission && (checkDelegateOneTime?.isSecondLevel==false || checkDelegateArray?.length==0)"  mat-stroked-button class="m-2 actionBtn" (click)="onboardDelegateButton()"> <img src="./assets/img/arrow-right-frame.png" class="gapSpace" /> Delegate </button>
+        <button *ngIf="showSecondApproveButton==true && permissionsBehaviorSubjectOnboarding?.withdrawPermission"  mat-stroked-button class="m-2 actionBtn" (click)="onboardRejectButton('SecondRejectedButtonOB')"> <img src="./assets/icons/cancel-blue.svg" style="width: 21px;" class="gapSpace" /> Reject </button>
+      
+        <button *ngIf="showSecondApproveButton==true && permissionsBehaviorSubjectOnboarding?.approvePermission" mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="onboardApproveButton()"> <img src="./assets/img/checkmark-frame.png" class="gapSpace" /> Approve </button>
+  
+  
+  </div>
+      </div>
+  
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(showFirstApproveButton==true) && (userDetailsRoles == '/EnricoUsers') && (( (getElementData.statusdescription=='Submitted' || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted'))) && showHideSowJdRemarksForSendBack==true || showHideOrganizationRemarksForSendBack==true)">     
+        <button mat-stroked-button class="m-2 actionBtn" (click)="cancelSendBackForSowJD()"> Cancel </button>   
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="!confirmSendbackbtnShowHide && isSetSendBackButtonVisible && permissionsBehaviorSubjectOnboarding?.rejectPermission"  (click)="sendbackEditSowJD()">Send Back  </button>
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="confirmSendbackbtnShowHide && permissionsBehaviorSubjectOnboarding?.rejectPermission" (click)="confirmSendbackEditSowJD('FL')">Confirm Send Back  </button>
+      </div>
+  
+  
+      <div class="col-md-12 col-sm" style="text-align:right" *ngIf="(showSecondApproveButton==true) && (userDetailsRoles == '/EnricoUsers') && (( (getElementData.statusdescription=='First Level Approved' || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved') )) &&   (showHideVendorDetailsRemarksForSendBack==true||  showHidePersonalInrmationDetailsRemarksForSendBack==true||  showHideContactInrmationDetailsRemarksForSendBack==true||  showHideIdentityInrmationDetailsRemarksForSendBack==true||   showHideResidenceRemarksForSendBack==true||  showHideWorkExpRemarksForSendBack==true||  showHidePreviousWorkedBoschRemarksForSendBack==true||  showHidePhotoRemarksForSendBack==true||     showHideParentOrgRemarksForSendBack==true||   showHideIspCertificateRemarksForSendBack==true))">     
+        <button mat-stroked-button class="m-2 actionBtn" (click)="cancelSendBack2()"> Cancel </button>   
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="!confirmSendbackbtnShowHide  && isSetSendBackButtonVisible && permissionsBehaviorSubjectOnboarding?.rejectPermission"  (click)="sendbackEditSowJD()">Send Back  </button>
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" *ngIf="confirmSendbackbtnShowHide && permissionsBehaviorSubjectOnboarding?.rejectPermission" (click)="confirmSendbackEditSowJD('SL')">Confirm Send Back  </button>
+      </div>
+  
+  
+  
+    
+  
+  
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(getElementData.statusdescription=='Employee Master Created' || getElementData.statusdescription=='NT ID Updated' || getElementData.statusdescription=='Date Of Joining Extended')">  
+        <button  *ngIf="userDetailsRoles == '/Vendors' && extendDojButtonShowHide==true && (onboardingFirstApproveList?.isExtendDojUpdated==false)" mat-stroked-button class="m-2 actionBtn" (click)="extendDojButton()"><img src="./assets/icons/extendDoj.svg" class="gapSpace" /> Extend Date of Joining </button>
+  
+        <button *ngIf="(getElementData.statusdescription=='Date Of Joining Extended' || getElementData.statusdescription=='Employee Master Created') && userDetailsRoles == '/EnricoUsers' && showSecondApproveButton==true && !ntIDDetailsList?.ntId  && permissionsBehaviorSubjectOnboarding?.editPermission" mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="updateNTidbutton()"> <img src="./assets/icons/updateNtid.svg" class="gapSpace" /> Update NT ID </button>
+  
+        <button *ngIf="permissionsBehaviorSubjectOnboarding?.editPermission && userDetailsRoles == '/EnricoUsers' && showHideCheckinSecurityButton==true && ((getElementData.statusdescription=='NT ID Updated') ||(ntIDDetailsList?.ntId && ntIDDetailsList?.ntId?.length>0 && getElementData.statusdescription=='Date Of Joining Extended'))" mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="checkInbutton()"> <img src="./assets/icons/obcheckin.svg" class="gapSpace" /> Check In </button>
+      </div>
+   
+  
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(userDetailsRoles == '/EnricoUsers')  && permissionsBehaviorSubjectOnboarding?.editPermission && (getElementData.statusdescription=='Resource Checked In') && showSecondApproveButton==true"> 
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="issueIdCardbutton()" style="width: 180px;"> <img src="./assets/icons/obIssueIdCard.svg" class="gapSpace" style="padding:1px;" /> Issue ID Card </button>
+      </div>
+  
+      
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(userDetailsRoles == '/EnricoUsers')  && permissionsBehaviorSubjectOnboarding?.editPermission && (getElementData.statusdescription=='ID Card Issued') && showSecondApproveButton==true"> 
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="shareNTIDbutton()"> <img src="./assets/icons/obShareNtid.svg" class="gapSpace" /> Share NT ID </button>
+      </div>
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(userDetailsRoles == '/EnricoUsers')  && permissionsBehaviorSubjectOnboarding?.editPermission && (getElementData.statusdescription=='Resource Onboarded') && (getElementData.bgvStatus ==''||getElementData.bgvStatus ==null || getElementData.bgvStatus ==undefined)  &&  showSecondApproveButton ==true"> 
+        <button mat-stroked-button *ngIf="(salaryLevelStatus == 'Level 83') && (resourceObOrganizationDetailData.company=='6520' )" class="m-2 actionBtn selectedDefaultItem" (click)="initiateBGVbutton()"> <img src="./assets/icons/obInitiateBgv.svg" class="gapSpace" style="width: 30px;"/> Initiate BGV </button>
+      </div>
+  
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(userDetailsRoles == '/Vendors') && (_checkuser?.businessSupport=='BGV') && getElementData.statusdescription=='Resource Onboarded' && getElementData.bgvStatus=='Request Initiated' "> 
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="ackknowledgeBGVbutton()"> <img src="./assets/icons/acknowledgeReq.svg" class="gapSpace" style="width: 25px;"/> Acknowledge BGV Request </button>
+      </div>
+  
+      <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(userDetailsRoles == '/Vendors') && (_checkuser?.businessSupport=='BGV') && getElementData.statusdescription=='Resource Onboarded' && getElementData.bgvStatus=='Request Acknowledged' "> 
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="updateBGVreportButton()"> <img src="./assets/icons/updaterep.svg" class="gapSpace"/> Update BGV Report </button>
+      </div>
+  
+      <div class="col-md-8 col-sm" style="text-align:right;color: #028a67;" *ngIf="getElementData.statusdescription=='Resource Onboarded' && getElementData.bgvStatus=='Passed' "> 
+        <span class="spanLabel">Resource Onboarded</span>
+        <span class="spanText">Background Verification Passed </span>
+        </div>
+        
+        <div class="col-md-8 col-sm" style="text-align:right;color: red;" *ngIf="(getElementData.statusdescription=='Resource De-boarding Initiated' && getElementData.bgvStatus=='Failed') "> 
+          <span class="spanLabel">Resource De-boarding Initiated</span>
+          <span class="spanText">Background Verification Failed</span>
+          </div>
+  
+  
+          
+          <div class="col-md-8 col-sm" style="text-align:right" *ngIf="(userDetailsRoles == '/EnricoUsers')  && permissionsBehaviorSubjectOnboarding?.editPermission && getElementData.statusdescription=='No Show-Employee Master Deactivated'"> 
+            <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="ntidDeactivatedButton()">  <img src="./assets/icons/ntidDeacImg.svg" style="width: 21px;" class="gapSpace" />  NT ID Deactivate </button>
+          </div>
+          <div class="col-md-8 col-sm" style="text-align:right;color: red;" *ngIf="(getElementData.statusdescription=='Resource De-boarded') "> 
+            <span class="spanLabel">Resource De-boarded</span>
+            </div>
+    </div>
+    
+  
+  
+    <div *ngIf="(getElementData.statusdescription=='Submitted') || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted')" class="mb-4">    
+      <div class="md-stepper-horizontal">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title"> <span> Submitted </span></div>
+        <div class="md-step-action-by" *ngIf="getElementData.statusdescription=='Submitted'">{{getElementData.vendorName||'--'}}</div>
+        <div class="md-step-action-by" *ngIf="(getElementData.module=='On-boarding Request' && getElementData.status=='Submitted')">{{getElementData.createdBy||'--'}}</div>
+        <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step second-done active">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title"><span>Yet to Approve</span></div>       
+        <div class="md-step-action-by">{{onboardingFirstApproveList?.firstApproverName}}</div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step second-done in-active">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title"><span> Yet to Approve</span></div>
+        <div class="md-step-action-by">{{onboardingFirstApproveList?.secondApproverName}}</div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+    </div> 
+  </div>
+  <div *ngIf="getElementData.statusdescription=='First Level Approved' || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')">    
+    <div class="md-stepper-horizontal">
+    <div class="md-step active first-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title"> <span> Submitted </span></div>
+      <div class="md-step-action-by" *ngIf="getElementData.statusdescription=='First Level Approved'">{{getElementData.vendorName||'--'}}</div>
+      <div class="md-step-action-by" *ngIf="(getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')">{{getElementData.createdBy||'--'}}</div>
+        <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step first-done active">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title tgrin"><span>Approved</span></div>       
+      <div class="md-step-action-by">{{onboardingFirstApproveList?.firstApproverName}}</div>
+        <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step second-done active">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title"><span>Yet to Approve</span></div>       
+      <div class="md-step-action-by">{{onboardingFirstApproveList?.secondApproverName}}</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div> 
+  </div>
+  
+    <div *ngIf="getElementData.statusdescription=='Employee Master Created' || getElementData.statusdescription=='Second level approved'">    
+        <div class="md-stepper-horizontal">
+        <div class="md-step active first-done">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title"> <span> Submitted </span></div>
+          <div class="md-step-action-by">{{getElementData.vendorName||'--'}}</div>
+          <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step first-done active">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title tgrin"><span>Approved</span></div>       
+          <div class="md-step-action-by">{{onboardingFirstApproveList?.firstApproverName}}</div>
+            <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step first-done active">
+          <div class="md-step-circle common-icon-align-center"></div>
+          <div class="md-step-title tgrin"><span> Approved</span></div>
+          <div class="md-step-action-by">{{onboardingFirstApproveList?.secondApproverName}}</div>
+            <div class="md-step-action-on">{{getDateSecondApprovedDate|date:'dd-MMM-yyyy'}}</div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+      </div> 
+    </div>
+  
+  
+  
+  
+  
+  
+  
+    <div *ngIf="getElementData.statusdescription =='Rejected' && checkRejectFirst==true" style="position:relative;right:5%">  
+    <div class="md-stepper-horizontal">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title"> <span> Submitted </span></div>
+        <div class="md-step-action-by">{{getElementData.vendorName||'--'}}</div>
+        <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active reject-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title reject">Rejected</div>
+        <div class="md-step-action-by"> {{onboardingFirstApproveList?.firstApproverName}} </div>
+        <div class="md-step-action-on"> {{getDateRejectedFirstDate?.createdOn|date:'dd-MMM-yyyy' || '--'}} </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div *ngIf="getElementData.statusdescription =='Rejected' && checkRejectSecond==true" style="position:relative;right:5%">  
+    <div class="md-stepper-horizontal">
+      <div class="md-step active first-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title"> <span> Submitted </span></div>
+        <div class="md-step-action-by">{{getElementData.vendorName||'--'}}</div>
+        <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}}</div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step first-done active">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title tgrin"><span>Approved</span></div>       
+        <div class="md-step-action-by">{{onboardingFirstApproveList?.firstApproverName}}</div>
+          <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+      <div class="md-step active reject-done">
+        <div class="md-step-circle common-icon-align-center"></div>
+        <div class="md-step-title reject">Rejected</div>
+        <div class="md-step-action-by"> {{onboardingFirstApproveList?.secondApproverName}} </div>
+        <div class="md-step-action-on"> {{getDateRejectedSecondDate?.createdOn|date:'dd-MMM-yyyy' || '--'}} </div>
+        <div class="md-step-bar-left"></div>
+        <div class="md-step-bar-right"></div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  <div  class="mb-4" *ngIf="getElementData.statusdescription=='Second Level Sent Back'" >  
+    <div class="md-stepper-horizontal">
+    <div class="md-step active second-done">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title"> <span>Submit </span></div>
+      <div class="md-step-action-by">{{vendorDetailsData?.vendorName}}</div> 
+      <div class="md-step-action-on">{{getDategetDateSubmitDate|date:'dd-MMM-yyyy'}} </div>    
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step first-done active">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title tgrin"><span>Approved</span></div>       
+      <div class="md-step-action-by">{{onboardingFirstApproveList?.firstApproverName}}</div>
+        <div class="md-step-action-on">{{getDateFirstApprovedDate|date:'dd-MMM-yyyy'}}</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+     <div class="md-step in-active sent-back">
+      <div class="md-step-circle common-icon-align-center"></div>
+      <div class="md-step-title sent-back">Sent Back</div>
+      <div class="md-step-action-by-active">
+        <div>{{onboardingFirstApproveList?.secondApproverName}}</div>
+        <div class="md-step-action-on">{{getDateSecondLevelSentBackDate|date:'dd-MMM-yyyy'}} </div>
+      </div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  
+  </div> 
+  </div>
+  
+  
+  
+  
+  
+  
+    <div class="row m-1 infoStatusOb mb-3" *ngIf="userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='Submitted'|| getElementData.statusdescription=='First Level Approved') && (showFirstApproveButton==true || showSecondApproveButton==true)">
+      <div class="col-md-12 col-sm m-2 pt-2">
+        <mat-icon class="infoCsOb">info_outline</mat-icon> In case you want to Send Back the Onboarding Request kindly identify all the sections that require correction and click on the 'Send Back' button to provide remarks.
+   </div>
+    </div>
+  
+    <h3>Order Information</h3>
+    <div class="bgClr">
+      <h3>SOW JD 
+        <span class="sendSectionBtn"  *ngIf="showFirstApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='Submitted' || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted')) && showHideSowJdRemarksForSendBack==false" (click)="sowJDInfoSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+        <span class="sendSectionBtn"  
+        *ngIf="showFirstApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='Submitted' || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted')) && showHideSowJdRemarksForSendBack==true">
+          <img src="./assets/icons/senbackobwithdarkbg.svg"/>
+        </span>
+      </h3>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Sign Off ID </span>
+          <span class="spanText"> {{getElementDataSignOff || '--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">SOW JD ID </span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.soWJdID||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">SOW JD Description</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.sowjdDescription||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">SOW JD Type</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.sowJdType||'--'}}</span>
+        </div>
+       
+      </div>
+  
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Skillset</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.skillset||'--'}}  </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Grade</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.grade||'--'}}   </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Outsourcing Mode</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.outSourcingType||  getElementData.outSourcingType|| '--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Salary Level</span>
+          <span class="spanText">{{salaryLevelStatus||'--'}} </span>
+        </div>
+       
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Location</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.location||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Sub/Work Location</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.workLocation||'--'}}</span>
+  
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Purchase Order</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.purchaseOrder||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">PO Line Item</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.poLineitem||'--'}} </span>
+        </div>
+       
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Requested Date of Joining</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.requestedDateofJoining  | date:'dd-MMM-YYYY' ||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Expected Date of Joining</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.expectedDateOfJoing  | date:'dd-MMM-YYYY'||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Contract End Date</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.contractEndDate | date:'dd-MMM-YYYY'||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Billable</span>
+          <span class="spanText" *ngIf="resourceObSowjdOrderDetailData.isBillable==true">Yes </span>
+          <span class="spanText" *ngIf="resourceObSowjdOrderDetailData.isBillable==false">No </span>
+        </div>
+       
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm" *ngIf="resourceObSowjdOrderDetailData.isBillable==true">
+          <span class="spanLabel">Billing Start Date</span>
+          <span class="spanText">{{resourceObSowjdOrderDetailData.billingStartDate | date:'dd-MMM-yyyy'||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Replacement Order</span>
+          <span class="spanText">-- </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Status</span>
+          <span class="spanTextStatusOb"  *ngIf="(getElementData && getElementData.module !='On-boarding Request')" [ngClass]="getElementData.statusdescription=='Submitted'?'':getElementData.statusdescription=='Date Of Joining Extended'?'backorange':getElementData.statusdescription=='Resource De-boarding Initiated'?'backorange':getElementData.statusdescription=='No Show-Employee Master Deactivated'?'backred2': getElementData.statusdescription=='Resource De-boarded'?'backred2':'backGreen'"> {{getElementData.statusdescription}} 
+          </span>
+  
+          <span class="spanTextStatusOb" *ngIf="(getElementData && getElementData.module=='On-boarding Request')" [ngClass]="getElementData.status=='Submitted'?'':getElementData.status=='Date Of Joining Extended'?'backorange':getElementData.status=='Resource De-boarding Initiated'?'backorange':getElementData.status=='No Show-Employee Master Deactivated'?'backred2': getElementData.status=='Resource De-boarded'?'backred2':'backGreen'">{{getElementData.status}}   </span>
+  
+        </div>
+     
+  
+        <div class="col-md-3 col-sm" *ngIf="((getElementData.statusdescription=='Resource Onboarded') && (getElementData.bgvStatus=='Request Initiated'|| getElementData.bgvStatus=='Request Acknowledged' || getElementData.bgvStatus=='Passed')) || (getElementData.statusdescription=='Resource De-boarding Initiated' && getElementData.bgvStatus=='Failed')">
+          <span class="spanLabel">BGV Status</span>
+          <span class="spanTextStatusOb"  [ngClass]="getElementData.bgvStatus=='Passed'?'backGreen':getElementData.bgvStatus=='Failed'?'backred':'frontclr'"> {{getElementData.bgvStatus}} </span>
+        </div>
+      
+  
+  
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm" *ngIf="(getElementData.statusdescription=='Resource De-boarding Initiated' && getElementData.bgvStatus=='Failed')">
+          <span class="spanLabel">Deboarding ID</span>
+          <span class="spanText" style="color:#007BC0;cursor: pointer;" (click)="clickDeboardingID()">{{deboardingDataDetailsList?.deboardingRequestID}}</span>
+        </div>
+      </div>
+  
+  
+  
+   <!--Start for SowJD Section-->
+      <div class="row mt-4" *ngIf="showFirstApproveButton && showHideSowJdRemarksForSendBack">
+        <div class="col-md-10 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+            <input matInput [(ngModel)]="sowjdSectionRemarksModel" [disabled]="getElementData.statusdescription =='First Level Approved'?true:false"/>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 col-sm p-0" style="text-align: right;">
+          <span *ngIf="!isShowSowJDremarksButtonSaveCancel">
+          <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelSowjdRemarks()"> Cancel</button>
+          <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveSowjdRemarks()" style="min-width: 80px;">Save</button>
+        </span>
+          <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowSowJDremarksButtonSaveCancel && (getElementData.statusdescription =='Submitted' || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted'))" mat-stroked-button class="m-2 actionBtn" (click)="editSowjdRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+        </div>
+        
+      </div>
+   <!--End for SowJD Section-->
+    </div>
+  
+    <div class="bgClr mt-4">
+      <h3>Organization Details 
+        <span style="display:none">
+        <span class="sendSectionBtn"  *ngIf="showFirstApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='Submitted' || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted')) && showHideOrganizationRemarksForSendBack==false" (click)="organizationInfoSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+        <span class="sendSectionBtn"  *ngIf="showFirstApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='Submitted' || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted')) && showHideOrganizationRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span> 
+      </span>   
+      
+      </h3>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Company</span>
+          <span class="spanText"> {{resourceObOrganizationDetailData.company||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Company Name</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.companyName||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Group</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.groupName||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Department</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.departmentName||'--'}} </span>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Section</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.sectionName||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">BU</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.buName||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">GB Business Area</span>
+          <span class="spanText">{{onboardingFirstApproveList?.gbCode||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Section SPOC</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.sectionSPOC||'--'}} </span>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Delivery Manager</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.deliveryManager||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Joining Loction</span>
+          <span class="spanText">{{resourceObOrganizationDetailData.joiningLocation||'--'}} </span>
+        </div>
+  
+      </div>
+  
+      <!--Start for Organization Section-->
+      <div style="display: none;">
+      <div class="row mt-4" *ngIf="showFirstApproveButton && showHideOrganizationRemarksForSendBack">
+        <div class="col-md-10 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+            <input matInput [(ngModel)]="organizationSectionRemarksModel" [disabled]="getElementData.statusdescription =='First Level Approved'?true:false"/>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 col-sm p-0" style="text-align: right;">
+          <span *ngIf="!isShowOrganizationremarksButtonSaveCancel">
+          <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelOrganizationRemarks()"> Cancel</button>
+          <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveOrganizationRemarks()" style="min-width: 80px;">Save</button>
+        </span>
+          <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowOrganizationremarksButtonSaveCancel && (getElementData.statusdescription =='Submitted' || (getElementData.module=='On-boarding Request' && getElementData.status=='Submitted'))" mat-stroked-button class="m-2 actionBtn" (click)="editOrganizationRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+        </div>
+        
+      </div>
+      </div>
+       <!--End for Organization Section-->
+    </div>
+  
+  
+    <div class="hrLine">&nbsp;</div>
+    <h3>Vendor Details</h3>
+    <div class="bgClr">
+      <div class="row mt-1">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Vendor ID </span>
+          <span class="spanText">{{vendorDetailsData?.vendorId||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel"> Vendor Name</span>
+          <span class="spanText">{{vendorDetailsData?.vendorName||'--'}}</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Vendor Email</span>
+          <span class="spanText">{{vendorDetailsData?.vendorEmail||'--'}} </span>
+        </div>
+      
+        <div class="col-md col-sm"  *ngIf="userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved' || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))">
+         
+          <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideVendorDetailsRemarksForSendBack==false" (click)="vendorInfoSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+          <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideVendorDetailsRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>  
+  
+  
+           </div>
+      </div>
+ 
+  
+  
+      <!--Start for Vendor Details Section-->
+      <div class="row mt-4" *ngIf="showSecondApproveButton && showHideVendorDetailsRemarksForSendBack">
+        <div class="col-md-10 col-sm">
+          <mat-form-field class="full-width gMFFInput" appearance="fill">
+            <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+            <input matInput [(ngModel)]="vendorSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 col-sm p-0" style="text-align: right;">
+          <span *ngIf="!isShowVendorremarksButtonSaveCancel">
+          <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelVendorRemarks()"> Cancel</button>
+          <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveVendorRemarks()" style="min-width: 80px;">Save</button>
+        </span>
+          <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowVendorremarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editVendorRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+        </div>
+        
+      </div>
+       <!--End for Vendor Details Section-->
+           <!--Start for Vendor Section-->
+           <div class="row mt-4 msaCs" *ngIf="vendorSection?.section=='VendorSection' && getElementData.statusdescription=='Second Level Sent Back'">
+            <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>{{vendorSection?.remark}}</div></div>
+          <!--End for vendor Section-->
+  
+  
+    </div>
+  
+    <div class="hrLine">&nbsp;</div>
+    <h3>Resource Details</h3>
+    <div class="bgClr">
+      <h3>Personal Information 
+               
+        <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved' || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHidePersonalInrmationDetailsRemarksForSendBack==false" (click)="personalInfoInfoSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+        <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved' || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHidePersonalInrmationDetailsRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>  
+  
+      </h3>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Title</span>
+          <span class="spanText">{{resourceObResourceDetailsData.title||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">First Name</span>
+          <span class="spanText">{{resourceObResourceDetailsData.firstName||'--'}} </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Middle Name</span>
+          <span class="spanText">{{resourceObResourceDetailsData.middleName||'--'}}  </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Last Name</span>
+          <span class="spanText">{{resourceObResourceDetailsData.lastName||'--'}} </span>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Date of Birth</span>
+          <span class="spanText">{{resourceObResourceDetailsData.dateofBirth| date:'dd-MMM-YYYY'||'--'}}  </span>
+        </div>
+  
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Gender</span>
+          <span class="spanText">{{resourceObResourceDetailsData.gender||'--'}}  </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Nationality</span>
+          <span class="spanText">{{resourceObResourceDetailsData.nationality ||'--'  | titlecase}} </span>
+        </div>
+      </div>
+  
+          <!--Start for Personal Information Details Section-->
+          <div class="row mt-4" *ngIf="showSecondApproveButton && showHidePersonalInrmationDetailsRemarksForSendBack">
+            <div class="col-md-10 col-sm">
+              <mat-form-field class="full-width gMFFInput" appearance="fill">
+                <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+                <input matInput [(ngModel)]="personalInfomationSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 col-sm p-0" style="text-align: right;">
+              <span *ngIf="!isShowPersoanlInforemarksButtonSaveCancel">
+              <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelPersonalInformationRemarks()"> Cancel</button>
+              <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="savePersonalInformationRemarkss()" style="min-width: 80px;">Save</button>
+            </span>
+              <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowPersoanlInforemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editPersonalInfoRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+            </div>
+            
+          </div>
+           <!--End for  Personal Information  Details Section-->
+             <!--Start for Personal Information Section-->
+             <div class="row mt-4 msaCs" *ngIf="persoanlInfoSection?.section=='PersonalInformationSection' && getElementData.statusdescription=='Second Level Sent Back'">
+              <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>{{persoanlInfoSection?.remark}}</div></div>
+            <!--End for Personal Information Section-->
+    </div>
+  
+    <div class="bgClr mt-4">
+      <h3>Contact Information    
+      
+         <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideContactInrmationDetailsRemarksForSendBack==false" (click)="contactInfoInfoSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+         <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideContactInrmationDetailsRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>  
+   
+     
+        
+        </h3>
+      <div class="row mt-2 mb-4">
+        <div class="col-md-3 col-sm pt-2">
+          <span class="spanLabel">Official Email ID</span>
+          <span class="spanText">{{resourceObResourceDetailsData.officialEmailId||'--'}} </span>
+          <span class="spanTextStatusOb backGreen"> Verified </span>
+        </div>
+      
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Mobile Number</span>
+          <span class="spanText">{{resourceObResourceDetailsData.primaryContactCode}} -{{resourceObResourceDetailsData.primaryContactNumber}} </span>
+        </div>
+  
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Alternate Mobile Number</span>
+          <span class="spanText">{{resourceObResourceDetailsData.alternateContactCode}} -{{resourceObResourceDetailsData.alternateContactNumber}}  </span>
+        </div>
+      </div>
+      <h3>Emergency Contact Information</h3>
+      <div class="row mt-3">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Name</span>
+          <span class="spanText">{{resourceObResourceDetailsData.emergencyContactName||'--'}}  </span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">Contact Number</span>
+          <span class="spanText">{{resourceObResourceDetailsData.emergencyContactCode}} -{{resourceObResourceDetailsData.emergencyNumber}} </span>
+        </div>
+      </div>
+  
+  
+    <!--Start for Contact Information Details Section-->
+    <div class="row mt-4" *ngIf="showSecondApproveButton && showHideContactInrmationDetailsRemarksForSendBack">
+      <div class="col-md-10 col-sm">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+          <input matInput [(ngModel)]="contactInfomationSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2 col-sm p-0" style="text-align: right;">
+        <span *ngIf="!isShowContactInforemarksButtonSaveCancel">
+        <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelContactInformationRemarks()"> Cancel</button>
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveContactInformationRemarkss()" style="min-width: 80px;">Save</button>
+      </span>
+        <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowContactInforemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editContactInfoRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+      </div>
+      
+    </div>
+     <!--End for Contact Information  Details Section-->
+  
+   <!--Start for Contact Information Section-->
+   <div class="row mt-4 msaCs" *ngIf="contactInfoSection?.section=='ContactInformationSection' && getElementData.statusdescription=='Second Level Sent Back'">
+    <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>{{contactInfoSection?.remark}}</div></div>
+  <!--End for Contact Information Section-->
+  
+  
+  
+  
+    </div>
+  
+    <div class="bgClr mt-4">
+      <h3>Identity Information  
+       
+           <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideIdentityInrmationDetailsRemarksForSendBack==false" (click)="identityInfoInfoSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+           <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideIdentityInrmationDetailsRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>  
+          
+          </h3>
+      <div class="row mt-4">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">ID Type</span>
+          <span class="spanText">{{resourceObResourceDetailsData.identityType||'--'}}  </span>
+  
+        </div>
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel">ID Number</span>
+          <span class="spanText">{{resourceObResourceDetailsData.idNumber||'--' | uppercase}} </span>
+  
+        </div>
+      </div>
+        <!--Start for Identity Information Details Section-->
+    <div class="row mt-4" *ngIf="showSecondApproveButton && showHideIdentityInrmationDetailsRemarksForSendBack">
+      <div class="col-md-10 col-sm">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+          <input matInput [(ngModel)]="identityInfomationSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2 col-sm p-0" style="text-align: right;">
+        <span *ngIf="!isShowIdentityInforemarksButtonSaveCancel">
+        <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelIdentityInformationRemarks()"> Cancel</button>
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveIdentityInformationRemarkss()" style="min-width: 80px;">Save</button>
+      </span>
+        <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowIdentityInforemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editIdentityInfoRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+      </div>
+      
+    </div>
+     <!--End for Identity Information  Details Section-->
+      <!--Start for Identity Information Section-->
+   <div class="row mt-4 msaCs" *ngIf="identityInfoSection?.section=='IdentityInformationSection' && getElementData.statusdescription=='Second Level Sent Back'">
+    <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>{{identityInfoSection?.remark}}</div></div>
+  <!--End for Identity Information Section-->
+    </div>
+  
+
+  
+    <div class="bgClr mt-4">
+      <div>
+        <h3>Residence Address    
+          <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideResidenceRemarksForSendBack==false" (click)="residenceSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+          <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideResidenceRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>    
+          
+          
+          </h3>
+        <div class="row mt-4">
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">House no. & Street</span>
+            <span class="spanText">{{resourceObResourceDetailsData.residentAddressHouseNoStreet||'--'}}  </span>
+          </div>
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">Landmark</span>
+            <span class="spanText">{{resourceObResourceDetailsData.residentAddressLandMark||'--'}}  </span>
+  
+          </div>
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">City</span>
+            <span class="spanText">{{resourceObResourceDetailsData.residentAddressCity||'--'}} </span>
+          </div>
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">State</span>
+            <span class="spanText">{{resourceObResourceDetailsData.residentAddressState||'--'}}  </span>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">Postal Code</span>
+            <span class="spanText">{{resourceObResourceDetailsData.residentAddressPostalCode||'--'}}  </span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="mt-4">
+        <h3>Permanent Address</h3>
+        <div class="row mt-4">
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">House no. & Street</span>
+            <span class="spanText">{{resourceObResourceDetailsData.permanentAddressHouseNoStreet||'--'}} </span>
+          </div>
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">Landmark</span>
+            <span class="spanText">{{resourceObResourceDetailsData.permanentAddressLandMark||'--'}} </span>
+  
+          </div>
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">City</span>
+            <span class="spanText">{{resourceObResourceDetailsData.permanentAddressCity||'--'}}  </span>
+          </div>
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">State</span>
+            <span class="spanText">{{resourceObResourceDetailsData.permanentAddressState||'--'}}  </span>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-3 col-sm">
+            <span class="spanLabel">Postal Code</span>
+            <span class="spanText">{{resourceObResourceDetailsData.permanentAddressPostalCode||'--'}}  </span>
+          </div>
+        </div>
+      </div>
+  
+           <!--Start for Residence Section-->
+           <div class="row mt-4" *ngIf="showSecondApproveButton && showHideResidenceRemarksForSendBack">
+            <div class="col-md-10 col-sm">
+              <mat-form-field class="full-width gMFFInput" appearance="fill">
+                <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+                <input matInput [(ngModel)]="residenceSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 col-sm p-0" style="text-align: right;">
+              <span *ngIf="!isShowResidenceRemarksButtonSaveCancel">
+              <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelResidenceRemarks()"> Cancel</button>
+              <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveResidenceRemarkss()" style="min-width: 80px;">Save</button>
+            </span>
+              <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowResidenceRemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editResidenceRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+            </div>
+            
+          </div>
+           <!--End for Residence Section-->
+      <!--Start for  Residence Section-->
+      <div class="row mt-4 msaCs" *ngIf="residenceSection?.section=='ResidenceSection' && getElementData.statusdescription=='Second Level Sent Back'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>{{residenceSection?.remark}}</div></div>
+      <!--End for  Residence Section-->
+  
+  
+    </div>
+  
+
+  
+    <div class="bgClr mt-4">
+      <div>
+        <h3>Work Experience    
+          <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideWorkExpRemarksForSendBack==false" (click)="workExpSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+        <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideWorkExpRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>  
+            </h3>
+        <div class="row mt-1">
+          <div class="col-md-3 col-sm text-right">
+            <span class="spanLabel">Total Experience</span>
+            <span class="spanText">{{educationDetailsData.totalExperienceYear ||'0'}} Years {{educationDetailsData.totalExperienceMonth ||'0'}} Months </span>
+          </div>
+          <div class="col-md-3 col-sm text-right">
+            <span class="spanLabel">Relevant Experience</span>
+            <span class="spanText">{{educationDetailsData.relevantExperienceYear ||'0'}} Years {{educationDetailsData.relevantExperienceMonth ||'0'}} Months  </span>
+          </div>
+        </div>
+            <!--Start for Work Experience  Section-->
+            <div class="row mt-4" *ngIf="showSecondApproveButton && showHideWorkExpRemarksForSendBack">
+              <div class="col-md-10 col-sm">
+                <mat-form-field class="full-width gMFFInput" appearance="fill">
+                  <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+                  <input matInput [(ngModel)]="workExpSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2 col-sm p-0" style="text-align: right;">
+                <span *ngIf="!isShowWorkExpRemarksButtonSaveCancel">
+                <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelWorkExpRemarks()"> Cancel</button>
+                <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveWorkExpRemarkss()" style="min-width: 80px;">Save</button>
+              </span>
+                <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowWorkExpRemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editWorkExpRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+              </div>
+              
+            </div>
+             <!--End for Work Experience  Section-->
+                  <!--Start for  Work Experience Section-->
+      <div class="row mt-4 msaCs" *ngIf="workExpSection?.section=='WorkExperienceSection' && getElementData.statusdescription=='Second Level Sent Back'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>{{workExpSection?.remark}}</div></div>
+      <!--End for  Work Experience Section-->
+      </div>
+    </div>
+    <div class="bgClr mt-4">
+      <div class="row mt-2 mb-0">
+        <div class="col-md-3 col-sm">
+          <span class="spanLabel"> Have you previously worked with BGS in the past year?</span>
+          <span class="spanText" *ngIf="educationDetailsData.isPreviouslyWorkedinBGSW==true"> Yes</span>
+          <span class="spanText" *ngIf="educationDetailsData.isPreviouslyWorkedinBGSW==false"> No</span>
+        </div>
+        <div class="col-md-3 col-sm">
+          <div *ngIf="educationDetailsData.isPreviouslyWorkedinBGSW==true">
+          <span class="spanLabel">Previous Employee Number</span>
+          <span class="spanText">{{educationDetailsData.boschEmployeeNumber ||'--'}} </span>
+        </div>
+        </div>
+        <div class="col-md-3 col-sm">
+          <div *ngIf="educationDetailsData.isPreviouslyWorkedinBGSW==true">
+          <span class="spanLabel">Previous Employee Last Working Day</span>
+          <span class="spanText">{{educationDetailsData.lwDatBGSW ||'--' |date:'dd-MMM-YYYY'}} </span>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm"  *ngIf="userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))">
+      
+        <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHidePreviousWorkedBoschRemarksForSendBack==false" (click)="previousWorkedSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>
+        
+        <span class="sendSectionBtn"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHidePreviousWorkedBoschRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>       
+  </div>
+  
+      </div>
+              <!--Start for previously worked  Section-->
+              <div class="row mt-4" *ngIf="showSecondApproveButton && showHidePreviousWorkedBoschRemarksForSendBack">
+                <div class="col-md-10 col-sm">
+                  <mat-form-field class="full-width gMFFInput" appearance="fill">
+                    <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+                    <input matInput [(ngModel)]="previousWorkedBoschSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-2 col-sm p-0" style="text-align: right;">
+                  <span *ngIf="!isShowPreviousWorkedBoschRemarksButtonSaveCancel">
+                  <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelPreviousWorkedBoschRemarks()"> Cancel</button>
+                  <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="savePreviousWorkedBoschRemarkss()" style="min-width: 80px;">Save</button>
+                </span>
+                  <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowPreviousWorkedBoschRemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editPreviousWorkedBoschRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+                </div>
+                
+              </div>
+               <!--End for previously worked  Section-->
+                   <!--Start for previously worked  Section-->
+      <div class="row mt-4 msaCs" *ngIf="previousWorkedSection?.section=='PreviousWorkedSection' && getElementData.statusdescription=='Second Level Sent Back'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Remark</span><br>{{previousWorkedSection?.remark}}</div></div>
+      <!--End for  previously worked  Section-->
+    </div>
+  
+    <div class="hrLine">&nbsp;</div>
+  
+  
+  <div>
+    <h3>Acknowledgement  </h3>
+    <div class="row mt-2 mb-4">
+      <div class="col-md-12 col-sm">
+        
+    <span class="spanText">
+    <mat-checkbox checked="true" disabled class="p-1"> </mat-checkbox>  I hereby confirm the completion of Bosch Rules, Device Usage and Service Providers ISMS policy training by the resource.
+  </span><br>
+ 
+      <span class="spanText"> 
+        <mat-checkbox  checked="true" disabled class="p-1"></mat-checkbox>I hereby declare that the information furnished above is true, complete and correct to the best of my knowledge and belief. I understand that in <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the event of my information being found false or incorrect at any stage, my candidature shall be liable to termination without notice or any compensation in lieu thereof.
+      </span>
+  </div>
+  </div>
+  </div>
+
+  <div *ngIf="(getElementData?.statusdescription !='Submitted') || (getElementData.module=='On-boarding Request' && getElementData?.status !='Submitted')">
+    <div class="hrLine">&nbsp;</div> 
+    <h3>Access Information  </h3>
+    <div class="row mt-2 mb-2">
+      <div class="col-md-12 col-sm">
+        <table style="width:100%">
+          <tr>
+            <td> <span class="spanText"> Is Resource Access Card required? </span><br>
+               <b>{{onboardingAddditionalDetailsData?.isResourceAccessCardRequired==true?'Yes':'No' ||'--'}}</b>
+              
+              </td>
+        
+            <td> <span class="spanText"> NT ID required?</span> <br>
+              <b>{{onboardingAddditionalDetailsData?.isNtidRequired==true?'Yes':'No'  ||'--'}}</b>
+            
+            </td>
+          
+            <td> <span class="spanText"> Internet Access required?</span><br>
+              <b>{{onboardingAddditionalDetailsData?.isInternetAccessRequired==true?'Yes':'No'  ||'--'}}</b> 
+            </td>
+
+          </tr>
+          <tr>
+            <td> <span class="spanText"> Is permission required to send mail outside the company?</span> <br>
+              <b>{{onboardingAddditionalDetailsData?.isMailAccessRequired==true?'Yes':'No'  ||'--'}}</b> 
+            </td>
+           
+            <td>  <span class="spanText"> Building and Floor Access Level</span><br>
+              <b>{{onboardingAddditionalDetailsData?.buildingAndFloorAccessLevel  ||'--'}}</b>
+            </td>
+        
+            <td> <span class="spanText">Device Class </span><br>
+              <b>{{onboardingAddditionalDetailsData?.deviceClass  ||'--'}}</b>
+             </td>
+          </tr>
+        
+        </table>
+   
+        </div>
+        </div>
+  </div>
+
+  <div class="hrLine">&nbsp;</div>  
+    <h3>Documents</h3>
+    <div class="bgClr mt-4 docD">  
+      <table class="docTblOb">
+        <tr>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Photo<span class='redClr'>*</span> <span class="fileNameText" (click)="photoClickDownload()">{{photoUploadFileName}}</span></span>                   
+              <label> 
+                <span class="sendSectionBtn1"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHidePhotoRemarksForSendBack==false" (click)="photoSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>      
+                <span class="sendSectionBtn1"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHidePhotoRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span>  
+  
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File" (click)="photoClickDownload()">
+              </label>
+            </div>
+        
+          </td>
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Parent Organization ID Card<span class='redClr'>*</span><span class="fileNameText"  (click)="parentOrgClickDownload()">{{parentOrgUploadfileName}}</span></span>
+              <label>
+                <span class="sendSectionBtn1"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideParentOrgRemarksForSendBack==false" (click)="parentOrgSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>      
+                <span class="sendSectionBtn1"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideParentOrgRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span> 
+                 <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"  (click)="parentOrgClickDownload()"></label>
+            </div>
+          </td>
+        </tr>   
+     
+        <tr>         
+          <td>
+            <div class="docCsOb">
+              <span class="spanLabel spaninline">Environment Health & Safety Certificate (EHS)<span
+                  class='redClr'>*</span><span class="fileNameText"   (click)="ispCertificateClickDownload()">{{ispSecurityUploadfileName}}</span></span>
+              <label> 
+                <span class="sendSectionBtn1"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideIspCertificateRemarksForSendBack==false" (click)="ispCertificateSendBackButton1()"><img src="./assets/icons/sentbackwithborderImg.svg"/></span>      
+                <span class="sendSectionBtn1"  *ngIf="showSecondApproveButton==true && userDetailsRoles =='/EnricoUsers' && (getElementData.statusdescription=='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved')) && showHideIspCertificateRemarksForSendBack==true"><img src="./assets/icons/senbackobwithdarkbg.svg"/></span> 
+                <img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File"  (click)="ispCertificateClickDownload()"></label>
+            </div>
+          </td>
+          <td>
+          
+          </td>
+        </tr>
+      
+      </table>
+    </div>
+  
+    <div *ngIf="(getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved') || getElementData.statusdescription=='Second Level Sent Back')">
+          <!--Start for Photo Section-->
+          <div class="row mt-4" *ngIf="showSecondApproveButton && showHidePhotoRemarksForSendBack">
+            <div class="col-md-10 col-sm">
+              <b>Photo</b><br>
+              <mat-form-field class="full-width gMFFInput" appearance="fill">
+                <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+                <input matInput [(ngModel)]="photoSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 col-sm p-4" style="text-align: right;">
+              <span *ngIf="!isShowPhotoRemarksButtonSaveCancel">
+              <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelPhotoRemarks()"> Cancel</button>
+              <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="savePhotoRemarkss()" style="min-width: 80px;">Save</button>
+            </span>
+              <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowPhotoRemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editPhotoRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+            </div>
+            
+          </div>
+           <!--End for Photo Section-->
+                  <!--Start for Photo Section-->
+      <div class="row mt-4 msaCs" *ngIf="photoSection?.section=='PhotoSection' && getElementData.statusdescription=='Second Level Sent Back'">
+        <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Photo</span><br>{{photoSection?.remark}}</div></div>
+      <!--End for Photo  Section-->
+  
+             
+  
+  
+
+  
+                 <!--Start for Parent Org Section-->
+          <div class="row mt-4" *ngIf="showSecondApproveButton && showHideParentOrgRemarksForSendBack">
+            <div class="col-md-10 col-sm">
+              <b>Parent Organization ID Card</b><br>
+              <mat-form-field class="full-width gMFFInput" appearance="fill">
+                <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+                <input matInput [(ngModel)]="parentOrgSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 col-sm p-4" style="text-align: right;">
+              <span *ngIf="!isShowParentOrgRemarksButtonSaveCancel">
+              <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelParentOrgRemarks()"> Cancel</button>
+              <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveParentOrgRemarkss()" style="min-width: 80px;">Save</button>
+            </span>
+              <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowParentOrgRemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editParentOrgRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+            </div>
+            
+          </div>
+           <!--End for  Parent Org Section-->
+  
+              <!--Start for   Parent Org Section-->
+     <div class="row mt-4 msaCs" *ngIf="parentOrgSection?.section=='ParentOrgCardSection' && getElementData.statusdescription=='Second Level Sent Back'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">Parent Organization ID Card</span><br>{{parentOrgSection?.remark}}</div></div>
+    <!--End for  Parent Org  Section-->
+  
+  
+  
+   <!--Start for Environment Health & Safety Certificate (EHS) Section-->
+   <div class="row mt-4" *ngIf="showSecondApproveButton && showHideIspCertificateRemarksForSendBack">
+    <div class="col-md-10 col-sm">
+      <b>Environment Health & Safety Certificate (EHS)</b><br>
+      <mat-form-field class="full-width gMFFInput" appearance="fill">
+        <mat-label>Remarks<span class='redClr'>*</span></mat-label>
+        <input matInput [(ngModel)]="ispCertificateSectionRemarksModel" [disabled]="getElementData.statusdescription =='Employee Master Created'?true:false"/>
+      </mat-form-field>
+    </div>
+    <div class="col-md-2 col-sm p-4" style="text-align: right;">
+      <span *ngIf="!isShowIspCertificateRemarksButtonSaveCancel">
+      <button mat-stroked-button class="m-2 actionBtn" style="min-width: 80px;background: #ECECEC;" (click)="cancelIspCertificateRemarks()"> Cancel</button>
+      <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="saveIspCertificateRemarkss()" style="min-width: 80px;">Save</button>
+    </span>
+      <button *ngIf="userDetailsRoles =='/EnricoUsers' && isShowIspCertificateRemarksButtonSaveCancel && (getElementData.statusdescription =='First Level Approved'  || (getElementData.module=='On-boarding Request' && getElementData.status=='First Level Approved'))" mat-stroked-button class="m-2 actionBtn" (click)="editIspCertificateRemarks()"  style="min-width: 80px;background: #ECECEC;"> Edit </button>
+    </div>
+    
+  </div>
+   <!--End for Environment Health & Safety Certificate (EHS) Section-->
+     <!--Start for  (EHS) Certificate Section-->
+     <div class="row mt-4 msaCs" *ngIf="ispCertificateSection?.section=='IspCertificateSection' && getElementData.statusdescription=='Second Level Sent Back'">
+      <div class="col-md-12 col-sm"> <span class="spanLabel spaninline">(EHS) Certificate</span><br>{{ispCertificateSection?.remark}}</div></div>
+    <!--End for  (EHS) Certificate Section-->
+
+
+          </div>
+  
+  
+  
+  
+  
+  
+    <div class="mt-4" *ngIf="getElementData.statusdescription=='Employee Master Created'|| getElementData.statusdescription=='NT ID Updated'|| getElementData.statusdescription=='Resource Checked In'|| getElementData.statusdescription=='ID Card Issued' || getElementData.statusdescription=='Resource Onboarded' || getElementData.statusdescription=='Resource De-boarding Initiated' || getElementData.statusdescription=='Date Of Joining Extended'||  getElementData.statusdescription=='No Show-Employee Master Deactivated'|| getElementData.statusdescription=='Resource De-boarded'">
+      <mat-accordion class="obExpenseDetailsAccordation">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="curp">
+            <mat-panel-title>Onboarding Details</mat-panel-title>     
+          </mat-expansion-panel-header>
+         <div>
+          <table class="obExpenseDetailsTbl">
+            <tr *ngIf="getElementData.statusdescription=='Resource Onboarded'|| getElementData.statusdescription=='ID Card Issued'|| getElementData.statusdescription=='Resource Checked In'|| getElementData.statusdescription=='NT ID Updated'||getElementData.statusdescription=='Employee Master Created' || getElementData.statusdescription=='Resource De-boarding Initiated'|| getElementData.statusdescription=='Date Of Joining Extended' ||  getElementData.statusdescription=='No Show-Employee Master Deactivated'|| getElementData.statusdescription=='Resource De-boarded'">
+              <td>
+                <span class="spanLabel">Employee Master </span>
+              </td>
+              <td>
+                <div class="row mt-1">
+                  <div class="col-md col-sm"> 
+                    <span class="spanLabel">Employee Number </span>
+                    <span class="spanText" *ngIf="employeeMasterDetailsList">{{employeeMasterDetailsList.ntId   || '--'}}</span>
+                   
+                  </div>
+                  <div class="col-md col-sm">
+                    <span class="spanLabel">External ID</span>
+                    <span class="spanText"> --</span>
+                  </div>
+                  <div class="col-md col-sm">
+                    <span class="spanLabel">Employee Name </span>
+                    <span class="spanText" *ngIf="employeeMasterDetailsList">{{employeeMasterDetailsList.checkedInBy   || '--'}}</span>
+                  </div>
+                  <div class="col-md col-sm">
+                    <span class="spanLabel">Created On </span>
+                    <span class="spanText" *ngIf="employeeMasterDetailsList">{{employeeMasterDetailsList.updatedOn   || '--'}}</span>
+                  </div>
+                  <div class="col-md col-sm">
+                    <span class="spanLabel">Created By </span>
+                    <span class="spanText" *ngIf="employeeMasterDetailsList">{{employeeMasterDetailsList.updatedBy   || '--'}}</span>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-12 col-sm">
+                    <span class="spanLabel">Remarks </span>
+                    <span class="spanText" *ngIf="employeeMasterDetailsList"> {{employeeMasterDetailsList.remark   || 'NA'}}
+                    </span>
+                   </div>
+                </div>
+              </td>
+            </tr>
+      
+             <tr *ngIf="getElementData.statusdescription=='Resource Onboarded'|| getElementData.statusdescription=='ID Card Issued'|| getElementData.statusdescription=='Resource Checked In'|| getElementData.statusdescription=='NT ID Updated'|| getElementData.statusdescription=='Resource De-boarding Initiated' || (ntIDDetailsList?.ntId && ntIDDetailsList?.ntId?.length>0 && getElementData.statusdescription=='Date Of Joining Extended')">
+           
+              <td>
+                <span class="spanLabel">NT ID </span>        
+              </td>
+              <td>
+                <div class="row mt-1">
+                  <div class="col-md-3 col-sm"> 
+                    <span class="spanLabel">NT ID</span>
+                    <span class="spanText"> {{ntIDDetailsList?.ntId  || '--'}} </span>
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel"> Created On</span>
+                    <span class="spanText"> {{ntIDDetailsList?.createdOn || '--' }}</span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Updated By</span>
+                    <span class="spanText">    {{ntIDDetailsList?.updatedBy  || '--'}}   </span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Updated On </span>
+                    <span class="spanText"> {{ntIDDetailsList?.updatedOn || '--' }}</span>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-12 col-sm">
+                    <span class="spanLabel">Remarks </span>
+                    <span class="spanText">
+                      {{ntIDDetailsList?.remark  || '--'}}   </span>
+                  </div>
+                </div>
+              </td>
+            </tr>      
+     
+            <tr *ngIf="getElementData.statusdescription=='Resource Onboarded'|| getElementData.statusdescription=='ID Card Issued'|| getElementData.statusdescription=='Resource Checked In'|| getElementData.statusdescription=='Resource De-boarding Initiated'">
+              <td>
+                <span class="spanLabel">Resource Check In</span>
+              </td>
+              <td>  
+                <div class="row mt-1">
+                  <div class="col-md-3 col-sm"> 
+                    <span class="spanLabel">Checked In Date </span>
+                    <span class="spanText">{{resourceCheckInDetailsList.checkedInDate || '--'}}  </span>
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Checked In By</span>
+                    <span class="spanText">  {{resourceCheckInDetailsList.checkedInBy || '--'}} </span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                   
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-12 col-sm">
+                    <span class="spanLabel">Remarks </span>
+                    <span class="spanText">
+                      {{resourceCheckInDetailsList.remark || '--'}}   </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+        
+            <tr *ngIf="getElementData.statusdescription=='Resource Onboarded'|| getElementData.statusdescription=='ID Card Issued'|| getElementData.statusdescription=='Resource De-boarding Initiated'">
+              <td>
+                <span class="spanLabel">ID Card Issue </span>
+              </td>
+              <td>
+                <div class="row mt-1">
+                  <div class="col-md-3 col-sm"> 
+                    <span class="spanLabel">Issued On </span>
+                    <span class="spanText">{{resourceIDcardIsuueDetailsList.checkedInDate || '--'}}  </span>
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Issued By</span>
+                    <span class="spanText">  {{resourceIDcardIsuueDetailsList.checkedInBy || '--'}}</span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                   
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-12 col-sm">
+                    <span class="spanLabel">Remarks </span>
+                    <span class="spanText">
+                      {{resourceIDcardIsuueDetailsList.remark || '--'}}  </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+         
+            <tr *ngIf="getElementData.statusdescription=='Resource Onboarded'|| getElementData.statusdescription=='Resource De-boarding Initiated'">
+              <td>
+                <span class="spanLabel">Share NT ID </span>
+              </td>
+              <td>
+                <div class="row mt-1">
+                  <div class="col-md-3 col-sm"> 
+                    <span class="spanLabel">Shared On </span>
+                    <span class="spanText">{{resourceShareNtidDetailsList.checkedInDate  || '--'}}  </span>
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Shared By</span>
+                    <span class="spanText">  {{resourceShareNtidDetailsList.checkedInBy  || '--'}} </span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                   
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-12 col-sm">
+                    <span class="spanLabel">Remarks </span>
+                    <span class="spanText">
+                      {{resourceShareNtidDetailsList.remark  || '--'}}   </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          
+            <tr *ngIf="getElementData.statusdescription=='No Show-Employee Master Deactivated'|| getElementData.statusdescription=='Resource De-boarded'">
+              <td>
+                <span class="spanLabel">Employee Master Deactivation </span>
+              </td>
+              <td>
+                <div class="row mt-1">
+                  <div class="col-md col-sm"> 
+                    <span class="spanLabel">Employee Number </span>
+                    <span class="spanText">{{resourceEmployeeMasterDeactivationDetailsList?.ntId}}</span>
+                   
+                  </div>
+                  <div class="col-md-3 col-sm"> 
+                    <span class="spanLabel">Deactivated On </span>
+                    <span class="spanText">{{resourceEmployeeMasterDeactivationDetailsList?.createdOn | date:'dd-MMM-YYYY'|| '--'}}  </span>
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Deactivated By</span>
+                    <span class="spanText">  {{resourceEmployeeMasterDeactivationDetailsList?.updatedBy}}</span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                   
+                  </div>
+                  
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-12 col-sm">
+                    <span class="spanLabel">Remarks </span>
+                    <span class="spanText">
+                      {{resourceEmployeeMasterDeactivationDetailsList?.remark}}
+                      </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="getElementData.statusdescription=='Resource De-boarded'">
+              <td>
+                <span class="spanLabel">NT ID Deactivation</span>
+              </td>
+              <td>
+                <div class="row mt-1">
+                  <div class="col-md-3 col-sm"> 
+                    <span class="spanLabel">NT ID</span>
+                    <span class="spanText"> SPS5KOR </span>
+                   
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel"> Deactivated On</span>
+                    <span class="spanText"> {{getDDMMYYYYDateFormat('21/06/2023') || '--' }}</span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Updated By</span>
+                    <span class="spanText"> Mobin Matthews </span>
+                  </div>
+                  <div class="col-md-3 col-sm">
+                    <span class="spanLabel">Updated On </span>
+                    <span class="spanText"> {{getDDMMYYYYDateFormat('21/06/2023') || '--' }}</span>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-12 col-sm">
+                    <span class="spanLabel">Remarks </span>
+                    <span class="spanText">
+                      Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over.   </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+  
+          </table>
+         </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      </div>
+  
+      <div class="mt-4"  *ngIf="(getElementData.statusdescription=='Resource Onboarded' && (getElementData.bgvStatus=='Request Initiated' ||  getElementData.bgvStatus=='Request Acknowledged'  ||getElementData.bgvStatus=='Passed')) || (getElementData.statusdescription=='Resource De-boarding Initiated' && getElementData.bgvStatus=='Failed')">
+        <mat-accordion class="obExpenseDetailsAccordation">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header class="curp">
+              <mat-panel-title>Background Verification (BGV) Details</mat-panel-title>     
+            </mat-expansion-panel-header>
+           <div>
+            <table class="obExpenseDetailsTbl">
+              <tr   *ngIf="(getElementData.statusdescription=='Resource Onboarded' && (getElementData.bgvStatus=='Request Initiated' ||getElementData.bgvStatus=='Request Acknowledged' ||getElementData.bgvStatus=='Passed')) || (getElementData.statusdescription=='Resource De-boarding Initiated' && getElementData.bgvStatus=='Failed') ">
+                <td>
+                  <span class="spanLabel">Initiate BGV</span>
+                </td>
+                <td>
+                  <div class="row mt-1">
+                    <div class="col-md-3 col-sm"> 
+                      <span class="spanLabel">Initiated on </span>
+                      <span class="spanText">{{bgvInitiateDetailsList.initiatedOrAcknowledgedOn || '--' }}</span>
+                     
+                    </div>
+                    <div class="col-md-3 col-sm">
+                      <span class="spanLabel">Initiated by</span>
+                      <span class="spanText"> {{bgvInitiateDetailsList.initiatedOrAcknowledgedBy || '--' }}</span>
+                    </div>
+                    <div class="col-md-3 col-sm">
+                      <span class="spanLabel">Vendor </span>
+                      <span class="spanText"> {{bgvInitiateDetailsList.vendor || '--' }}</span>
+                    </div>
+                    <div class="col-md-3 col-sm">
+                     
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-md-12 col-sm">
+                      <span class="spanLabel">Remarks </span>
+                      <span class="spanText">
+                        {{bgvInitiateDetailsList.remarks || '--' }}
+                      </span>
+                     </div>
+                  </div>
+                </td>
+              </tr>
+    
+               <tr *ngIf="(getElementData.statusdescription=='Resource Onboarded' && (getElementData.bgvStatus=='Request Acknowledged' ||getElementData.bgvStatus=='Passed')) || (getElementData.statusdescription=='Resource De-boarding Initiated' && getElementData.bgvStatus=='Failed') ">
+                <td>
+                  <span class="spanLabel">BGV Request</span>        
+                </td>
+                <td>
+                  <div class="row mt-1">
+                   
+                    <div class="col-md-3 col-sm">
+                      <span class="spanLabel"> Acknowledged on</span>
+                      <span class="spanText">    {{bgvRequestDetailsList?.initiatedOrAcknowledgedOn || '--' }} </span>
+                    </div>
+                    <div class="col-md-3 col-sm">
+                      <span class="spanLabel">Acknowledged by</span>
+                      <span class="spanText">    {{bgvRequestDetailsList?.vendor || '--' }}  </span>
+                    </div>
+                    <div class="col-md-3 col-sm">
+                     
+                    </div>
+                    <div class="col-md-3 col-sm"> 
+                     
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-md-12 col-sm">
+                      <span class="spanLabel">Remarks </span>
+                      <span class="spanText">
+                        {{bgvRequestDetailsList.remarks || '--' }} </span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+           
+          
+              <tr *ngIf="(getElementData.statusdescription=='Resource Onboarded' && getElementData.bgvStatus=='Passed') || (getElementData.statusdescription=='Resource De-boarding Initiated' && getElementData.bgvStatus=='Failed')">
+                <td>
+                  <span class="spanLabel">BGV Completed</span>
+                </td>
+                <td>
+                  <div class="docCsOb m-0">
+                    <span class="spanLabel spaninline">Bosch BGV Report <span
+                        class="fileNameText">{{filenameBGVReport || 'no_content.pdf'}}</span></span>                         
+                    <label><img src="../assets/icons/download.svg" class="imgDelOb" matTooltip="Download File" (click)="bgvReportClickDownload()"></label>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-3 col-sm"> 
+                      <span class="spanLabel">BGV Status</span>
+                      <span class="spanText"> {{bgvCompletedDetailsList.bgvReportStatus || '--' }} </span>
+                     
+                    </div>
+                    <div class="col-md-3 col-sm">
+                      <span class="spanLabel">Updated on</span>
+                      <span class="spanText">  {{bgvCompletedDetailsList.initiatedOrAcknowledgedOn || '--' }} </span>
+                    </div>
+                    <div class="col-md-3 col-sm">
+                      <span class="spanLabel">Updated by </span>
+                      <span class="spanText"> {{bgvCompletedDetailsList.initiatedOrAcknowledgedBy || '--' }} </span>
+                    </div>
+                    <div class="col-md-3 col-sm">
+                     
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-md-12 col-sm">
+                      <span class="spanLabel">Remarks </span>
+                      <span class="spanText">
+                        {{bgvCompletedDetailsList.remarks || '--' }} 
+                      </span>
+                     </div>
+                  </div>
+                </td>
+              </tr>            
+            </table>
+           </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        </div>
+  
+  
+    <mat-accordion>   
+      <mat-expansion-panel class="remarksColapse" >
+        <mat-expansion-panel-header>
+          <mat-panel-title>        
+          <h3 class="m-0">Remarks</h3>
+          </mat-panel-title>    
+        </mat-expansion-panel-header>
+        <div class="bgClr" style="border-bottom: 1px solid #d3d3d3;" *ngFor="let v of remarksList">
+          <div class="row mt-1">
+            <div class="col-md-9 col-sm">
+              <span class="spanLabel">{{v.createdBy}}</span>
+              <span class="spanText">{{v.createdOn| date:'dd-MMM-yyyy' }}</span>
+            </div>
+            <div class="col-md-3 col-sm" style="text-align:right">    
+              <span class="spanLabel">
+                <span  *ngIf="v.statusDescription !='First Level Approved' && v.statusDescription!='Rejected'  && v.statusDescription != 'Submitted' && v.statusDescription != 'Employee Master Created' && v.statusDescription !='First Level Sent Back' &&  v.statusDescription !='Date Of Joining Extended' && v.statusDescription !='Second Level Sent Back' &&  v.statusDescription !=''"> {{v.statusDescription}}</span>
+                <span *ngIf="v.statusDescription=='First Level Sent Back'" style="color:#EEC100">First Level Sent Back</span>
+                <span *ngIf="v.statusDescription=='Second Level Sent Back'" style="color:#EEC100">Second Level Sent Back</span>
+                <span *ngIf="v.statusDescription=='Date Of Joining Extended'" style="color:#EEC100">Date Of Joining Extended</span>
+                <span  *ngIf="v.statusDescription =='First Level Approved' || v.statusDescription == 'Employee Master Created'|| (v.statusDescription == 'Submitted')" style="color:green">
+                  <span  *ngIf="v.statusDescription == 'Submitted' &&  v.remark.includes('SubmitRemarksFirstOBs:')==true  " style="color:green">
+                    Submitted
+                    </span>
+                  <span  *ngIf="v.statusDescription == 'Submitted' &&  v.remark.includes('ReSubmitRemarksSecondOBs:')==true  " style="color:green">
+                    Re-Submitted
+                    </span>
+                    <span  *ngIf="v.statusDescription == 'Submitted' &&  (v.remark.includes('ReSubmitRemarksSecondOBs:')==false && v.remark.includes('SubmitRemarksFirstOBs:')==false)  " style="color:green">
+                      {{v.statusDescription}}
+                      </span> 
+                      <span  *ngIf="v.statusDescription =='First Level Approved' || v.statusDescription == 'Employee Master Created'" style="color:green">
+                        {{v.statusDescription}}
+                        </span>
+                  </span>              
+                
+                <span  *ngIf="v.statusDescription ==''" style="color:#0061cf"> Delegate</span>
+                
+                <span *ngIf="v.statusDescription=='Rejected'" style="color:red">Rejected</span>
+               
+  
+                </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 col-sm">
+              <span class="spanText">{{getRemarkTextparagrapg(v.remark)}}</span>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  
+  
+    <br><br><br><br>
+  </div>
+  

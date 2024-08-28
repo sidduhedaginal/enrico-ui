@@ -1,0 +1,302 @@
+<div class="erroMessageTag" *ngIf="showErroMessage">
+  <span>{{ this.errorMessage }}</span>
+</div>
+
+<div *ngIf="viewMode && !editMode" class="dynamicForm scrollable-content">
+  <ng-container *ngFor="let field of formFields">
+      <div style="padding-top: 15px" *ngIf="field.isVisible">
+          <div class="view-lables">
+              <span class="label">
+                  {{ field.label }}
+              </span>
+              <div class="value" title="{{getValue(field)}}">
+                {{getValue(field)}}
+              </div>
+              <!-- <div class="value" *ngIf="getValue(field).length >= 28" title="{{getValue(field)}}">
+                {{getValue(field).substring(0, 28)}}...
+              </div>
+              <div class="value" *ngIf="getValue(field).length < 28" title="{{getValue(field)}}">
+                {{ getValue(field) }}
+              </div> -->
+          </div>
+      </div>
+  </ng-container>
+  <ng-container *ngFor="let field of radioCheckboxformFields">
+      <div style="padding-top: 15px" *ngIf="field.isVisible">
+          <div class="view-lables">
+              <span class="label">
+                  {{ field.label }}
+              </span>
+              <div class="value">
+                  {{ field.value }}
+              </div>
+          </div>
+      </div>
+  </ng-container>
+</div>
+
+<form class="dynamicForm" [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content *ngIf="!viewMode || editMode" class="scrollable-content">
+      <ng-container *ngFor="let field of formFields">
+          <ng-container *ngIf="field.isVisible">
+              <!-- condition for edit mode -->
+              <mat-form-field class="matform1" [formGroup]="dynamicMatForm">
+                  <mat-label class="form-label">{{ field.label }}</mat-label>
+                  <ng-container [ngSwitch]="field.validationType">
+                      <ng-container *ngSwitchCase="'text'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" readonly (keydown)="space($event)" />
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" (keydown)="space($event)" />
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'number'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" readonly (keydown)="space($event)" />
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly">
+                              <input *ngSwitchCase="'number'" matInput [formControlName]="field.name" (keydown)="space($event)"
+                                  [value]="field?.value" />
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'numberWithoutZero'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" readonly (keydown)="space($event)" />
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly">
+                              <input *ngSwitchCase="'numberWithoutZero'" matInput [formControlName]="field.name"
+                                  [value]="field?.value" (keydown)="space($event)" />
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'decimal'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value"
+                                  (keypress)="limitDecimalPlaces($event, 3)" readonly (keydown)="space($event)" />
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly">
+                              <input *ngSwitchCase="'decimal'" (keypress)="limitDecimalPlaces($event, 3)" matInput
+                                  [formControlName]="field.name" [value]="field?.value" (keydown)="space($event)" />
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'percentage'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" readonly  (keydown)="space($event)"/>
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly">
+                              <input *ngSwitchCase="'percentage'" (keypress)="limitDecimalPlaces($event, 2)" matInput
+                                  [formControlName]="field.name" [value]="field?.value" (keydown)="space($event)"/>
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'alphanumeric'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" readonly (keydown)="space($event)" />
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly">
+                              <input *ngSwitchCase="'alphanumeric'" matInput [formControlName]="field.name"
+                                  [value]="field?.value" (keydown)="space($event)" />
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'email'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" readonly (keydown)="space($event)"/>
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly">
+                              <input *ngSwitchCase="'email'" matInput [formControlName]="field.name"
+                                  [value]="field?.value" (keydown)="space($event)"/>
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'alphanumericWithSpecialChar'">
+                          <ng-container *ngIf="field.readOnly">
+                              <input matInput [formControlName]="field.name" [value]="field?.value" readonly (keydown)="space($event)"/>
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly && field.name == 'ClusterCode'">
+                              <input *ngSwitchCase="'alphanumericWithSpecialChar'" matInput
+                                  [formControlName]="field.name" [value]="field?.value" (keydown)="space($event)" readonly/>
+                          </ng-container>
+                          <ng-container *ngIf="!field.readOnly && field.name != 'ClusterCode'">
+                              <input *ngSwitchCase="'alphanumericWithSpecialChar'" matInput
+                                  [formControlName]="field.name" [value]="field?.value" (keydown)="space($event)"/>
+                          </ng-container>
+                      </ng-container>
+                      <!-- Dropdown with search -->
+
+                      <ng-container *ngSwitchCase="'dropdownWithSearch'">
+                          <ng-container *ngIf="field.readOnly">
+                              <mat-select [formControlName]="field.name" [value]="field?.value">
+                                  <mat-option>Select</mat-option>
+                                  <mat-option *ngFor="let option of field.dropdownList" [value]="option.id">{{
+                                      option.name }}</mat-option>
+                              </mat-select>
+                          </ng-container>
+
+                          <ng-container *ngIf="!field.readOnly">
+                              <mat-select [formControlName]="field.name" [value]="field?.value" (selectionChange)="OnDropdownWithSearchChange($event,field)">
+                                  <input class="inputsearch" type="text" autocomplete="on" matInput
+                                      placeholder="Search" (keydown)="handleInput($event)"
+                                      (input)="OnEmploySearch($event, field.name)" />
+                                  <mat-option>Select</mat-option>
+                                  <mat-option *ngFor="let option of field.dropdownList" [value]="option.id">{{
+                                      option.name }}</mat-option>
+                              </mat-select>
+                          </ng-container>
+                      </ng-container>
+
+                      <!-- Checkbox  -->
+                      <ng-container *ngSwitchCase="'checkbox'">
+                          {{ field.name }}
+                          <ng-container *ngIf="field.readOnly">
+                              <mat-checkbox [formControlName]="field.name" [value]="field?.value"></mat-checkbox>
+                          </ng-container>
+
+                          <ng-container *ngIf="!field.readOnly">
+                              <mat-checkbox [formControlName]="field.name" [value]="field?.value"></mat-checkbox>
+                          </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'dropdown'">
+                          <ng-container *ngIf="field.readOnly">
+                              <mat-select [formControlName]="field.name">
+                                  <mat-option>Select</mat-option>
+                                  <mat-option *ngFor="let option of field.dropdownList" [value]="option.id">{{
+                                      option.name }}</mat-option>
+                              </mat-select>
+
+                              <!-- <input matInput [formControlName]="field.name" [value]="field?.value" readonly > -->
+                          </ng-container>
+
+                          <ng-container *ngIf="!field.readOnly">
+                              <mat-select [formControlName]="field.name" [value]="field?.value"
+                                  (selectionChange)="OnCompanyCodeChange($event, field)">
+                                  <mat-option>Select</mat-option>
+                                  <mat-option *ngFor="let option of field.dropdownList" [value]="option.id">{{
+                                      option.name }}</mat-option>
+                              </mat-select>
+                          </ng-container>
+                      </ng-container>
+
+                      <!-- (focus)="picker.open()"  -->
+                      <input class="formdatepicker" *ngSwitchCase="'date'" matInput [matDatepicker]="picker"
+                          [formControlName]="field.name" [disabled]="field.readOnly" [min]="
+                            field.name === 'ValidityEnd'
+                                ? minStartValidityEndDate
+                                : field.name === 'CFCyclePlanningEndate'
+                                ? minStartCFCyclePlanningDate
+                                : field.name === 'ValidTo'
+                                ? minStartValidToDate
+                                : field.name === 'periodEnd'
+                                ? minStartPeriodEndDate
+                                : field.name === 'PeriodEnd'
+                                ? minStartPeriodEndDate
+                                : field.name === 'DateofLeaving'
+                                ? minDateOfJoiningStartValue
+                                : null
+                            " 
+                        />
+                      <mat-datepicker-toggle class="datepicker" matSuffix *ngIf="field.validationType === 'date'"
+                          [for]="picker"></mat-datepicker-toggle>
+
+                      <mat-datepicker #picker></mat-datepicker>
+                  </ng-container>
+
+                  <mat-error *ngIf="dynamicMatForm.get(field.name)?.errors?.['minlength']">
+                      Input should have a minimum length of
+                      {{ field.minLength }} characters.
+                  </mat-error>
+                  <mat-error *ngIf="dynamicMatForm.get(field.name)?.errors?.['maxlength']">
+                      Input can have a maximun length of {{ field.maxlength }} characters.
+                  </mat-error>
+                  <mat-error *ngIf="
+            dynamicMatForm.get(field.name)?.invalid &&
+            (dynamicMatForm.get(field.name)?.dirty ||
+              dynamicMatForm.get(field.name)?.touched)
+          ">
+                      <span *ngIf="dynamicMatForm.get(field.name)?.errors?.['required']">This field is
+                          required.</span>
+                      <span *ngIf="dynamicMatForm.get(field.name)?.errors?.['pattern']">Invalid value.</span>
+                  </mat-error>
+              </mat-form-field>
+          </ng-container>
+      </ng-container>
+      <form [formGroup]="dynamicRadioCheckboxForm">
+          <div *ngFor="let field of radioCheckboxformFields">
+              <ng-container *ngIf="field.isVisible">
+                  <ng-container [ngSwitch]="field.validationType">
+                      <mat-checkbox-group *ngSwitchCase="'checkbox'" [formControlName]="field.name">
+                          <!-- <mat-label class="matCheckbox-label">{{ field.name }}</mat-label>                    -->
+                          <!-- <ng-container *ngFor="let option of field.checkBoxOptions">
+                              <mat-checkbox class="matCheckbox" [checked]="option.value">{{
+                                  option.name }}</mat-checkbox>
+                          </ng-container> -->
+                          <ng-container>
+                              <mat-checkbox (change)="onChangeCheckbox(field.name, $event.checked)"
+                                  class="matCheckbox" [checked]="field.value != '' ? field.value : false">{{
+                                  field.label }}</mat-checkbox>
+                          </ng-container>
+                      </mat-checkbox-group>
+                      <mat-radio-group *ngSwitchCase="'radioButton'" [formControlName]="field.name"
+                          [value]="field.value" [disabled]="field.readOnly">
+                          <mat-radio-button *ngFor="let option of field.radioOptions" [value]="option.id">{{
+                              option.name }}</mat-radio-button>
+                      </mat-radio-group>
+                  </ng-container>
+              </ng-container>
+          </div>
+      </form>
+  </mat-dialog-content>
+
+  <!-- <div class="action-btn">
+      <button class="cancel-btn" mat-raised-button color="primary" type="submit" (click)="onClose($event)">
+          Cancel
+      </button>
+      <ng-container>
+          <button *ngIf="viewMode && !editMode && !isStatusApproved" class="save-btn" mat-raised-button
+              color="primary" (click)="editModeOn($event)" [disabled]="!permissionDetails.editPermission">
+              Edit
+          </button>
+      </ng-container>
+      <button *ngIf="!viewMode || editMode" class="save-btn" mat-raised-button color="primary" type="submit"
+      [disabled]="dynamicMatForm.invalid && !showLoading">
+      Save
+  </button>
+  </div> -->
+
+  <div class="dailog-end" *ngIf="data.payload.ApproveStatus">
+      <div class="status-btn" *ngIf="data.operation == 'update'">
+          Approval Status :&nbsp;
+          <span  [ngClass]="data.payload.ApproveStatus === 'Rejected' ? 'reject' : ''"
+           *ngIf="data.payload.ApproveStatus == 'Rejected'">
+            Rejected</span>
+           <span  [ngClass]="data.payload.ApproveStatus === 'Approved' ? 'approved' : ''"
+           *ngIf="data.payload.ApproveStatus == 'Approved'">
+            Approved</span>
+            <span  [ngClass]="data.payload.ApproveStatus === 'Submitted' ? 'submitted' : ''"
+            *ngIf="data.payload.ApproveStatus == 'Submitted'">
+             Submitted</span>
+      </div>
+  </div>
+  <div class="action-btn">
+      <button class="cancel-btn" mat-raised-button color="primary" type="submit" (click)="onClose($event)">
+          Cancel
+      </button>
+      <ng-container>
+          <button *ngIf="viewMode && !editMode && !isStatusApproved" class="save-btn" mat-raised-button
+              color="primary" (click)="editModeOn($event)" [disabled]="!permissionDetails.editPermission">
+              Edit
+          </button>
+      </ng-container>
+      <button *ngIf="!viewMode || editMode" class="save-btn" mat-raised-button color="primary" type="submit"
+      [disabled]="dynamicMatForm.invalid && !showLoading">
+      Save
+      </button>
+  </div>
+
+
+</form>

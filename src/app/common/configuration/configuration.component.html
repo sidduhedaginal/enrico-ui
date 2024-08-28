@@ -1,0 +1,18 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <!-- <mat-tab  label="Vendor User Accounts">
+        <app-vendors *ngIf="selectedTab == 0"></app-vendors>
+    </mat-tab> -->
+    <mat-tab label="Business Roles" >
+        <app-business-roles *ngIf="selectedTab == 0"></app-business-roles>
+    </mat-tab>
+    <mat-tab label="Users in Business Roles">
+        <app-users-in-business-roles *ngIf="selectedTab == 1"></app-users-in-business-roles>
+    </mat-tab>
+    <mat-tab label="Permissions on Business Roles">
+        <app-permissions-on-business-roles *ngIf="selectedTab == 2"></app-permissions-on-business-roles>
+    </mat-tab>
+    <mat-tab label="Email Template">
+        <app-email-settings *ngIf="selectedTab == 3"></app-email-settings>
+    </mat-tab>
+</mat-tab-group>
+  

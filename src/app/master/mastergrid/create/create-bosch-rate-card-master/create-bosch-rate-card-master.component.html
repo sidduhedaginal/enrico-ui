@@ -1,0 +1,164 @@
+<div class="formspinner" *ngIf="showloader">
+  <lib-spinner></lib-spinner>
+</div>
+
+<div class="main_block">
+
+    <div class="grid_header">
+      <div class="left_title">
+        <h1 class="grid_title">{{title}}</h1>
+      </div>
+      <div class="right_buttons">
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-secondary"
+        >
+        Cancel
+
+        </button>
+
+
+        <button
+          mat-button
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+          class="button-primary"
+          (click) = "saveboschRateCard()"
+
+        >
+        Save
+
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="errorMessage.length>0">
+    <div class="grid_header">
+      <span style="color:red">{{ errorMessage}}</span>
+
+    </div>
+  </div>
+
+<div class="row"  style="margin-top: 3%;">
+
+    <!-- <mat-form-field class="example-full-width" appearance="fill" style= "width: 30%;">
+        <mat-label>Rate Card ID</mat-label>
+        <input
+          matInput
+          placeholder="Rate Card ID"
+          [(ngModel)]="rateCardId"
+
+
+        />
+      </mat-form-field> -->
+
+
+
+    <mat-form-field class="example-full-width" appearance="fill" style= "width: 30%;">
+        <mat-label>Company</mat-label>
+        <input
+          matInput
+          placeholder="Company"
+          [(ngModel)]="company"
+        readonly
+        required
+
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width"  style= "width: 30%;" appearance="fill"  >
+        <mat-label>Skillset Name</mat-label>
+
+        <mat-select required
+        [(ngModel)]="skillsetName"
+
+        >
+            <mat-option
+                *ngFor="let skillset of skillset_card"
+                [value]="skillset.skillsetId"
+            >
+
+                {{ skillset.skillsetName }}
+
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill" style= "width: 30%;">
+      <mat-label>Currency</mat-label>
+      <input
+        matInput
+        placeholder="Currency"
+        [(ngModel)]="currency"
+
+       readonly
+       required
+      />
+  </mat-form-field>
+
+
+</div>
+
+<div class="row">
+
+
+
+    <mat-form-field  appearance="fill" style= "width: 30%;">
+      <mat-label>Validity Start</mat-label>
+
+      <input matInput [matDatepicker]="validity_startDate" placeholder="Validity Start" required   [(ngModel)]="validityStartDate" >
+      <mat-datepicker-toggle matSuffix [for]="validity_startDate">
+        <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #validity_startDate></mat-datepicker>
+    </mat-form-field>
+
+
+    <mat-form-field  appearance="fill" style= "width: 30%;">
+      <mat-label>Validity End</mat-label>
+
+      <input matInput [matDatepicker]="validity_endDate" placeholder="Validity End" required   [(ngModel)]="validityEndDate">
+      <mat-datepicker-toggle matSuffix [for]="validity_endDate">
+        <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #validity_endDate></mat-datepicker>
+    </mat-form-field>
+
+
+
+</div>
+
+<div class="row">
+
+
+  <mat-form-field  appearance="fill" style= "width: 30%;">
+
+    <mat-label>Grade</mat-label>
+
+    <mat-select
+      [(ngModel)]="gradeId"
+      required
+    >
+      <mat-option
+        *ngFor="let grade of grade_list"
+        [value]="grade.gradeMasterId"      >
+        {{ grade.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field  appearance="fill" style= "width: 30%;">
+
+      <mat-label>Price</mat-label>
+      <input matInput placeholder="Price" [(ngModel)]="price" (keydown)="onKeyDownforGraid($event)"/>
+    </mat-form-field>
+
+
+</div>

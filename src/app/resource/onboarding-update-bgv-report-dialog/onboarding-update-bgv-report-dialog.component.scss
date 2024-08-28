@@ -1,0 +1,129 @@
+.title-head {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .colorStart {
+    color: red;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: -6px;
+  }
+  
+  ::ng-deep .gMFFInput.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  ::ng-deep .gMFFSelect.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 2px 2px 0 0 !important;
+    padding: 0.45em 0.75em 0 0.75em !important;
+    background: #E0E2E5  !important;
+  }
+  .cancelBtn {
+    border-radius: 0;
+    width: 100px;
+    color: #008ECF;
+    border: 1px solid #008ECF;
+    font-size: 14px;
+    margin-right: 1rem;
+  }
+  
+  .submitBtn {
+    border-radius: 0;
+    width: 100px;
+    color: #fff;
+    border: 1px solid #008ECF;
+    font-size: 14px;
+    background-color: #007BC0;
+  }
+  .imgSearch{
+    position: relative;
+    white-space: nowrap;
+    display: inline;
+    bottom: 12px;
+    width: 18px;
+    padding: 0.95em 0 0.25em 0;
+
+  }
+
+  .disableBtnClor {
+    border: 1px solid #cccccc;
+    background-color: #C1C7CC;
+    cursor: not-allowed;
+    color: #000 !important;
+  }
+
+  .spanLabel {
+    display: block;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .spaninline {
+    display: inline-block;
+  }
+  .fileNameText{
+    color: #008ECF;
+    font-weight: 600;
+    position: relative;
+    left: 25px;
+    font-size: 10px;
+  }
+  .uploadFileBtnOb {
+    color: #007bc0;
+        
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.5;
+        line-height: 24px;
+        cursor: pointer;
+        width: 120px;
+        border-width: 1px;
+        border-color: #007bc0;
+        border-style: solid;
+        border-radius: 0;
+        padding: 5px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      width: 160px;
+        background: #fff;
+        top: 12px;
+    }
+    .obUploadFileCs {
+      position: relative;
+      left: 0;
+      opacity: 0;
+      top: 0px;
+      bottom: 0;
+      width: 100%;
+      height: 0px;
+    
+    }
+    .imgDelOb{
+      height: 24px;
+      width: 24px;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+    .redClr{
+      color:red;
+    }
+    .msaCs{
+      background: #F5F5F5;
+      align-items: center;
+      margin: 2px;
+      min-height: 56px;
+    }
+    .rsideUp{
+      text-align:right;display: ruby;
+    }
+    
+  @media screen and (min-width:1400px){
+
+    .fileNameText{
+      font-size: 12px;
+    }
+  }

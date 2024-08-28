@@ -1,0 +1,57 @@
+<div style="width: 100%; overflow-x: hidden">
+    <div class="main_block">
+      <div class="grid_header">
+        <div class="left_title">
+          <h2>
+          </h2>
+        </div>
+        <div class="right_buttons">
+          <button mat-button (click)="aggrid()" class="button-secondary">
+            <span class="back_planning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="action_text"> Back</span>
+          </button>
+          <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="onBtnExport()" class="button-secondary">
+  
+            <span class="export icon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>Export</span>
+  
+          </button>
+  
+          <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="saveData(1)" class="button-secondary">
+            <span class="insertImport"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+            <span> Insert </span>
+          </button>
+  
+          <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="saveData(2)" class="button-secondary">
+            <span class="updateImport"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+            <span> Update </span>
+          </button>
+  
+          <button mat-button style="width: 150px;" [mat-dialog-close]="true" cdkFocusInitial (click)="saveData(3)" class="button-secondary">
+            <span class="insertUpdateImport">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span> Insert & Update </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <ag-grid-angular 
+    class="ag-theme-alpine"
+    rowAnimation pagination 
+    [rowData]="rowData" 
+    [paginationPageSize]="5"
+    [columnDefs]="columnDefs" 
+    [defaultColDef]="defaultColDef"
+    [autoGroupColumnDef]="autoGroupColumnDef" 
+    [animateRows]="true" 
+    (gridReady)="onGridReady($event)"
+    (cellClicked)="onCellClicked($event)" 
+    [rowSelection]="'multiple'"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    [suppressMenuHide]="true" 
+    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+    (filterChanged)="onFilterChanged($event)"
+    (horizontalScroll)="onHorizontalScroll($event)"
+    (sortChanged)="onSortChanged($event)"></ag-grid-angular>
+  </div>

@@ -1,0 +1,113 @@
+.commonstyle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 13px;
+  }
+  .commonstylemain {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-button {
+    justify-content: space-between;
+    border-radius: 0;
+    border-color: #008ecf;
+    color: #008ecf;
+    margin-right: 4px;
+  }
+  .icon-button mat-icon {
+    margin-left: 4px;
+    color: #008ecf;
+  }
+  .lefttitle {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+  }
+  .righticons {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+  .buttonalign {
+    display: flex;
+    align-items: center;
+  }
+  .iconcolor {
+    color: #008ecf;
+    padding: 5px;
+    cursor: pointer;
+  }
+  .background {
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin: 0px 10px;
+  }
+  .spantitle {
+    width: 25%;
+    text-align: left;
+  }
+  .ag-theme-alpine {
+    --ag-header-background-color: White;
+    --ag-header-border-bottom: black;
+  }
+
+  .hover-text {
+    display: none;
+  }
+  
+  /* Show the hover-text span when hovering over the .alignIcons div */
+  .alignIcons:hover .hover-text {
+    display: inline-block;
+  }
+
+  .mat-form-field {
+    flex: 1 1 25%;
+    margin-right: 1rem; /* Optional: Add some space between form fields */
+  }
+  .editButton{
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .editButton > * {
+    margin : 10px;
+  }
+
+  .spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -15vh;
+    margin-left: 10vw;
+  }
+  .statusText1{
+    font-size: 10px;
+    font-weight: bold;
+}
+.statusText{
+  font-size: 15px;
+  font-weight: bold;
+}
+.ownermainblock{
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px 12px;
+}
+.OwnerBlock{
+    background-color: rgb(224, 245, 255);
+    border-radius: 25px;
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px 12px;
+}
+.filterTopPortion1 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

@@ -1,0 +1,185 @@
+<div class="contact-details-page">
+  <div class="header">
+    <div>{{ title }}</div>
+    <div>
+      <mat-icon style="cursor: pointer" matTooltip="Close" (click)="cancel()"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <form [formGroup]="ContactDeatilsForm">
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Contact Name</mat-label>
+        <input matInput placeholder="" formControlName="contactName" />
+        <mat-error
+          *ngIf="
+            ContactDeatilsForm.controls['contactName'].invalid &&
+            ContactDeatilsForm.controls['contactName'].touched
+          "
+        >
+          Please choose Contact Name
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-field" style="display: flex; gap: 10px">
+        <mat-form-field appearance="fill" style="width: 60px">
+          <mat-label>Code</mat-label>
+          <mat-select formControlName="countryCode">
+            <mat-option>Select</mat-option>
+            <mat-option
+              *ngFor="let country of countryCodes"
+              [value]="country"
+              >{{ country }}</mat-option
+            >
+          </mat-select>
+          <!-- <mat-error
+                      *ngIf="ContactDeatilsForm.controls['countryCode'].invalid &&
+                             ContactDeatilsForm.controls['countryCode'].touched">
+                      Please choose Country Code
+                  </mat-error> -->
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 160px">
+          <mat-label>Mobile</mat-label>
+          <input
+            matInput
+            placeholder=""
+            minlength="10"
+            maxlength="10"
+            formControlName="mobile"
+            (keypress)="numberOnly($event)"
+          />
+          <mat-error
+            *ngIf="
+              ContactDeatilsForm.controls['mobile'].invalid &&
+              ContactDeatilsForm.controls['mobile'].touched
+            "
+          >
+            Please provide Mobile Number and country code
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="" formControlName="email" email />
+        <mat-error
+          *ngIf="
+            ContactDeatilsForm.controls['email'].invalid &&
+            ContactDeatilsForm.controls['email'].touched
+          "
+        >
+          Please choose Valid Email
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Designation</mat-label>
+        <input matInput placeholder="" formControlName="designation" />
+        <mat-error
+          *ngIf="
+            ContactDeatilsForm.controls['designation'].invalid &&
+            ContactDeatilsForm.controls['designation'].touched
+          "
+        >
+          Please choose Designation
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Domain Responsibility</mat-label>
+        <input matInput placeholder="" formControlName="domainResponsibility" />
+        <mat-error
+          *ngIf="
+            ContactDeatilsForm.controls['domainResponsibility'].invalid &&
+            ContactDeatilsForm.controls['domainResponsibility'].touched
+          "
+        >
+          Please choose Domain Responsibility
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>EscalationLevel</mat-label>
+        <mat-select formControlName="escalationLevel">
+          <mat-option>Select</mat-option>
+          <mat-option
+            *ngFor="let level of escalation_Levels"
+            [value]="level.id"
+            >{{ level.escalationLevelValue }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            ContactDeatilsForm.controls['escalationLevel'].invalid &&
+            ContactDeatilsForm.controls['escalationLevel'].touched
+          "
+        >
+          Please choose EscalationLevel
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option>Select</mat-option>
+          <mat-option
+            *ngFor="let status of status_list"
+            [value]="status.value"
+            >{{ status.status }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            ContactDeatilsForm.controls['status'].invalid &&
+            ContactDeatilsForm.controls['status'].touched
+          "
+        >
+          Please choose Status
+        </mat-error>
+      </mat-form-field>
+
+      <mat-slide-toggle
+        class="primary-contact"
+        formControlName="isPrimaryContact"
+        [color]="primary"
+      >
+        Primary Contact
+      </mat-slide-toggle>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Notes</mat-label>
+        <textarea
+          class="form-field-notes"
+          matInput
+          formControlName="notes"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="buttons">
+      <button mat-button class="secondaryButton" (click)="cancel()">
+        Cancel
+      </button>
+      <button
+        *ngIf="isCreate"
+        mat-button
+        [disabled]="ContactDeatilsForm.invalid"
+        class="primaryButton"
+        (click)="save()"
+      >
+        Save
+      </button>
+      <button
+        *ngIf="!isCreate"
+        mat-button
+        [disabled]="ContactDeatilsForm.invalid"
+        class="primaryButton"
+        (click)="save()"
+      >
+        Update
+      </button>
+    </div>
+  </form>
+</div>

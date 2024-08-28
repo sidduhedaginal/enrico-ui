@@ -1,0 +1,115 @@
+<div class="myForm">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="header-items">
+      <div class="title">
+        <p>{{ title }}</p>
+      </div>
+    </div>
+    <mat-form-field>
+      <mat-label>Plant Code</mat-label>
+      <input
+        matInput
+        placeholder="Plant Code"
+        formControlName="plant_code"
+        readonly
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Plant Name</mat-label>
+      <mat-select formControlName="name" placeholder="Name">
+        <mat-option>select</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Company Code</mat-label>
+      <input
+        matInput
+        formControlName="companyCode"
+        placeholder="Company Code"
+        readonly
+      />
+      <mat-error *ngIf="myForm.get('companyCode')?.hasError('pattern')"
+        >Please enter numbers only.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Street</mat-label>
+      <input matInput formControlName="street" placeholder="Street" />
+      <mat-error *ngIf="myForm.get('street')?.hasError('pattern')"
+        >Please enter AlphaNumeric only.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>City</mat-label>
+      <input matInput formControlName="city" placeholder="City" />
+      <mat-error *ngIf="myForm.get('city')?.hasError('pattern')"
+        >Please enter Alphabets only</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>State</mat-label>
+      <input matInput formControlName="state" placeholder="State" />
+      <mat-error *ngIf="myForm.get('state')?.hasError('pattern')"
+        >Please enter Alphabets only</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Region</mat-label>
+      <input matInput formControlName="region" placeholder="Region" />
+      <mat-error *ngIf="myForm.get('region')?.hasError('pattern')"
+        >Please enter Alphabets only</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country" placeholder="Country Name" />
+      <mat-error *ngIf="myForm.get('country')?.hasError('pattern')"
+        >Please enter Alphabets only</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Postal Code</mat-label>
+      <input
+        matInput
+        min="0"
+        formControlName="postalcode"
+        (keypress)="numberOnly($event)"
+        placeholder="PostalCode"
+      />
+      <mat-error *ngIf="myForm.get('postalcode')?.hasError('pattern')"
+        >Please enter numbers only</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Currency</mat-label>
+      <mat-select formControlName="currency" placeholder="currency">
+        <mat-option>select</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="action-btn">
+      <button
+        class="cancel-btn"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+
+      <button class="save-btn" mat-raised-button color="primary" type="submit">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

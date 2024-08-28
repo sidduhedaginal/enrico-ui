@@ -1,0 +1,1223 @@
+<app-loader></app-loader>
+<div *ngIf="!loader" class="sowjd-details">
+  <div class="sowjd-header">
+    <div style="display: flex">
+      <div class="page-heading">{{ rfq_Detail.sowJdNumber }} Details</div>
+    </div>
+    <div class="button-wrappper">
+      <button
+        mat-button
+        class="secondaryIconButton arrow space"
+        (click)="interestedorNot(false)"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="thumb-down"></span>
+          </div>
+          <div class="btn-name">Not Interested</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        (click)="interestedorNot(true)"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="thumb-up"></span>
+          </div>
+          <div class="btn-name">Interested</div>
+        </div>
+      </button>
+      <button
+        mat-flat-button
+        class="secondaryIconButton arrow space"
+        (click)="saveOrSubmit(false)"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="save"></span>
+          </div>
+          <div class="btn-name">Save</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        *ngIf="rfqStatus == 'Interested' || rfqStatus == 'Saved'"
+        class="btn-hover-primary arrow space"
+        (click)="saveOrSubmit(true)"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="white-checkmark"></span>
+          </div>
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        *ngIf="rfqStatus == 'Send back'"
+        class="btn-hover-primary arrow space"
+        (click)="saveOrSubmit(true)"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="white-checkmark"></span>
+          </div>
+          <div class="btn-name">ReSubmit</div>
+        </div>
+      </button>
+    </div>
+
+    <div
+      class="button-wrappper"
+      *ngIf="
+        IsRFQID &&
+        technicalProposalDetails?.techProposalId &&
+        (technicalProposalDetails?.status == 1 ||
+          technicalProposalDetails?.status == 2)
+      "
+    >
+      <button
+        mat-button
+        class="secondaryIconButton arrow space"
+        (click)="saveOrSubmitTp(false)"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="save"></span>
+          </div>
+          <div class="btn-name">Save</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        (click)="saveOrSubmitTp(true)"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="white-checkmark"></span>
+          </div>
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+
+    <div *ngIf="IsRFQID && isVendorEligibleForSignOff">
+      <div class="button-wrappper">
+        <div *ngIf="!islinkthepo">
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            (click)="VendorSignOff()"
+          >
+            <div class="btn-wrapper">
+              <div class="btn-name">Sign Off</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="button-wrappper">
+        <div *ngIf="islinkthepo">
+          <button
+            mat-button
+            class="btn-hover-primary arrow space"
+            (click)="linkThePo()"
+          >
+            <div class="btn-wrapper">
+              <div class="btn-name">Link the PO</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-wrappper" *ngIf="!IsRFQID">
+      <button mat-button class="secondaryIconButton arrow space">
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="save"></span>
+          </div>
+          <div class="btn-name">Save</div>
+        </div>
+      </button>
+      <button mat-button class="btn-hover-primary arrow space">
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="white-checkmark"></span>
+          </div>
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: end">
+    <div class="error">{{ error_msg }}</div>
+  </div>
+  <div
+    style="display: flex; justify-content: flex-end; padding-top: 15px"
+    *ngIf="IsRFQID"
+  >
+    <div style="align-self: center">
+      <span class="detail">SOW JD Status : </span>
+      <span class="detail legend success-status">{{
+        rfq_Detail.sowJdStatus
+      }}</span>
+    </div>
+    <div style="align-self: center; padding-left: 40px">
+      <span class="detail">RFQ Status : </span>
+      <span
+        class="detail"
+        [ngClass]="
+          rfqStatus === 'Open' ||
+          rfqStatus === 'Saved' ||
+          rfqStatus === 'Interested'
+            ? 'legend interest'
+            : ''
+        "
+        [ngClass]="rfqStatus === 'Submitted' ? 'legend interest' : ''"
+        [ngClass]="
+          rfqStatus === 'Not Interested' || rfqStatus === 'Send back'
+            ? 'legend not-interested'
+            : ''
+        "
+        >{{ rfqStatus }}</span
+      >
+    </div>
+    <div
+      style="align-self: center; padding-left: 40px"
+      *ngIf="technicalProposalDetails?.status"
+    >
+      <span class="detail">Technical Proposal Status : </span>
+      <span class="detail legend interest">{{
+        technicalProposalDetails?.technicalProposalStatus
+      }}</span>
+    </div>
+  </div>
+
+  <div class="main__form">
+    <div class="left-portion">
+      <mat-tree
+        #tree
+        [dataSource]="dataSource"
+        [treeControl]="treeControl"
+        class="sowjd-details"
+      >
+        <mat-tree-node
+          *matTreeNodeDef="let node"
+          matTreeNodePadding
+          (click)="activeNode = node"
+          [ngClass]="{ 'background-highlight': activeNode == node }"
+        >
+          <button mat-icon-button>
+            <mat-icon>{{ node.isLocked }}</mat-icon>
+          </button>
+          <span style="cursor: pointer" (click)="navigateChildPage(node)">{{
+            node.name
+          }}</span>
+        </mat-tree-node>
+
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          matTreeNodePadding
+        >
+          <button
+            mat-icon-button
+            matTreeNodeToggle
+            [attr.aria-label]="'Toggle ' + node.name"
+          >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{
+                treeControl.isExpanded(node)
+                  ? "keyboard_arrow_down"
+                  : "keyboard_arrow_right"
+              }}
+            </mat-icon>
+          </button>
+          <span matTreeNodeToggle style="cursor: pointer">
+            {{ node.name }}</span
+          >
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+
+    <div class="right__portion" *ngIf="IsRFQID">
+      <mat-tab-group>
+        <mat-tab label="SOW JD Details">
+          <div>
+            <label style="padding-left: 15px">Project Data</label>
+            <div style="margin-bottom: 20px !important; margin-top: 5px">
+              <div class="sowjd-detail">
+                <div class="col">
+                  <div class="detail">Company Code</div>
+                  <div>{{ allSOWJDData?.companyCode }}</div>
+                </div>
+                <div class="col">
+                  <div class="detail">Company Name</div>
+                  <div>{{ allSOWJDData?.companyFullName }}</div>
+                </div>
+                <div class="col">
+                  <div class="detail">Location Mode</div>
+                  <div>{{ allSOWJDData?.resourceLocation }}</div>
+                </div>
+              </div>
+              <div class="sowjd-detail">
+                <div class="col">
+                  <div class="detail">SOW JD Type</div>
+                  <div>{{ rfq_Detail?.sowJdType }}</div>
+                </div>
+                <div class="col">
+                  <div class="detail">Description</div>
+                  <div>{{ rfq_Detail?.description }}</div>
+                </div>
+                <div class="col">
+                  <div class="detail">Currency</div>
+                  <div>{{ rfq_Detail?.currencyName }}</div>
+                </div>
+              </div>
+            </div>
+            <label style="padding-left: 15px">PO Info</label>
+            <div class="vendor-details">
+              <div class="col">
+                <div class="detail">Start Date</div>
+                <div>{{ rfq_Detail?.startDate | date : dateFormat }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">End Date</div>
+                <div>{{ rfq_Detail?.endDate | date : dateFormat }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Location/Plant</div>
+                <div>{{ rfq_Detail?.plantName }}</div>
+              </div>
+            </div>
+            <label style="padding-left: 15px">Delivery Manager Details</label>
+            <div class="vendor-details">
+              <div class="col">
+                <div class="detail">Name</div>
+                <div>{{ allSOWJDData?.deliveryManager }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Email</div>
+                <div>{{ allSOWJDData?.deliveryManagerEmail }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">DM Remarks</div>
+                <div>{{ allSOWJDData?.dmRemarks }}</div>
+              </div>
+            </div>
+
+            <label style="padding-left: 15px">Section Spoc Details</label>
+            <div class="vendor-details">
+              <div class="col">
+                <div class="detail">Name</div>
+                <div>{{ allSOWJDData?.secSpoc }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Email</div>
+                <div>{{ allSOWJDData?.secSpocEmail }}</div>
+              </div>
+              <div class="col">
+                <!-- <div class="detail">DM Remarks</div>
+              <div>{{allSOWJDData?.dmRemarks}}</div> -->
+              </div>
+            </div>
+
+            <label style="padding-left: 15px; padding-bottom: 5px"
+              >SOW JD Documents</label
+            >
+            <div>
+              <div style="padding-left: 15px; padding-right: 0px">
+                <div class="proposalDocuments">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">File</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <span
+                        *ngIf="
+                          sowjdDocuments?.data?.length > 0;
+                          then dataExists6;
+                          else noDataExists6
+                        "
+                      ></span>
+                      <ng-template #dataExists6>
+                        <tr
+                          *ngFor="
+                            let doc of sowjdDocuments?.data;
+                            let i = index
+                          "
+                        >
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ doc.documentName }}</td>
+                          <td>
+                            <a
+                              href="{{ doc.documentUrl }}{{
+                                sowjdDocuments.sasToken
+                              }}"
+                              ><div class="cloud-download"></div>
+                            </a>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template #noDataExists6
+                        ><tr>
+                          No documents found.
+                        </tr></ng-template
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </mat-tab>
+        <mat-tab label="RFQ Proposal">
+          <div>
+            <label style="padding-left: 15px">Vendor Detail</label>
+            <div class="vendor-details">
+              <div class="col4">
+                <div class="detail">Vendor ID</div>
+                <div>{{ vendorDetails?.vendorSAPId }}</div>
+              </div>
+              <div class="col4">
+                <div class="detail">Vendor Name</div>
+                <div>{{ vendorDetails?.vendorName }}</div>
+              </div>
+              <div class="col4">
+                <div class="detail">RFQ Start Date</div>
+                <div>{{ rfq_Detail?.rfqStartDate | date : dateFormat }}</div>
+              </div>
+              <div class="col4">
+                <div class="detail">RFQ End Date</div>
+                <div>{{ rfq_Detail?.rfqEndDate | date : dateFormat }}</div>
+              </div>
+            </div>
+          </div>
+
+          <label style="padding-left: 15px; padding-bottom: 5px"
+            >Vendor Proposal Documents</label
+          >
+          <div
+            class="file-upload"
+            *ngIf="
+              rfqStatus != 'Open' &&
+              rfqStatus != 'Not Interested' &&
+              rfqStatus != 'Submitted' &&
+              rfqStatus != 'WithDraw'
+            "
+          >
+            <div class="fileUpload" (click)="fileInput.click()"></div>
+            <input
+              style="display: none"
+              #attachments
+              type="file"
+              (change)="onproposalFileChanged($event)"
+              #fileInput
+              multiple="true"
+            />
+          </div>
+          <div>
+            <div style="padding: 15px; padding-right: 0px">
+              <div class="proposalDocuments">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">File</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <span
+                      *ngIf="
+                        proposalDocuments?.data?.length > 0;
+                        then dataExists1;
+                        else noDataExists1
+                      "
+                    ></span>
+                    <ng-template #dataExists1>
+                      <tr
+                        *ngFor="
+                          let doc of proposalDocuments.data;
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          {{ doc.fileName }}
+                        </td>
+                        <td>
+                          <div style="display: flex">
+                            <a
+                              href="{{ doc.fileUrl }}{{
+                                proposalDocuments.sasToken
+                              }}"
+                              ><div class="cloud-download"></div>
+                            </a>
+                            <div
+                              class="blue-delete icon edit-delete"
+                              *ngIf="
+                                rfqStatus == 'Interested' ||
+                                rfqStatus == 'Saved'
+                              "
+                              (click)="deleteFile(doc.id)"
+                            ></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #noDataExists1
+                      ><tr>
+                        No documents found.
+                      </tr></ng-template
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label style="padding-left: 15px">Vendor Cost</label>
+            <div class="vendor-details">
+              <div class="col">
+                <div class="detail">Equivalant Capacity</div>
+                <div>{{ equivalantCapacity }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Equivalant PMO</div>
+                <div>{{ equivalantpmo }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Total Price</div>
+                <div>{{ equivalantCost }}</div>
+              </div>
+            </div>
+
+            <div class="resourcePlan department__title">
+              <div>Resource Plan</div>
+              <div class="button-wrappper">
+                <button
+                  mat-button
+                  class="btn-hover-primary arrow space"
+                  *ngIf="
+                    rfqStatus != 'Open' &&
+                    rfqStatus != 'Not Interested' &&
+                    rfqStatus != 'Submitted' &&
+                    rfqStatus != 'WithDraw'
+                  "
+                  mat-button
+                  (click)="openDialog()"
+                >
+                  <div class="btn-wrapper">
+                    <div class="icon">
+                      <span class="add-icon"></span>
+                    </div>
+                    <div class="btn-name">Add</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                rfqStatus != 'Submitted' &&
+                rfqStatus != 'Open' &&
+                rfqStatus != 'Not Interested' &&
+                rfqStatus != 'WithDraw'
+              "
+            >
+              <ag-grid-angular
+                style="margin-left: 15px; margin-bottom: 5px"
+                [domLayout]="domLayout"
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefs__resource"
+                [defaultColDef]="defaultColDef"
+                [rowData]="resource_list"
+                [pagination]="true"
+                [paginationPageSize]="5"
+                (gridReady)="onGridReady__resource($event)"
+              ></ag-grid-angular>
+            </div>
+
+            <div
+              class="proposal__resource__grid"
+              *ngIf="
+                rfqStatus == 'Submitted' ||
+                rfqStatus == 'Open' ||
+                rfqStatus == 'Not Interested' ||
+                rfqStatus == 'WithDraw'
+              "
+            >
+              <ag-grid-angular
+                style="
+                  width: 97%;
+                  height: 300px;
+                  margin-left: 15px;
+                  margin-bottom: 5px;
+                "
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefs_resource"
+                [defaultColDef]="defaultColDef"
+                [rowData]="resource_list"
+                [pagination]="true"
+                [paginationPageSize]="5"
+                (gridReady)="onGridReady__resource($event)"
+              ></ag-grid-angular>
+            </div>
+          </div>
+          <label
+            style="padding-left: 15px; padding-bottom: 5px; padding-top: 20px"
+            >Resource Profiles</label
+          >
+          <div
+            class="file-upload"
+            *ngIf="
+              rfqStatus != 'Open' &&
+              rfqStatus != 'Not Interested' &&
+              rfqStatus != 'Submitted' &&
+              rfqStatus != 'WithDraw'
+            "
+          >
+            <div class="fileUpload" (click)="fileInput1.click()"></div>
+            <input
+              style="display: none"
+              #attachments
+              type="file"
+              (change)="onProfileFileChanged($event)"
+              #fileInput1
+              multiple="true"
+            />
+          </div>
+          <div>
+            <div style="padding: 15px; padding-right: 0px">
+              <div class="proposalDocuments">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">File</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <span
+                      *ngIf="
+                        rfqResourceProdileDocs?.data?.length > 0;
+                        then dataExists3;
+                        else noDataExists3
+                      "
+                    ></span>
+                    <ng-template #dataExists3>
+                      <tr
+                        *ngFor="
+                          let doc of rfqResourceProdileDocs?.data;
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          {{ doc.fileName }}
+                        </td>
+                        <div style="display: flex">
+                          <a
+                            href="{{ doc.fileUrl }}{{
+                              rfqResourceProdileDocs.sasToken
+                            }}"
+                            ><div class="cloud-download"></div>
+                          </a>
+                          <div
+                            class="blue-delete icon edit-delete"
+                            *ngIf="
+                              rfqStatus == 'Interested' || rfqStatus == 'Saved'
+                            "
+                            (click)="deleterfqResourceProfileFile(doc.id)"
+                          ></div>
+                        </div>
+                      </tr>
+                    </ng-template>
+                    <ng-template #noDataExists3
+                      ><tr>
+                        No documents found.
+                      </tr></ng-template
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div>
+            <mat-form-field
+              appearance="fill"
+              style="padding-left: 15px; padding-right: 10px"
+              class="example-full-width"
+            >
+              <mat-label>Vendor Remarks</mat-label>
+              <input
+                matInput
+                [disabled]="
+                  rfqStatus == 'Submitted' ||
+                  rfqStatus == 'Open' ||
+                  rfqStatus == 'Not Interested' ||
+                  rfqStatus == 'WithDraw'
+                "
+                [(ngModel)]="rfq_Detail.remarks"
+              />
+            </mat-form-field>
+          </div>
+        </mat-tab>
+        <mat-tab
+          label="Technical Proposal"
+          *ngIf="technicalProposalDetails?.techProposalId"
+        >
+          <div>
+            <label style="padding-left: 15px">Vendor Detail</label>
+            <div class="vendor-details">
+              <div class="col4">
+                <div class="detail">Vendor ID</div>
+                <div>{{ vendorDetails?.vendorSAPId }}</div>
+              </div>
+              <div class="col4">
+                <div class="detail">Vendor Name</div>
+                <div>{{ vendorDetails?.vendorName }}</div>
+              </div>
+              <div class="col4">
+                <div class="detail">Technical Proposal Start Date</div>
+                <div>
+                  {{ technicalProposalDetails?.startDate | date : dateFormat }}
+                </div>
+              </div>
+              <div class="col4">
+                <div class="detail">Technical Proposal End Date</div>
+                <div>
+                  {{ technicalProposalDetails?.endDate | date : dateFormat }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <label style="padding-left: 15px; padding-bottom: 5px"
+            >Vendor Proposal Documents</label
+          >
+          <div
+            class="file-upload"
+            *ngIf="technicalProposalDetails?.status != 3"
+          >
+            <div class="fileUpload" (click)="fileInput5.click()"></div>
+            <input
+              style="display: none"
+              #attachments
+              type="file"
+              (change)="onTPVendorproposalFileChanged($event)"
+              #fileInput5
+              multiple="true"
+            />
+          </div>
+          <div>
+            <div style="padding: 15px; padding-right: 0px">
+              <div class="proposalDocuments">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">File</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <span
+                      *ngIf="
+                        TechnicalProposalDocuments?.data?.length > 0;
+                        then dataExists4;
+                        else noDataExists4
+                      "
+                    ></span>
+                    <ng-template #dataExists4>
+                      <tr
+                        *ngFor="
+                          let doc of TechnicalProposalDocuments?.data;
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          {{ doc.fileName }}
+                        </td>
+                        <td>
+                          <div style="display: flex">
+                            <a
+                              href="{{ doc.fileUrl }}{{
+                                TechnicalProposalDocuments.sasToken
+                              }}"
+                              ><div class="cloud-download"></div>
+                            </a>
+                            <div
+                              class="blue-delete icon edit-delete"
+                              *ngIf="technicalProposalDetails?.status != 3"
+                              (click)="deleteTechnicalProposalDoc(doc.id)"
+                            ></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #noDataExists4
+                      ><tr>
+                        No documents found.
+                      </tr></ng-template
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label style="padding-left: 15px">Vendor Cost</label>
+            <div class="vendor-details">
+              <div class="col">
+                <div class="detail">Equivalant PMO</div>
+                <div>{{ equivalantpmo_tp }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Equivalant Cost</div>
+                <div>{{ equivalantCost_tp }}</div>
+              </div>
+              <div class="col">
+                <div class="detail">Total Price</div>
+                <div>{{ equivalantPrice_tp }}</div>
+              </div>
+            </div>
+
+            <div class="resourcePlan department__title">
+              <div class="">Resource Plan</div>
+              <div class="button-wrappper">
+                <button
+                  mat-button
+                  class="btn-hover-primary arrow space"
+                  *ngIf="technicalProposalDetails?.status != 3"
+                  (click)="addTPResource()"
+                >
+                  <div class="btn-wrapper">
+                    <div class="icon">
+                      <span class="add-icon"></span>
+                    </div>
+                    <div class="btn-name">Add</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="technicalProposalDetails?.status != 3">
+              <ag-grid-angular
+                style="margin-left: 15px; margin-bottom: 5px"
+                [domLayout]="domLayout"
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefs_tp_resource"
+                [defaultColDef]="defaultColDef"
+                [rowData]="resource_tp_list"
+                [pagination]="true"
+                [paginationPageSize]="5"
+                (gridReady)="onGridReady_tp_resource($event)"
+              ></ag-grid-angular>
+            </div>
+            <div *ngIf="technicalProposalDetails?.status == 3">
+              <ag-grid-angular
+                style="margin-left: 15px; margin-bottom: 5px"
+                [domLayout]="domLayout"
+                class="ag-theme-alpine"
+                [columnDefs]="columnDefs_tp_resource_submitted"
+                [defaultColDef]="defaultColDef"
+                [rowData]="resource_tp_list"
+                [pagination]="true"
+                [paginationPageSize]="5"
+                (gridReady)="onGridReady_tp_resource($event)"
+              ></ag-grid-angular>
+            </div>
+          </div>
+          <label
+            style="padding-left: 15px; padding-bottom: 5px; padding-top: 20px"
+            >Resource Profiles</label
+          >
+          <div class="file-upload">
+            <div
+              class="fileUpload"
+              *ngIf="technicalProposalDetails?.status != 3"
+              (click)="fileInput6.click()"
+            ></div>
+            <input
+              style="display: none"
+              #attachments
+              type="file"
+              (change)="onTPProfileFileChanged($event)"
+              #fileInput6
+              multiple="true"
+            />
+          </div>
+          <div>
+            <div style="padding: 15px; padding-right: 0px">
+              <div class="proposalDocuments">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">File</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <span
+                      *ngIf="
+                        tpResourceProdileDocs?.data?.length > 0;
+                        then dataExists5;
+                        else noDataExists5
+                      "
+                    ></span>
+                    <ng-template #dataExists5>
+                      <tr
+                        *ngFor="
+                          let doc of tpResourceProdileDocs.data;
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          {{ doc.fileName }}
+                        </td>
+                        <td>
+                          <div style="display: flex">
+                            <a
+                              href="{{ doc.fileUrl }}{{
+                                TechnicalProposalDocuments.sasToken
+                              }}"
+                              ><div class="cloud-download"></div>
+                            </a>
+                            <div
+                              class="blue-delete icon edit-delete"
+                              *ngIf="technicalProposalDetails?.status != 3"
+                              (click)="deleteTPResourceProfileFile(doc.id)"
+                            ></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #noDataExists5
+                      ><tr>
+                        No documents found.
+                      </tr></ng-template
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div>
+            <mat-form-field
+              appearance="fill"
+              style="padding-left: 15px; padding-right: 10px"
+              class="example-full-width"
+            >
+              <mat-label>Vendor Remarks</mat-label>
+              <input matInput [(ngModel)]="technicalProposalDetails.remarks" />
+            </mat-form-field>
+          </div>
+        </mat-tab>
+        <mat-tab label="Sign Off" *ngIf="technicalProposalDetails?.status == 3">
+          <div>
+            <label class="sign-Off-details">Sign Off Details</label>
+            <ag-grid-angular
+              [domLayout]="domLayout"
+              class="ag-theme-alpine"
+              [columnDefs]="columnDefs_signoff"
+              [defaultColDef]="defaultColDef"
+              [rowData]="signOffDetails"
+              [pagination]="true"
+              [paginationPageSize]="5"
+              (gridReady)="onGridReady_signoff($event)"
+            ></ag-grid-angular>
+          </div>
+          <br />
+          <div>
+            <label class="sign-Off-details">PO Linked Details</label>
+            <ag-grid-angular
+              [domLayout]="domLayout"
+              class="ag-theme-alpine"
+              [columnDefs]="columnDefs_polinked"
+              [defaultColDef]="defaultColDef"
+              [rowData]="poLinkedDetails"
+              [pagination]="true"
+              [paginationPageSize]="5"
+              (gridReady)="onGridReady_polinked($event)"
+            ></ag-grid-angular>
+          </div>
+          <br />
+          <form [formGroup]="actionForm">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+                  <mat-form-field *ngIf="!islinkthepo">
+                    <mat-label>Sign Off Remarks</mat-label>
+                    <input
+                      class="inputmat"
+                      matInput
+                      placeholder="Sign Off Remarks"
+                      formControlName="signoffRemarks"
+                    />
+                    <mat-error
+                      *ngIf="
+                        actionFormControl['signoffRemarks'].touched &&
+                        actionFormControl['signoffRemarks'].invalid
+                      "
+                    >
+                      Please add vendor sign off comments
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field class="text-box">
+                    <mat-label>Purchase Order Number</mat-label>
+                    <mat-select formControlName="poNumber">
+                      <mat-option>Select</mat-option>
+                      <mat-option
+                        *ngFor="let p of poDropdownValues"
+                        [value]="p.id"
+                        >{{ p.poNumber }}</mat-option
+                      >
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        actionFormControl['poNumber'].touched &&
+                        actionFormControl['poNumber'].invalid
+                      "
+                    >
+                      Please choose purchase order number
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field>
+                    <mat-label>Purchase Order Remarks</mat-label>
+                    <input
+                      class="inputmat"
+                      matInput
+                      placeholder="PO Remarks"
+                      formControlName="poremarks"
+                    />
+                    <mat-error
+                      *ngIf="
+                        actionFormControl['poremarks'].touched &&
+                        actionFormControl['poremarks'].invalid
+                      "
+                    >
+                      Please add purchase order remarks
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <div class="right__portion" *ngIf="!IsRFQID">
+      <div>
+        <div style="display: flex; padding: 15px">
+          <mat-icon>{{ srnDetail.isLocked }}</mat-icon>
+          <div class="srn-heading">{{ srnDetail.name }} Details</div>
+        </div>
+
+        <br />
+        <div class="details-heading">
+          <mat-form-field
+            appearance="fill"
+            style="width: 33.3%"
+            class="example-full-width column1"
+          >
+            <mat-label>Bill Month</mat-label>
+            <input matInput placeholder="" [(ngModel)]="srnDetail.billMonth" />
+          </mat-form-field>
+          <div class="column">
+            <span>From Date:</span>
+            <span class="detail">{{ srnDetail.fromDate }}</span>
+          </div>
+          <div class="column">
+            <span>To Date:</span>
+            <span class="detail">{{ srnDetail.toDate }}</span>
+          </div>
+        </div>
+
+        <div class="details-heading">
+          <div class="column1">
+            <span>Purchase Order:</span>
+            <span class="detail">{{ srnDetail.purchaseOrder }}</span>
+          </div>
+          <div class="column">
+            <span>Country:</span>
+            <span class="detail">{{ srnDetail.country }}</span>
+          </div>
+          <div class="column">
+            <span>Order Currency:</span>
+            <span class="detail">{{ srnDetail.orderCurrency }}</span>
+          </div>
+        </div>
+
+        <div class="details-heading">
+          <div class="column1">
+            <span>PO Type:</span>
+            <span class="detail">{{ srnDetail.potype }}</span>
+          </div>
+          <div class="column">
+            <span>PO Validity Start:</span>
+            <span class="detail">{{ srnDetail.poValidityStart }}</span>
+          </div>
+          <div class="column">
+            <span>PO Validity End:</span>
+            <span class="detail">{{ srnDetail.poValidityEnd }}</span>
+          </div>
+        </div>
+
+        <div class="details-heading">
+          <div class="column1">
+            <span>DM Name:</span>
+            <span class="detail">{{ srnDetail.dmName }}</span>
+          </div>
+          <div class="column">
+            <span>DM Email:</span>
+            <span class="detail">{{ srnDetail.dmEmail }}</span>
+          </div>
+          <mat-form-field
+            appearance="fill"
+            style="width: 33.3%"
+            class="example-full-width column"
+          >
+            <mat-label>Invoice</mat-label>
+            <input matInput placeholder="" [(ngModel)]="srnDetail.invoice" />
+          </mat-form-field>
+        </div>
+        <div class="details-heading">
+          <div class="column1">
+            <span>Vendor Name:</span>
+            <span class="detail">{{ srnDetail.vendorName }}</span>
+          </div>
+          <div class="column">
+            <span>Vendor ID:</span>
+            <span class="detail">{{ srnDetail.vendorID }}</span>
+          </div>
+          <div class="column">
+            <span>Vendor Email:</span>
+            <span class="detail">{{ srnDetail.vendorEmail }}</span>
+          </div>
+        </div>
+        <div class="department__title1">Resource Plan</div>
+        <div>
+          <ag-grid-angular
+            style="
+              width: 97%;
+              height: 200px;
+              margin-left: 15px;
+              margin-bottom: 5px;
+            "
+            class="ag-theme-alpine"
+            [rowData]="srnDetail.resourcePlan"
+            [columnDefs]="ResourcePlan_columnDefs"
+            [defaultColDef]="defaultColDef"
+          ></ag-grid-angular>
+        </div>
+      </div>
+      <br />
+      <div class="details-heading">
+        <div>
+          <span>Equivalant Capacity:</span>
+          <span class="detail">{{ srnDetail.equivalantCapacity }}</span>
+        </div>
+        <div>
+          <span>Rate Card:</span>
+          <span class="detail">{{ srnDetail.rateCard }}</span>
+        </div>
+        <div>
+          <span>Equivalant PMO:</span>
+          <span class="detail">{{ srnDetail.equivalantPMO }}</span>
+        </div>
+      </div>
+      <div class="details-heading">
+        <div>
+          <span>Total Cost:</span>
+          <span class="detail">{{ srnDetail.totalCost }}</span>
+        </div>
+      </div>
+      <div class="file-upload">
+        <div class="fileUpload" (click)="fileInput.click()"></div>
+        <input
+          style="display: none"
+          #attachments
+          type="file"
+          (change)="onproposalFileChanged($event)"
+          #fileInput
+          multiple="true"
+        />
+      </div>
+      <div>
+        <div style="padding: 15px">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">File</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <span
+                *ngIf="
+                  proposalDocuments.data.length > 0;
+                  then dataExists1;
+                  else noDataExists1
+                "
+              ></span>
+              <ng-template #dataExists1>
+                <tr *ngFor="let doc of srnDetail.files; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <a href="{{ doc.fileUrl }}{{ proposalDocuments.sasToken }}"
+                      >{{ doc.fileName }}
+                    </a>
+                  </td>
+                  <td>
+                    <div
+                      class="blue-delete icon"
+                      (click)="deleteFile(doc.id)"
+                    ></div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #noDataExists1
+                ><tr>
+                  No documents found.
+                </tr></ng-template
+              >
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div></div>
+      <div>
+        <mat-form-field
+          appearance="fill"
+          style="width: 96%; padding-left: 15px"
+          class="example-full-width"
+        >
+          <mat-label>Remarks</mat-label>
+          <input matInput placeholder="" [(ngModel)]="srnDetail.remarks" />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

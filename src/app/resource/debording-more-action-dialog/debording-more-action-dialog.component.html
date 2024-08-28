@@ -1,0 +1,81 @@
+<div>
+  <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+    <app-resource-loader-ui></app-resource-loader-ui>
+   </div>
+ 
+  <div class="row">
+    <div class="col-md col-sm">
+      <h3 class="title-head">
+       <b *ngIf="viewData.type=='Reject'"> Send Back</b>
+       <b *ngIf="viewData.type=='Rejected' && viewData.rowData.module=='De-boarding Request'"> Send Back De-boarding</b>
+       
+       <b *ngIf="viewData.type=='Withdraw'"> Withdraw De-boarding</b>
+       <b *ngIf="viewData.type !='Reject' && viewData.type !='Withdraw' && viewData.type!='Rejected'"> {{ viewData.type }} </b>
+      <b>{{viewData.comp}}</b> 
+        <mat-icon style="float: right;" (click)="closeBtn()">close</mat-icon>
+      </h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm mt-2" *ngIf="viewData.type == 'Delegate'">
+     
+      <mat-form-field class="full-width gMFFInput" appearance="fill">
+        <mat-label>Choose User<span class="colorStart">*</span></mat-label>
+        <input [(ngModel)]="selectedUser" (input)="filterUsers()" placeholder="Select" matInput
+          [matAutocomplete]="auto" />
+          <img matSuffix src="../assets/img/search.png" class="imgSearch" />
+        
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+        <mat-option *ngFor="let option of filterdOptions" [value]="option.ntid">
+            {{ option.email }} ({{option.ntid}})
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+     
+      <div class="col-md-12 col-sm mb-2" *ngIf="viewData.type=='Reject' || (viewData.type=='Rejected' && viewData.rowData.module=='De-boarding Request')">
+        <div style="background-color: #FFDF95;">
+                <table class="warnTbl">
+                  <tr>
+                    <td class="td1">  <img src="../assets/icons/warning_iconImg.svg"> </td>
+                    <td> 
+                    <div>   Warning. If you choose to send back the de-boarding request, the recipient will have the option to resubmit it. Please consider carefully before proceeding with this action.
+                    </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              </div>
+
+
+
+
+              <div class="col-md-12 col-sm mt-2" *ngIf="viewData.type == 'GCN Access'">
+                <mat-form-field class="full-width gMFFSelect" appearance="fill">
+                  <mat-label>Access Removed On<span class="colorStart">*</span></mat-label>
+                  <input matInput [matDatepicker]="pickerGcn" placeholder="Choose a date" readonly (click)="pickerGcn.open()"  [(ngModel)]="gcnAcceessDateModel" [min]="minDate1" [max]="maxDateCurrent"/>
+                  <mat-datepicker-toggle  matSuffix [for]="pickerGcn"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerGcn></mat-datepicker>
+                </mat-form-field>
+                </div>
+             
+    <div class="col-md-12 col-sm mt-2">
+      <mat-form-field class="full-width gMFFInput" appearance="fill">
+        <mat-label>Remarks<span class="colorStart">*</span></mat-label>
+        <textarea matInput style="resize:none" [(ngModel)]="remarksModel" (keydown)="restrictFirstSpace($event)"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md col-sm" style="text-align:right">
+      <button mat-stroked-button class="cancelBtn" (click)="cancleBtn()">
+        Cancel
+      </button>
+      <button mat-stroked-button color="primary" class="submitBtn" (click)="submitBtn()"  [disabled]="(remarksModel=='' || remarksModel==undefined || remarksModel==null )?true:false" [ngClass]="(remarksModel=='' || remarksModel==undefined || remarksModel==null )?'disableBtnClor':'submitBtn'">
+        Submit
+      </button>
+    </div>
+  </div>
+</div>

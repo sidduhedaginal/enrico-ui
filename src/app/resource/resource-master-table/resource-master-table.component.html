@@ -1,0 +1,761 @@
+
+<div class="adjustMH">
+  <div *ngIf="showLoading">
+    <app-resource-loader-ui></app-resource-loader-ui>
+   </div>
+  <div class="row rowBg" >
+    <div class="col-md-3 col-sm"  (click)="hideCsPopup()">
+      <mat-form-field class="full-width gMFFInput" appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput #searchInput (keyup)="applyFilter(searchInput.value,'',false)" />
+        <img matSuffix src="../assets/img/search.png" class="imgSearch" />
+      </mat-form-field>
+      </div>
+<div class="col-md-2 col-sm" >
+  <span class="curP adjustCSettings" id="csID" (click)="openSettingPopupDeboarding()">
+
+    <span>
+      <img src="../assets/img/settings.png" class="imgSettings curP" />
+    </span>
+    <span class="settingText">Column Settings</span>
+    </span>
+  
+  
+             <div class="RM-popup" id="myPopup1" >
+              <div class="RM-popupoverlaySetting" >
+                <div class="RM-popupSet">                 
+                    <div class="RM-setting-upArrow">
+                      <div class="RM-diag-sub-scroll">
+                        <div class="resetFiltercsDiv">
+                          <button class="resetFiltercs" (click)="saveAllFilter()"> Save Filters</button>
+                          <span (click)="closeColumnSettingsPopup()"><mat-icon>close</mat-icon></span>
+                        </div>
+                      <div class="RM-popuptext">    
+              <div *ngFor="let item of _displayAllCols; let i = index">    
+                <input type="checkbox" class="colSetCbx-rm" [id]="item + i" [name]="item" [(ngModel)]="item.Checked" (ngModelChange)="getCheckboxValues($event, item)" /><label [for]="item + i"> {{ getCapitalize(item) }} </label>    
+              </div>    
+            </div> 
+
+            <div>
+              <mat-chip-list>
+                <mat-chip  class="mchipV" *ngFor="let a of allChilpList;" [removable]="true" (removed)="onToppingRemoved(a)">
+                  {{ getCapitalize(a) }} 
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                </mat-chip-list>
+
+            </div>
+
+            <div class="resetFiltercsDiv mt-2" style="justify-content: left;">
+            
+              <button class="resetFiltercs" (click)="resetAll()"> Reset All Filters</button>
+            </div>
+           
+                    </div>
+                </div>
+                </div>
+              </div>
+            </div>   
+  </div>
+  <div class="col-md col-sm"  (click)="hideCsPopup()"></div>
+  <div class="col-md-2 col-sm adjustExportWdRM" >
+    <button (click)="btnExport()" class="buttonExportRM">
+    <div class="icon-class"><span class="export icon"></span> &nbsp;<span>Export</span></div>
+  </button>
+  </div>
+
+  <div class="col-md-1 col-sm" >
+    <img src="./assets/images/refresh.svg" class="refreshtableR" matTooltip="Refresh Data" (click)="refreshGetData()"/>
+  </div>
+  </div>
+  </div>
+
+<div>
+    <div class="divTableScroll" (click)="hideCsPopup()">
+      <table mat-table [dataSource]="dataSource" matSort class="resourceTbl custTablePaginator">
+          <ng-container matColumnDef="employeeNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('employeeNumber')" [ngClass]="activeCol=='employeeNumber'?'fTextClr' : ''">  Employee Number  </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='employeeNumber'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('employeeNumber')"/>
+              <span class="tooltiptext-v">
+                <mat-form-field>
+                  <mat-label>Employee Number</mat-label>
+                  <mat-select  (selectionChange)="applyEmpFilter2($event, 'employeeNumber')"  #selectEmployeeNumber multiple>
+                    <input placeholder="Search" class="inputSearchField"  #idEmployeeNumber  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'EmployeeNumber')" >
+                    <div class="select-all">
+                      <mat-checkbox [(ngModel)]="allSelectedEmployeeNumber" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('empNumber')">Select All</mat-checkbox>
+                    </div> 
+                    <mat-option (click)="optionClick('empNumber')"  *ngFor="let op of employeeNumberDetails" [value]="op">{{ op }}</mat-option>
+                  </mat-select>
+                </mat-form-field>              
+              </span>
+            </div>           
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.employeeNumber }}</td>
+        </ng-container>
+        <ng-container matColumnDef="employeeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('employeeName')"  [ngClass]="activeCol=='employeeName'?'fTextClr' : ''">  Employee Name  </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='employeeName'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('employeeName')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>Employee Name</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'employeeName')"  #selectEmployeeName multiple>
+                <input placeholder="Search" class="inputSearchField"  #idEmployeeName  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'EmployeeName')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedEmployeeName" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('empName')">Select All</mat-checkbox>
+                </div>  
+                <mat-option  (click)="optionClick('empName')" *ngFor="let op of employeeNameDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>     
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.employeeName }}</td>
+        </ng-container> 
+
+        <ng-container matColumnDef="ntid">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('ntid')"  [ngClass]="activeCol=='ntid'?'fTextClr' : ''">   NT ID  </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='ntid'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('ntid')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>NTID</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'ntid')" #selectNtid multiple>
+                <input placeholder="Search" class="inputSearchField"  #idNtid  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'NTID')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedNTID" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('ntid')">Select All</mat-checkbox>
+                </div> 
+                <mat-option (click)="optionClick('ntid')" *ngFor="let op of ntidDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>  
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.ntid }}</td>
+        </ng-container> 
+        <ng-container matColumnDef="emailID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('emailID')"  [ngClass]="activeCol=='emailID'?'fTextClr' : ''">   Email ID  </span>
+             <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='emailID'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('emailID')"/>
+            <span class="tooltiptext-v">
+          <mat-form-field>
+            <mat-label>Email ID</mat-label>
+            <mat-select  (selectionChange)="applyEmpFilter2($event, 'emailID')" #selectEmailid multiple>
+              <input placeholder="Search" class="inputSearchField"  #idEmailid  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'EmailId')" >
+              <div class="select-all">
+                <mat-checkbox [(ngModel)]="allSelectedEmailId" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('emailid')">Select All</mat-checkbox>
+              </div> 
+              <mat-option (click)="optionClick('emailid')" *ngFor="let op of emailIDDetails" [value]="op">{{ op }}</mat-option>
+            </mat-select>
+          </mat-form-field>              
+        </span>
+      </div> 
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.emailID }}</td>
+        </ng-container> 
+        <ng-container matColumnDef="sowJdID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('sowJdID')"  [ngClass]="activeCol=='sowJdID'?'fTextClr' : ''">  SOW JD  </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='sowJdID'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('sowJdID')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>  SOW JD </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'sowJdID')"  #selectSowJd multiple>
+                <input placeholder="Search" class="inputSearchField"  #idSowJd  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'SowJdID')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedSowJd" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('sowjd')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('sowjd')"  *ngFor="let op of sowJDIddetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.sowJdID }}</td>
+        </ng-container>
+        <ng-container matColumnDef="skillset">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('skillset')"  [ngClass]="activeCol=='skillset'?'fTextClr' : ''"> Skillset </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='skillset'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('skillset')" />
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Skillset </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'skillset')"  #selectSkillset multiple>
+                <input placeholder="Search" class="inputSearchField"  #idSkillSet  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'SkillSet')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedSkillSet" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('skillset')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('skillset')" *ngFor="let op of skillSetDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.skillset }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="grade">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('grade')"  [ngClass]="activeCol=='grade'?'fTextClr' : ''"> Grade </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='grade'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('grade')" />
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Grade </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'grade')"  #selectGrade multiple>
+                <input placeholder="Search" class="inputSearchField"  #idGrade  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Grade')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedGrade" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('grade')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('grade')" *ngFor="let op of gradeDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+            
+            </th>
+          <td mat-cell *matCellDef="let element">{{ element.grade }}</td>
+        </ng-container>
+       <ng-container matColumnDef="level">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('level')"  [ngClass]="activeCol=='level'?'fTextClr' : ''"> Level </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='level'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('level')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Level </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'level')"  #selectLevel multiple>
+                <input placeholder="Search" class="inputSearchField"  #idLevel  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Level')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedLevel" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('level')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('level')" *ngFor="let op of levelDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+            </th>
+          <td mat-cell *matCellDef="let element">{{ element.level }}</td>
+        </ng-container>
+        <ng-container matColumnDef="locationMode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>	 
+            <span (click)="colNameClick('locationMode')"  [ngClass]="activeCol=='locationMode'?'fTextClr' : ''"> Location Mode </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='locationMode'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('locationMode')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Location Mode </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'locationMode')"   #selectLocationMode multiple>
+                <input placeholder="Search" class="inputSearchField"  #idLocationMode  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'LocationMode')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedLocationMode" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('locMode')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('locMode')" *ngFor="let op of locationModedetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.locationMode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="company">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+            <span (click)="colNameClick('company')"  [ngClass]="activeCol=='company'?'fTextClr' : ''"> Company </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='company'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('company')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Company </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'company')"  #selectCompany multiple>
+                <input placeholder="Search" class="inputSearchField"  #idCompany  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Company')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedCompany" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('company')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('company')" *ngFor="let op of companyDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.company }}</td>
+        </ng-container>
+        <ng-container matColumnDef="personnelArea">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+            <span  (click)="colNameClick('personnelArea')"  [ngClass]="activeCol=='personnelArea'?'fTextClr' : ''"> Personnel Area</span> 
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='personnelArea'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"   (click)="colNameClick('personnelArea')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Personnel Area  </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'personnelArea')"  #selectPersArea multiple>
+                <input placeholder="Search" class="inputSearchField"  #idPersonnelArea  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'PersonnelArea')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedPersonalArea" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('persArea')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('persArea')" *ngFor="let op of personalAreaDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.personnelArea }}</td>
+        </ng-container>
+        <ng-container matColumnDef="personnelSubarea">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span  (click)="colNameClick('personnelSubarea')"  [ngClass]="activeCol=='personnelSubarea'?'fTextClr' : ''"> Personnel Subarea BGS</span> 
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='personnelSubarea'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('personnelSubarea')" />
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Personnel Subarea  </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'personnelSubarea')"  #selectPersSubArea multiple>
+                <input placeholder="Search" class="inputSearchField"  #idPersonnelSubArea  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'PersonnelSubarea')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedPersonalSubArea" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('persSubArea')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('persSubArea')" *ngFor="let op of personalSubAreaDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.personnelSubarea }}</td>
+        </ng-container>
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span  (click)="colNameClick('gender')"  [ngClass]="activeCol=='gender'?'fTextClr' : ''"> Gender </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='gender'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'"  (click)="colNameClick('gender')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Gender </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'gender')" #selectGender multiple>
+                <input placeholder="Search" class="inputSearchField"  #idGender  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Gender')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedGender" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('gender')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('gender')"  *ngFor="let op of genderdetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+            
+            </th>
+          <td mat-cell *matCellDef="let element">{{ element.gender }}</td>
+        </ng-container>
+        <ng-container matColumnDef="purchaseOrder">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('purchaseOrder')"  [ngClass]="activeCol=='purchaseOrder'?'fTextClr' : ''">   Purchase Order  </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='purchaseOrder'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('purchaseOrder')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>  Purchase Order  </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'purchaseOrder')"  #selectPO multiple>
+                <input placeholder="Search" class="inputSearchField"  #idPurchaseOrder  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'PurchaseOrder')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedPorder" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('pOrder')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('pOrder')"  *ngFor="let op of purchaseOrderDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.purchaseOrder }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="poLineItem">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('poLineItem')"  [ngClass]="activeCol=='poLineItem'?'fTextClr' : ''">  PO Line item </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='poLineItem'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('poLineItem')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>  PO Line Item  </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'poLineItem')" #selectPOLineItem multiple>
+                <input placeholder="Search" class="inputSearchField"  #idPoLineItem  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'PoLineItem')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedPoLineItem" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('poLineItem')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('poLineItem')" *ngFor="let op of poLineTemDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.poLineItem }}</td>
+        </ng-container>
+        <ng-container matColumnDef="vendorName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('vendorName')" [ngClass]="activeCol=='vendorName'?'fTextClr' : ''">  Vendor Name	 </span> 
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='vendorName'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('vendorName')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Vendor Name  </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'vendorName')"  #selectVendorName multiple>
+                <input placeholder="Search" class="inputSearchField"  #idVendorName  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'VendorName')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedVendorname" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('vendorName')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('vendorName')"  *ngFor="let op of vendorNameDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.vendorName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="vendorID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('vendorID')"  [ngClass]="activeCol=='vendorID'?'fTextClr' : ''">   Vendor ID  </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='vendorID'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('vendorID')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Vendor ID  </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'vendorID')"  #selectVendorId multiple>
+                <input placeholder="Search" class="inputSearchField"  #idVendorId  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'VendorID')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedVendorId" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('vendorId')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('vendorId')"  *ngFor="let op of vendorIdDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.vendorID }}</td>
+        </ng-container>
+        <ng-container matColumnDef="vendorEmail">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('vendorEmail')"  [ngClass]="activeCol=='vendorEmail'?'fTextClr' : ''">  Vendor emailID </span>
+             <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='vendorEmail'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('vendorEmail')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Vendor Email ID    </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'vendorEmail')" #selectVendorEmailId multiple>
+                <input placeholder="Search" class="inputSearchField"  #idVendorEmailId  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'VendorEmail')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedVendorEmailId" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('vendorEmailId')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('vendorEmailId')"  *ngFor="let op of vendorEmailDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.vendorEmail }}</td>
+        </ng-container>
+        	
+        <ng-container matColumnDef="poEnddate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 	
+            <span (click)="colNameClick('poEnddate')"  [ngClass]="activeCol=='poEnddate'?'fTextClr' : ''"> PO End date </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='poEnddate'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('poEnddate')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> PO End date	    </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'poEnddate')"  #selectPoEnddt multiple>
+                <input placeholder="Search" class="inputSearchField"  #idPoEnddate  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'PoEnddate')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedPoEndDt" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('poEndDt')">Select All</mat-checkbox>
+                </div>
+                <mat-option   (click)="optionClick('poEndDt')"  *ngFor="let op of poEndDateDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.poEnddate | date: 'dd/MM/yyyy'  }}</td>
+        </ng-container>
+        <ng-container matColumnDef="contractEnd">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('contractEnd')"  [ngClass]="activeCol=='contractEnd'?'fTextClr' : ''"> Contract End(SOW JD) </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='contractEnd'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('contractEnd')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>Contract End    </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'contractEnd')"  #selectContractEnd multiple>
+                <input placeholder="Search" class="inputSearchField"  #idContractEnd  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'ContractEnd')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedContractEnd" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('contractEnd')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('contractEnd')" *ngFor="let op of contractEndDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          
+          
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.contractEnd | date: 'dd/MM/yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="group">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+            <span (click)="colNameClick('group')"  [ngClass]="activeCol=='group'?'fTextClr' : ''"> Group </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='group'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('group')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>Group</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'group')"  #selectGrup multiple>
+                <input placeholder="Search" class="inputSearchField"  #idGroup  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Group')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedGroup" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('group')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('group')" *ngFor="let op of groupDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+            
+            
+            </th>
+          <td mat-cell *matCellDef="let element">{{ element.group }}</td>
+        </ng-container>
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  
+            <span (click)="colNameClick('department')"  [ngClass]="activeCol=='department'?'fTextClr' : ''"> Department </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='department'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('department')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>Department</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'department')"  #selectDept multiple>
+                <input placeholder="Search" class="inputSearchField"  #idDepartment  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Department')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedDept" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('dept')">Select All</mat-checkbox>
+                </div>
+                
+                <mat-option  (click)="optionClick('dept')" *ngFor="let op of departmentDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+            
+          
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.department }}</td>
+        </ng-container>
+        <ng-container matColumnDef="section">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>   
+            <span (click)="colNameClick('section')"  [ngClass]="activeCol=='section'?'fTextClr' : ''"> Section </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='section'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('section')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>Section</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'section')"  #selectSection multiple>
+                <input placeholder="Search" class="inputSearchField"  #idSection  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Section')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedSection" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('section')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('section')" *ngFor="let op of sectionDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.section }}</td>
+        </ng-container>
+        <ng-container matColumnDef="bu">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  
+            <span (click)="colNameClick('bu')"  [ngClass]="activeCol=='bu'?'fTextClr' : ''">  Business Unit </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='bu'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('bu')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Business Unit </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'bu')"   #selectBunit multiple>
+                <input placeholder="Search" class="inputSearchField"  #idBusinessUnit  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'BusinessUnit')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedBunit" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('bUnit')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('bUnit')" *ngFor="let op of buDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.bu }}</td>
+        </ng-container>
+        <ng-container matColumnDef="deliveryManagerName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('deliveryManagerName')" [ngClass]="activeCol=='deliveryManagerName'?'fTextClr' : ''">   Delivery Manager Name </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='deliveryManagerName'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('deliveryManagerName')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>   Delivery Manager Name</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'deliveryManagerName')"   #selectDmName multiple>
+                <input placeholder="Search" class="inputSearchField"  #idDeliveryManagerName  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'DeliveryManagerName')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedDeliveryManName" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('DmName')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('DmName')" *ngFor="let op of deliveryManagerNameDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.deliveryManagerName }}
+          </td>
+        </ng-container>
+       
+        <ng-container matColumnDef="deliveryManagerEmail">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('deliveryManagerEmail')" [ngClass]="activeCol=='deliveryManagerEmail'?'fTextClr' : ''">  Delivery Manager Email  </span> 
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='deliveryManagerEmail'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('deliveryManagerEmail')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>   Delivery Manager Email</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'deliveryManagerEmail')"   #selectDmEmail multiple>
+                <input placeholder="Search" class="inputSearchField"  #idDeliveryManagerEmail  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'DeliveryManagerEmail')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedDeliveryManEmail" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('DmEmail')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('DmEmail')" *ngFor="let op of deliveryManagerEmailDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.deliveryManagerEmail }}</td>
+        </ng-container>
+
+      
+
+        <ng-container matColumnDef="dateOfJoining">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+            <span (click)="colNameClick('dateOfJoining')" [ngClass]="activeCol=='dateOfJoining'?'fTextClr' : ''"> Date of Joining </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='dateOfJoining'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('dateOfJoining')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label> Date of Joining</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'dateOfJoining')"  #selectDoj multiple>
+                <input placeholder="Search" class="inputSearchField"  #idDateOfJoining  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'DateOfJoining')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedDoj" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('doj')">Select All</mat-checkbox>
+                </div>
+                <mat-option (click)="optionClick('doj')"  *ngFor="let op of dojDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+            
+            </th>
+          <td mat-cell *matCellDef="let element">{{ element.dateOfJoining  | date: 'dd/MM/yyyy' }}</td>
+        </ng-container>
+     
+        <ng-container matColumnDef="billingStartDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  
+            <span (click)="colNameClick('billingStartDate')" [ngClass]="activeCol=='billingStartDate'?'fTextClr' : ''"> Billing Start Date </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='billingStartDate'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('billingStartDate')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>   Billing Start Date</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'billingStartDate')"  #selectBillStartdt multiple>
+                <input placeholder="Search" class="inputSearchField"  #idBillingStartDate  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'BillingStartDate')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedBillingSdate" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('billStartdt')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('billStartdt')"  *ngFor="let op of billingStartDateDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+            </th>
+          <td mat-cell *matCellDef="let element">{{ element.billingStartDate | date: 'dd/MM/yyyy'  }}</td>
+        </ng-container>
+
+               <ng-container matColumnDef="billable">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>   
+            <span (click)="colNameClick('billable')" [ngClass]="activeCol=='billable'?'fTextClr' : ''"> Billable </span> 
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='billable'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('billable')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>   Billable</mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'billable')"  #selectBillable multiple>
+                <input placeholder="Search" class="inputSearchField"  #idBillable  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Billable')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedBillable" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('billable')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('billable')" *ngFor="let op of billableDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.billable }}</td>
+        </ng-container>
+        <ng-container matColumnDef="availableCapacity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+            <span (click)="colNameClick('availableCapacity')" [ngClass]="activeCol=='availableCapacity'?'fTextClr' : ''">  Available Capacity  </span>
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"> <img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='availableCapacity'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('availableCapacity')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>    Available Capacity </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'availableCapacity')"  #selectAvailableCapacity multiple>
+                <input placeholder="Search" class="inputSearchField"  #idAvailableCapacity  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'AvailableCapacity')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedAvaCapacity" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('aCapacity')">Select All</mat-checkbox>
+                </div>
+                <mat-option   (click)="optionClick('aCapacity')" *ngFor="let op of availableCapacityDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.availableCapacity }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="employmentStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span (click)="colNameClick('employmentStatus')" [ngClass]="activeCol=='employmentStatus'?'fTextClr' : ''">  Employment Status  </span> 
+            <div class="tooltip-v"  (click)="$event.stopPropagation()"><img [src]="sortImg" class="sortImg" (mouseover)="mhoverChangeIcon()" [ngClass]="activeCol=='employmentStatus'?'filterIconHighlightCls' : 'filterIconNotHighlightCls'" (click)="colNameClick('employmentStatus')"/>
+              <span class="tooltiptext-v">
+            <mat-form-field>
+              <mat-label>    Employment Status </mat-label>
+              <mat-select  (selectionChange)="applyEmpFilter2($event, 'employmentStatus')"  #selectStatus multiple>
+                <input placeholder="Search" class="inputSearchField"  #idStatus  matInput type="text" (keyup)="onKeyChangeFilter($event.target.value,'Status')" >
+                <div class="select-all">
+                  <mat-checkbox [(ngModel)]="allSelectedStatus" [ngModelOptions]="{ standalone: true }" (change)="toggleAllDDL('status')">Select All</mat-checkbox>
+                </div>
+                <mat-option  (click)="optionClick('status')" *ngFor="let op of empStatusDetails" [value]="op">{{ op }}</mat-option>
+              </mat-select>
+            </mat-form-field>              
+          </span>
+        </div>
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.employmentStatus }}</td>
+        </ng-container> 
+  
+        <ng-container matColumnDef="more" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef  class="trt" style="text-align: right;">Action</th>
+          <td mat-cell *matCellDef="let element" class="trt curP">          
+                
+
+            <mat-icon [matMenuTriggerFor]="menuMore" class="curP"   *ngIf="(userDetailsRoles=='/Vendors') || ((userDetailsRoles=='/EnricoUsers') && ((showInitiateDeboardChangeBtn || showinformPartnerBtn) && _roleGetPermission.editPermission))" >more_vert</mat-icon>
+            <mat-menu #menuMore="matMenu">
+              <button  class="menuInitiateClr" *ngIf="(userDetailsRoles=='/Vendors') || ((userDetailsRoles=='/EnricoUsers') && (showInitiateDeboardChangeBtn && _roleGetPermission.editPermission))" mat-menu-item (click)="initiateDeBording(element,'Initiate De-boarding')" >
+             
+                <img src="../assets/img/initiateDeBording.png" class="iniimg1" /> Initiate De-boarding
+              </button>
+              <button class="menuInitiateClr" *ngIf="(userDetailsRoles=='/Vendors') || ((userDetailsRoles=='/EnricoUsers') && (showInitiateDeboardChangeBtn && _roleGetPermission.editPermission))" mat-menu-item (click)="initiateChangeRequest(element)">
+              
+                 <img src="../assets/img/initiateChange.png"
+                  class="iniimg2" />Initiate Change</button>
+                  <button *ngIf="((userDetailsRoles=='/EnricoUsers') && showinformPartnerBtn &&  _roleGetPermission.editPermission)"  mat-menu-item (click)="informPartnerLink(element)" class="menuInitiateClr">
+                  
+                    <img src="../assets/img/initiateChange.png"
+                    class="iniimg2" />Inform Partner</button>
+            </mat-menu>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+
+
+    <mat-paginator 
+    class="pageCustRange" 
+    [length]="dataSource.data.length"
+    #paginator
+    [pageSizeOptions]="[5,10, 25, 50, 100]"
+    appStylePaginator  [showTotalPages]="3"
+     [hidden]="!dataSource.data.length"    
+  ></mat-paginator>
+  </div>

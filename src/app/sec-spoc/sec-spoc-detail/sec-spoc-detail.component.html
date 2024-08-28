@@ -1,0 +1,195 @@
+<div *ngIf="sowJdDetail">
+  <div class="justify-space-btw">
+    <div class="approve-title">{{ sowJdDetail.sowJdNumber }} Details</div>
+    <div
+      class="button-wrappper"
+      *ngIf="
+        !(
+          !sowJdDetail.isCurrentApprover ||
+          sowJdDetail.status === 4 ||
+          sowJdDetail.status === 6 ||
+          sowJdDetail.status === 17
+        )
+      "
+    >
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="doDelegate()"
+        *ngIf="permissionDetails?.delegatePermission"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="delegate icon"></span>
+          </div>
+          <div class="btn-name">Delegate</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="submit"
+        (click)="doReject()"
+        *ngIf="permissionDetails?.rejectPermission"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="withdraw icon"></span>
+          </div>
+          <div class="btn-name">Reject</div>
+        </div>
+      </button>
+      <button
+        *ngIf="permissionDetails?.sendBackPermission"
+        mat-button
+        class="btn-hover arrow space"
+        (click)="onSubmit('sendback')"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="back-menu-icon"></span>
+          </div>
+          <div class="btn-name">Send back</div>
+        </div>
+      </button>
+      <button
+        *ngIf="permissionDetails?.approvePermission"
+        mat-button
+        class="btn-hover-primary arrow space"
+        (click)="onSubmit('approve')"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="checkmark-icon"></span>
+          </div>
+          <div class="btn-name">Approve</div>
+        </div>
+      </button>
+    </div>
+  </div>
+  <div class="py-3">
+    <div *ngIf="sowJdId">
+      <app-sowjd-approval-process-info
+        [sowJdId]="sowJdId"
+      ></app-sowjd-approval-process-info>
+    </div>
+  </div>
+
+  <app-sowjd-common-info [sowJdId]="sowJdId"></app-sowjd-common-info>
+
+  <div class="approval-section-heading">
+    <div class="align-btn pt-3">
+      <div class="approval-content-heading">Vendor Suggestions</div>
+      <div class="button-wrappper">
+        <button
+          *ngIf="sowJdDetail.status === 3 && sowJdDetail.isCurrentApprover"
+          mat-button
+          class="btn-hover-primary arrow space"
+          (click)="addVendor()"
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="add-icon"></span>
+            </div>
+            <div class="btn-name">Add</div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <!--Non Rate Card-->
+    <div
+      class="approval-section-border"
+      *ngIf="
+        sowJdDetail?.sowJdTypeId === 'c65aaf67-071a-4b0f-95d0-9f6af420fb35'
+      "
+    >
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        [columnDefs]="vendorColumnDefsNRC"
+        [defaultColDef]="defaultColDef"
+        [rowData]="vendorSuggestionData"
+        [paginationPageSize]="5"
+        [animateRows]="true"
+        [pagination]="true"
+        (gridReady)="onGridReadyVendorSuggestion($event)"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        [suppressMenuHide]="true"
+        [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+        (filterChanged)="onFilterChanged($event)"
+        (horizontalScroll)="onHorizontalScroll($event)"
+        (sortChanged)="onSortChanged($event)"
+      ></ag-grid-angular>
+    </div>
+    <!--Rate Card-->
+    <div
+      class="approval-section-border"
+      *ngIf="
+        sowJdDetail?.sowJdTypeId === 'dacd2c78-8fde-4ab8-91c5-fa4b2faa4a71'
+      "
+    >
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        [columnDefs]="vendorColumnDefsRC"
+        [defaultColDef]="defaultColDef"
+        [rowData]="vendorSuggestionData"
+        [paginationPageSize]="5"
+        [animateRows]="true"
+        [pagination]="true"
+        (gridReady)="onGridReadyVendorSuggestion($event)"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        [suppressMenuHide]="true"
+        [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+        (filterChanged)="onFilterChanged($event)"
+        (horizontalScroll)="onHorizontalScroll($event)"
+        (sortChanged)="onSortChanged($event)"
+      ></ag-grid-angular>
+    </div>
+  </div>
+
+  <mat-expansion-panel class="mt-3">
+    <mat-expansion-panel-header>
+      <div class="approval-section-heading">
+        <mat-panel-title class="approval-content-heading"
+          >Remarks</mat-panel-title
+        >
+      </div>
+    </mat-expansion-panel-header>
+    <div>
+      <div
+        *ngIf="approvedStatusData?.length > 0; else noRemarksFound"
+        class="remarks-section"
+      >
+        <div
+          class="approval-section-remarks"
+          *ngFor="let item of approvedStatusData"
+        >
+          <div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+                  <div>
+                    {{ item.name }}
+                    <span
+                      style="float: right"
+                      [ngClass]="sowjdService.getStatusColor(item.statusId)"
+                      >{{ item.status }}</span
+                    >
+                  </div>
+                  <div>{{ item.actionOn | date : dateFormat }}</div>
+                  <div>{{ item.remarks }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noRemarksFound>
+      <p class="px-4">No remarks found</p>
+    </ng-template>
+  </mat-expansion-panel>
+  <hr />
+</div>

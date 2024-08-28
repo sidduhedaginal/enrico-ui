@@ -1,0 +1,44 @@
+<!-- <div class="upload-file-header">
+  <span class="Upload__file__span">UPLOAD FILE</span>
+  <mat-icon mat-dialog-close class="cancel-icon">cancel</mat-icon>
+</div> -->
+<div class="header-items">
+    <div class="title">
+        <p mat-dialog-title class="custom-dialog">Upload File</p>
+    </div>
+    <div>
+        <mat-icon matTooltip="Close" class="close-btn" mat-dialog-close
+          >close</mat-icon
+        >
+    </div>
+  </div>
+  
+  <div class="image-container drop-zone" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
+    <img style="object-fit: contain; width: 450px" src="{{ imageUrl }}" (click)="handleButtonClick()" alt="Image"
+      (drop)="onDrop($event)" />
+  </div>
+  
+  <input (change)="onFileChange($event)" type="file" class="form-control" id="file-input" style="display: none"
+    accept=".xlsx, .xls, csv" />
+  
+  
+  <div class="button-container">
+    <button mat-button class="button-secondary" cdkFocusInitial (click)="downloadTemplate()">
+      <span class="import icon"></span>&nbsp;&nbsp;&nbsp;
+      Download Template
+    </button>
+  </div>
+  
+  <div class="filenameblock" *ngIf="filename">
+    <!-- <span class="xlsicons icon">&nbsp;&nbsp;&nbsp;</span> -->
+      <span style="font-weight: bold; width: 100%;font-size: 12px;">{{filename}}
+      <br>  <span style="font-weight: bold; width: 100%;font-size: 10px;color: #999;">{{filesize}} KB</span>
+      </span>
+     
+      <span class="cancelcircleicons icons" (click)="cancelFile()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+  <div class="processbtn">
+    <button mat-button *ngIf="fileSelected" cdkFocusInitial (click)="Onsave()" class="button-primary">
+      Proceed
+    </button>
+  </div>

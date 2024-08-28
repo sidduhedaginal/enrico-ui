@@ -1,0 +1,500 @@
+<div class="row">
+    <div class="col-md-4 col-sm">
+      <h3 class="title-head">
+        
+        {{getElementData.employeeNumber}} - {{getElementData.employeeName}} 
+      </h3>
+    </div>
+    <div class="col-md-8 col-sm" style="text-align:right" >
+
+        <button mat-stroked-button class="m-2 actionBtn" (click)="cancelBtnCM()">  <mat-icon class="gapSpaceIcon">close</mat-icon> Cancel</button>
+    
+        <button mat-stroked-button class="m-2 actionBtn selectedDefaultItem" (click)="submitBtn('Submit')">
+           <img src="./assets/img/checkmark-bold.png" class="gapSpace2"/> Submit</button>
+    
+      </div>
+  
+      
+  
+  </div>
+  <h3>Resource Details</h3>
+  <div class="bgClr">
+    <div class="row mt-1">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Employee Number </span>
+        <span class="spanText">{{getElementData.employeeNumber}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel"> Employee Name</span>
+        <span class="spanText">{{getElementData.employeeName}}  </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Email ID</span>
+        <span class="spanText">{{getElementData.emailID}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">NT ID</span>
+        <span class="spanText">{{getElementData.ntid}} </span>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Company</span>
+        <span class="spanText">{{getElementData.company}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel"> Personnel Sub-Area</span>
+        <span class="spanText">{{getElementData.personnelSubarea}}  </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Date of Joining</span>
+        <span class="spanText">{{getElementData.dateOfJoining  |  date: 'dd-MMM-yyyy'}}  </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Contract End Date</span>
+        <span class="spanText">{{getElementData.contractEnd  |  date: 'dd-MMM-yyyy' }}  </span>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Delivery Manager</span>
+        <span class="spanText">{{getElementData.deliveryManagerName}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Section SPOC</span>
+        <span class="spanText">{{getElementData.sectionSpocNtID}} </span> 
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Employment Status</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getElementData.status}} </span>
+        <span class="spanText"  *ngIf="typeBtn!='Re-Submit'">{{getElementData.employmentStatus}} </span>
+      </div>
+      <div class="col-md-3 col-sm"></div>
+    </div>
+  </div>
+  <div class="hrLine">&nbsp;</div>
+  <h3>Vendor Details</h3>
+  <div class="bgClr">
+    <div class="row mt-1">
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Vendor ID </span>
+        <span class="spanText">{{getElementData.vendorID}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel"> Vendor Name</span>
+        <span class="spanText">{{getElementData.vendorName}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Contact Name</span>
+        <span class="spanText">{{getElementData.vendorEmail}} </span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">Vendor Email ID</span>
+        <span class="spanText">{{getElementData.vendorEmail}} </span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="hrLine">&nbsp;</div>
+  <h3>Change Request</h3>
+
+  <div class="row mt-1">
+    <div class="col-md-5 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill">
+        <mat-label>Select Change</mat-label>
+        <mat-select (selectionChange)="selectChangeDropdown($event.value)" [(ngModel)]="ddlChangeModel" [disabled]="typeBtn =='Re-Submit'?true:false">
+          <mat-option value="SOW JD">SOW JD </mat-option>
+          <mat-option value="Billable/Non-Billable"> Billable/Non-Billable</mat-option>
+          <mat-option value="Personal Sub-Area" *ngIf="getElementData?.companyCode !='38F0'"> Personal Sub-Area</mat-option>
+          <mat-option value="Purchase Order"> Purchase Order</mat-option> 
+          <mat-option value="Grade"> Grade</mat-option> 
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm">
+      <mat-form-field class="full-width gMFFSelect" appearance="fill">
+        <mat-label>Effective From <span class="colorStart">*</span></mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerLastWorkingDate"
+          placeholder="Choose a date"
+          readonly
+          (click)="pickerLastWorkingDate.open()" [(ngModel)]="dateBind" [min]="MinDateModel" disabled
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerLastWorkingDate"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerLastWorkingDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    </div>
+<!--start for  sowjd-->
+<div *ngIf="isShowSowJD">  
+  <form [formGroup]="createdForm">
+    <div class="divChangeCS pb-0">
+      <div class="row mt-1">
+        <div class="col-md-5 col-sm">
+          <span class="spanLabel">Sign Off ID</span>
+          <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.technicalProposalNumber }}</span>
+          <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.signOffId}}</span>
+        </div>
+        <div class="col-md-7 col-sm">
+          <mat-form-field class="full-width gMFFSelect" appearance="fill">
+            <mat-label>New Sign Off ID</mat-label>
+            <mat-select (selectionChange)="newSignOffChange()" formControlName="newSignOffIdForm">
+              <mat-option *ngFor="let v1 of  signoffIDddlList  | sortCM : 'signoffID'" [value]="v1">
+                {{v1.signoffID}} | {{v1.skillsetName}} | {{v1.gradeName}} | {{v1.dateOfJoining}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">SOW JD ID</span>       
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.sowJdID }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.sowJdID}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <!-- <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New SOW JD ID</mat-label>
+          <mat-select  formControlName="newSowJDIdForm" >
+            <mat-option *ngFor="let v1 of  getResponseSowJDDetails.sowjds | sortCM : 'sowjdNumber'" [value]="v1">{{v1.sowjdNumber}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New SOW JD ID</mat-label>
+          <mat-select formControlName="newSowJDIdForm" (selectionChange)="newSowJDChange()" >
+            <mat-option *ngFor="let v1 of  sowJDListCM | sortCM : 'sowJdNumber'" [value]="v1">{{v1.sowJdNumber}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Skillset</span>
+  
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.skillset }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.skillSet}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <!-- <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Skillset</mat-label>
+          <mat-select formControlName="newSkillSetForm">
+            <mat-option *ngFor="let v1 of  getResponseSowJDDetails.skillSets | sortCM : 'skillSetName'" [value]="v1">{{v1.skillSetName}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Skillset</mat-label>
+          <mat-select formControlName="newSkillSetForm"  (selectionChange)="newSkillsetChange()">
+            <mat-option *ngFor="let v1 of  skillSetListCM | sortCM : 'skillsetName'" [value]="v1">{{v1.skillsetName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Grade</span>
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.grade }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.grade}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <!-- <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Grade</mat-label>
+          <mat-select  formControlName="newGradeForm">
+            <mat-option *ngFor="let v1 of  getResponseSowJDDetails.grades | sortCM : 'gradeName'" [value]="v1">{{v1.gradeName}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Grade</mat-label>
+          <mat-select  formControlName="newGradeForm" (selectionChange)="newGradeChange()">
+            <mat-option *ngFor="let v1 of  gradeListCM | sortCM : 'gradeName'" [value]="v1">{{v1.gradeName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Purchase Order</span>      
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.purchaseOrder }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.purchaseOrder}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <!-- <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Purchase Order</mat-label>
+          <mat-select  formControlName="newPurchaseOrderForm" (selectionChange)="newPurchaseOrderChange($event)">
+            <mat-option *ngFor="let v1 of  getResponseSowJDDetails.purchaseOrders  | sortCM : 'poNumber'" [value]="v1">{{v1.poNumber}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Purchase Order</mat-label>
+          <mat-select  formControlName="newPurchaseOrderForm" (selectionChange)="newPurchaseOrderChange2()">
+            <mat-option *ngFor="let v1 of  purchaseOrderListCM  | sortCM : 'pOnumber'" [value]="v1">{{v1.pOnumber}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">PO Line Item</span>
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.poLineItem }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.poLineItem}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <!-- <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New PO Line Item</mat-label>
+          <mat-select formControlName="newPoLineItemForm" (selectionChange)="newPoLineItemChange($event)">
+            <mat-option *ngFor="let v1 of  filterPOLineArray  | sortCM : 'lineItem'" [value]="v1">{{v1.lineItem}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New PO Line Item</mat-label>
+          <mat-select formControlName="newPoLineItemForm">
+            <mat-option *ngFor="let v1 of  poLineItemListCM" [value]="v1">{{v1.lineitem}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Personal Area</span>
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.personnelArea }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.personalArea}}</span>
+      </div>
+      <div class="col-md-3 col-sm pb-3">
+       
+        <span class="spanLabel">New Personal Area</span>
+        <span class="spanText">{{newPersonalAreaData}}</span>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Personal Sub-Area</span>
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.personnelSubarea }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.personalSubArea}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <!-- <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Personal Sub-Area</mat-label>
+          <mat-select  formControlName="newPersonalSubAreaForm">
+            <mat-option *ngFor="let v1 of  getResponseSowJDDetails.personalSubAreas | sortCM : 'personalSubArea'" [value]="v1">{{v1.personalSubArea}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Personal Sub-Area</mat-label>
+          <mat-select  formControlName="newPersonalSubAreaForm">
+            <mat-option *ngFor="let v1 of  plantInformationItemListCM | sortCM : 'name'" [value]="v1">{{v1.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Organization Unit</span>
+      
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.group }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.organizationUnit}}</span>
+      </div>
+      <div class="col-md-3 col-sm pb-3">
+       
+        <span class="spanLabel">New Organization Unit</span>
+        <span class="spanText">{{newOrganizationUnit}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divChangeCS pb-0">
+    <div class="row mt-1">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">SOW JD End Date</span>
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.sowEndDate | date:'dd-MMM-yyyy'}}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{ getSowInfoData?.sowJdEndDate | date:'dd-MMM-yyyy'}}</span>
+      </div>
+      <div class="col-md-3 col-sm pb-3">
+       
+        <span class="spanLabel">New SOW JD End Date</span>
+        <span class="spanText">{{createdForm?.controls?.newSignOffIdForm?.value?.endDate | date:'dd-MMM-yyyy' || '--'}}</span>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<!--end for sowjd-->
+
+<!--start for  Billable/Non-Billable-->
+<div *ngIf="isShowBillable">  
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel"> Billable</span>
+        <span *ngIf="typeBtn !='Re-Submit'">
+      <span *ngIf="(getElementData.billable=='True')||(getElementData.billable==true)" class="spanText">Yes</span>
+        <span  *ngIf="(getElementData.billable=='False')||(getElementData.billable==false)" class="spanText">No</span>
+      </span>
+        
+        <span *ngIf="typeBtn =='Re-Submit'">
+          <span *ngIf="(getSowInfoData.billable=='True')||(getSowInfoData.billable==true)" class="spanText">Yes</span>
+            <span  *ngIf="(getSowInfoData.billable=='False')||(getSowInfoData.billable==false)" class="spanText">No</span>
+          </span>
+      </div>
+      <div class="col-md-3 col-sm" *ngIf="typeBtn !='Re-Submit'">
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Billable<span class="colorStart">*</span></mat-label>
+          <mat-select [(ngModel)]="newBillableModel">
+            <mat-option value="1" *ngIf="(getElementData.billable=='False')||(getElementData.billable==false)">Yes </mat-option>
+            <mat-option value="0" *ngIf="(getElementData.billable=='True')||(getElementData.billable==true)">No </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm" *ngIf="typeBtn =='Re-Submit'">
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Billable<span class="colorStart">*</span></mat-label>
+          <mat-select [(ngModel)]="newBillableModel">
+            <mat-option value="1" *ngIf="(getSowInfoData.billable=='False')||(getSowInfoData.billable==false)">Yes </mat-option>
+            <mat-option value="0" *ngIf="(getSowInfoData.billable=='True')||(getSowInfoData.billable==true)">No </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end for  Billable/Non-Billable-->
+
+<!--start for personal sub area-->
+<div *ngIf="isShowPersonalSubArea">  
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Personal Sub-Area</span>
+      
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.personnelSubarea }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.personalSubArea}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Personal Sub-Area<span class="colorStart">*</span></mat-label>
+          <mat-select [(ngModel)]="newPersonalSubAreaModel">
+            <!-- <mat-option value="6525-COB">6525-COB </mat-option> -->
+            <mat-option *ngFor="let v1 of  getResponseSowJDDetails.personalSubAreas | sortCM : 'personalSubArea'" [value]="v1">{{v1.personalSubArea}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end for personal sub area-->
+
+<!--start for Purchase Order-->
+<div *ngIf="isShowPurchaseOrder">  
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Purchase Order</span>
+  
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.purchaseOrder }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.purchaseOrder}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Purchase Order<span class="colorStart">*</span></mat-label>
+          <mat-select  [(ngModel)]="newPODDLmodel" (selectionChange)="newPODDl($event)">
+            <mat-option *ngFor="let v of poListForPurchaseOrder  | sortCM : 'pOnumber'" [value]="v">{{v.pOnumber}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">PO Line Item</span>
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.poLineItem }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.poLineItem}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New PO Line Item<span class="colorStart">*</span></mat-label>
+          <mat-select  [(ngModel)]="newPOLineItemDDLmodel">
+            <mat-option *ngFor="let v of poListForPOLineItems | sortCM : 'lineitem'" [value]="v">{{v.lineitem}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--end for Purchase Order-->
+
+<!--start for Grade-->
+<div *ngIf="isShowGrade">  
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0 pb-2">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Skillset</span>
+       
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.skillset }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.skillSet}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <span class="spanLabel">New Skillset</span>
+      
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.skillset }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.skillSet}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="divChangeCS pb-0">
+    <div class="row mb-0">
+      <div class="col-md-5 col-sm">
+        <span class="spanLabel">Grade</span>
+        <span class="spanText" *ngIf="typeBtn !='Re-Submit'">{{getElementData.grade }}</span>
+        <span class="spanText" *ngIf="typeBtn=='Re-Submit'">{{getSowInfoData?.grade}}</span>
+      </div>
+      <div class="col-md-3 col-sm">
+        <mat-form-field class="full-width gMFFSelect" appearance="fill">
+          <mat-label>New Grade<span class="colorStart">*</span></mat-label>
+          <mat-select  [(ngModel)]="newGradeDDLmodel">
+            <mat-option *ngFor="let v1 of  gradeListForGrade | sortCM : 'gradeName'" [value]="v1">{{v1.gradeName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--end for Grade-->
+  <br /><br /><br /><br /><br />
+  

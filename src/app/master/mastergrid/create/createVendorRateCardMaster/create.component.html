@@ -1,0 +1,261 @@
+<div class="formspinner" *ngIf="showloader">
+  <lib-spinner></lib-spinner>
+</div>
+
+
+<div class="main_block">
+  <div class="grid_header">
+    <div class="left_title">
+      <h1 class="grid_title">{{ title }}</h1>
+    </div>
+    <div class="right_buttons">
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-secondary"
+        (click)="cancelVendorRateCard()"
+      >
+        Cancel
+      </button>
+
+      <button
+        mat-button
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        class="button-primary"
+        (click)="saveVendorRateCard()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="errorMessage.length > 0">
+  <div class="grid_header">
+    <span style="color: red">{{ errorMessage }}</span>
+  </div>
+</div>
+<div class="row" style="margin-top: 3%">
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      style="width: 80%"
+      appearance="fill"
+    >
+      <mat-label>Vendor Rate Id</mat-label>
+      <input
+        matInput
+        placeholder="Vendor Rate Id"
+        [(ngModel)]="vendorRateCardId"
+        readonly="readonly"
+      />
+    </mat-form-field>
+  </div>
+  <!-- (selectionChange)="onVendorChange()" -->
+  <!-- <div class="col-md-4">
+    <mat-form-field appearance="fill" style="width: 80%; margin-left: 10%;">
+      <mat-label>Company Code</mat-label>
+
+      <mat-select
+        [(ngModel)]="companyid"
+        
+        required
+      >
+        <mat-option
+          *ngFor="let comp of company_list"
+          [value]="comp.companyId"
+        >
+          {{ comp.companyCode }}
+
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div> -->
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      style="width: 80%; margin-left: 10%"
+      appearance="fill"
+    >
+      <mat-label>Company Code</mat-label>
+      <input
+        matInput
+        placeholder="Company Code"
+        [(ngModel)]="companyCode"
+        readonly="readonly"
+      />
+    </mat-form-field>
+  </div>
+
+
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      appearance="fill"
+      style="width: 80%; margin-left: 20%"
+    >
+      <mat-label>Currency</mat-label>
+      <input
+        matInput
+        placeholder="Currency"
+        [(ngModel)]="currency"
+        readonly="readonly"
+      />
+    </mat-form-field>
+  </div>
+
+
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <mat-form-field appearance="fill" style="width: 80%">
+      <mat-label>Vendor Name</mat-label>
+
+      <mat-select
+        [(ngModel)]="vendorid"
+        (selectionChange)="onVendorChange()"
+        required
+      >
+        <mat-option
+          *ngFor="let vend of vendor_card"
+          [value]="vend.vendorId"
+        >
+          {{ vend.vendorName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      appearance="fill"
+      style="width: 80%; margin-left: 10%"
+    >
+      <mat-label>Vendor SAP ID</mat-label>
+      <input
+        matInput
+        placeholder="Vendor SAP ID"
+        [(ngModel)]="vendorSapid"
+        readonly="readonly"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      appearance="fill"
+      style="margin-left: 20%; width: 80%"
+    >
+      <mat-label>Location Mode</mat-label>
+
+      <mat-select [(ngModel)]="locationMode" required>
+        <mat-option *ngFor="let location of locationModes" [value]="location">
+          {{ location }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      style="width: 80%"
+      appearance="fill"
+    >
+      <mat-label>Grade</mat-label>
+
+      <mat-select [(ngModel)]="gradeId" required>
+        <mat-option
+          *ngFor="let grade of grade_list"
+          [value]="grade.gradeMasterId"
+        >
+          {{ grade.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      appearance="fill"
+      style="width: 80%; margin-left: 10%"
+    >
+      <mat-label>Price</mat-label>
+      <input
+        matInput
+        placeholder="Price"
+        [(ngModel)]="price"
+        (keydown)="onKeyDownforGraid($event)"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      appearance="fill"
+      style="width: 80%; margin-left: 20%"
+    >
+      <mat-label>Skillset Name</mat-label>
+
+      <mat-select
+        [(ngModel)]="skillSetId"
+        (selectionChange)="onSkillSetChange()"
+        required
+      >
+        <mat-option
+          *ngFor="let skillset of skillset_card"
+          [value]="skillset.skillsetId"
+        >
+          {{ skillset.skillsetName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      appearance="fill"
+      style="width: 80%;"
+    >
+      <mat-label>Remarks</mat-label>
+      <input matInput placeholder="Remarks" [(ngModel)]="remark" />
+    </mat-form-field>
+  </div>
+
+
+  <div class="col-md-4">
+    <mat-form-field
+      class="example-full-width"
+      appearance="fill"
+      style="width: 80%; margin-left: -40%"
+    >
+    <mat-label>Modified Date</mat-label>
+
+
+      <input matInput [matDatepicker]="validityStartDate" placeholder="Modified Date"  [(ngModel)]="modifiedDate">
+      <mat-datepicker-toggle matSuffix [for]="validityStartDate">
+        <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #validityStartDate></mat-datepicker>
+      
+    </mat-form-field>
+  </div>
+\
+
+</div>

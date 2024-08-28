@@ -1,0 +1,24 @@
+.approval-section {
+  padding: 16px;
+  margin: 16px 0;
+}
+.container-fluid {
+  .row {
+    padding-bottom: 16px;
+  }
+  .row > .col div:first-child {
+    font-weight: bold;
+    line-height: 26px;
+  }
+  .row > .col div:last-child {
+    word-break: break-all;
+  }
+}
+.header {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  font-size: 18px;
+}

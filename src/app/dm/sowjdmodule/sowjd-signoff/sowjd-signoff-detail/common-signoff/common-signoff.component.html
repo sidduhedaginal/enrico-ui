@@ -1,0 +1,114 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div
+      *ngIf="
+        data.type === 'createSoWJD' ||
+          data.type === 'updateSoWJD' ||
+          data.type === 'workPackage' ||
+          data.type === 'resourcePlan';
+        else otherTitle
+      "
+    >
+      <div class="title" *ngIf="data.type === 'createSoWJD'">
+        {{ "Create SoW JD" }}
+      </div>
+      <div class="title" *ngIf="data.type === 'updateSoWJD'">
+        {{ "Update SoW JD" }}
+      </div>
+      <div class="title" *ngIf="data.type === 'workPackage'">
+        {{ "Work Package Delivery Complete" }}
+      </div>
+      <div class="title" *ngIf="data.type === 'resourcePlan'">
+        {{ "Vendor Resource Plan Onboarding Complete" }}
+      </div>
+    </div>
+    <ng-template #otherTitle>
+      <div class="title">{{ data.type }} Sign Off</div>
+    </ng-template>
+
+    <div>
+      <mat-icon matTooltip="Close" class="close-btn" (click)="onClose('no')"
+        >close</mat-icon
+      >
+    </div>
+  </div>
+  <div class="remarks-red py-2" *ngIf="showerror">{{ errormsg }}</div>
+  <form [formGroup]="commonSignOffForm" (ngSubmit)="onSubmit()">
+    <div
+      class="row"
+      *ngIf="
+        data.type === 'Initiate' &&
+        data.sowjdTypeCode === 'RC' &&
+        data.outSourcingCode === 'TAM'
+      "
+    >
+      <div class="col">
+        <mat-form-field class="matform1">
+          <mat-label>Managed Capacity</mat-label>
+          <mat-select matNativeControl formControlName="managedCapacity">
+            <mat-option value="Yes">Yes</mat-option>
+            <mat-option value="No">No</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              commonSignOffForm.controls['managedCapacity'].touched &&
+              commonSignOffForm.controls['managedCapacity'].invalid
+            "
+          >
+            Please choose Managed Capacity
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Remarks</mat-label>
+          <textarea
+            matInput
+            (keydown)="sowjdService.space($event)"
+            placeholder="Remarks"
+            formControlName="remarks"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              commonSignOffForm.controls['remarks'].invalid &&
+              commonSignOffForm.controls['remarks'].touched
+            "
+          >
+            Please add remarks
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="onClose('no')"
+      >
+        <div class="btn-wrapper">
+          <!-- <div class="icon">
+            <span class="cancel-icon"></span>
+          </div> -->
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button
+        mat-button
+        class="btn-hover-primary arrow space"
+        type="submit"
+        [disabled]="commonSignOffForm.invalid"
+      >
+        <div class="btn-wrapper">
+          <!-- <div class="icon">
+            <span class="checkmark-icon"></span>
+          </div> -->
+          <div class="btn-name">Submit</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

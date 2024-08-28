@@ -1,0 +1,136 @@
+<div class="vendor-details">
+  <div class="row" *ngIf="errorMessage.length > 0">
+    <div class="grid_header">
+      <span style="color: red">{{ errorMessage }}</span>
+    </div>
+  </div>
+  <div class="divDataContaint">
+    <div class="vendor-detail">
+      <div class="header">
+        <div class="heading">{{ title }}</div>
+        <div class="edit-button">
+          <div class="button-wrappper">
+            <button
+              mat-button
+              class="btn-hover-primary arrow space"
+              (click)="openVendorDetailsDialog()"
+            >
+              <div class="btn-wrapper">
+                <div class="icon">
+                  <span class="edit-icon"></span>
+                </div>
+                <div class="btn-name">Edit</div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="details-heading" *ngIf="vendorDetail">
+        <div class="column">
+          <div class="detail">Vendor Name</div>
+          <div>{{ vendorDetail?.vendorName }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">Vendor Code(SAP ID)</div>
+          <div>{{ vendorDetail?.vendorSAPID }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">Classification</div>
+          <div>{{ vendorDetail?.classificationName }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">Vendor Type</div>
+          <div>{{ vendorDetail?.vendorTypeName }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">Business Support</div>
+          <div>{{ vendorDetail?.businessSupportName }}</div>
+        </div>
+      </div>
+
+      <div class="details-heading">
+        <div class="column" *ngIf="vendorDetail?.parentVendorName != null">
+          <div class="detail">Parent Vendor</div>
+          <div>{{ vendorDetail?.parentVendorName }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">Currency</div>
+          <div>{{ vendorDetail?.currencyName }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">Status</div>
+          <div>{{ vendorDetail?.status }}</div>
+        </div>
+      </div>
+      <div class="details-heading">
+        <div class="column">
+          <div class="detail">Country</div>
+          <div>{{ vendorDetail?.vendorCountryName }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">State</div>
+          <div>{{ vendorDetail?.vendorRegionName }}</div>
+        </div>
+        <div class="column">
+          <div class="detail">City</div>
+          <div>{{ vendorDetail?.vendorAddressCity }}</div>
+        </div>
+      </div>
+      <div class="details-heading">
+        <div class="column">
+          <div class="detail">Address</div>
+          <div>{{ vendorDetail?.vendorAddressStreet }}</div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="table-heading">
+      <div>Contact Details</div>
+      <div class="button-wrappper">
+        <button
+          mat-button
+          class="btn-hover-primary arrow space"
+          (click)="openContactDetailsDialog()"
+        >
+          <div class="btn-wrapper">
+            <div class="icon">
+              <span class="add-icon"></span>
+            </div>
+            <div class="btn-name">Add</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        [rowData]="contact_Detail"
+        [columnDefs]="columnDefsContactInfo"
+        [defaultColDef]="defaultColDef"
+        (gridReady)="onGridReadyContactInfo($event)"
+        [pagination]="pagination"
+        [paginationPageSize]="paginationPageSize"
+        [stopEditingWhenCellsLoseFocus]="true"
+      >
+      </ag-grid-angular>
+    </div>
+
+    <div class="row table-heading">
+      <div>Subsidiaries</div>
+    </div>
+    <div>
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        [rowData]="subsidaryDetails"
+        [defaultColDef]="defaultColDef"
+        [columnDefs]="columnDefsSubsidiaries"
+        (gridReady)="onGridReadySubsidiaries($event)"
+        [pagination]="pagination"
+        [paginationPageSize]="paginationPageSize"
+        [stopEditingWhenCellsLoseFocus]="true"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

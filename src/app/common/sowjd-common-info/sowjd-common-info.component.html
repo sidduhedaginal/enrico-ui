@@ -1,0 +1,370 @@
+<div *ngIf="sowjddetaildata">
+  <div>
+    <label>SoW JD Details</label>
+    <div class="bgSJD">
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">SoW JD Number</div>
+          <div>{{ sowjddetaildata?.sowJdNumber }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">SoW JD Type</div>
+          <div>{{ sowjddetaildata?.sowJdType }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Status</div>
+          <div>{{ sowjddetaildata?.statusName }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Description</div>
+          <div>{{ sowjddetaildata?.description }}</div>
+        </div>
+      </div>
+
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Company</div>
+          <div>{{ sowjddetaildata?.companyCode }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Currency</div>
+          <div>{{ sowjddetaildata?.currencyName }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Location/Plant</div>
+          <div>
+            {{
+              sowjddetaildata?.plantCode +
+                " (" +
+                sowjddetaildata?.plantName +
+                ")"
+            }}
+          </div>
+        </div>
+        <div class="col">
+          <div class="detail">WBS</div>
+          <div>{{ sowjddetaildata?.wbsElement }}</div>
+        </div>
+      </div>
+
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Name of the customer</div>
+          <div>{{ sowjddetaildata?.customerName }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Internal Resource check done?</div>
+          <div>{{ sowjddetaildata?.internalResourceCheckdone }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">
+            Customer Approval Available for using outsourcing?
+          </div>
+          <div>{{ sowjddetaildata?.isCustomerApprovalAvailable }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Customer</div>
+          <div>{{ sowjddetaildata?.customerTypeName }}</div>
+        </div>
+      </div>
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Is the project GDPR relevant?</div>
+          <div>{{ sowjddetaildata?.isprojectGDPRRelevant }}</div>
+        </div>
+        <div class="col" *ngIf="sowjddetaildata.isStandardGPAIsSufficient">
+          <div class="detail">
+            Is it clarified if the standard GPA is sufficient?
+          </div>
+          <div>{{ sowjddetaildata.isStandardGPAIsSufficient }}</div>
+        </div>
+        <div class="col" *ngIf="sowjddetaildata.c2PAgreement">
+          <div class="detail">C2P agreement?</div>
+          <div>{{ sowjddetaildata.c2PAgreement }}</div>
+        </div>
+        <div
+          class="col"
+          *ngIf="sowjddetaildata.isResourceAugmentationNeedExtensionOfC2P"
+        >
+          <div class="detail">
+            Does "Resource Augmentation" need extension of C2P
+          </div>
+          <div>
+            {{ sowjddetaildata.isResourceAugmentationNeedExtensionOfC2P }}
+          </div>
+        </div>
+        <div class="col" *ngIf="sowjddetaildata.c2PDocumentPrepared">
+          <div class="detail">C2P document prepared?</div>
+          <div>{{ sowjddetaildata.c2PDocumentPrepared }}</div>
+        </div>
+      </div>
+    </div>
+    <label class="pb-2">Outsourcing type</label>
+    <div class="bgSJD">
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Resource location</div>
+          <div>{{ sowjddetaildata?.resourceLocation }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Outsourcing type</div>
+          <div>{{ sowjddetaildata?.outsourcingType }}</div>
+        </div>
+      </div>
+    </div>
+
+    <label class="pb-2">SOW JD Reference</label>
+    <div class="bgSJD">
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Is this is a repeat outsourcing?</div>
+          <div>{{ sowjddetaildata?.isRepeatOutsourcing }}</div>
+        </div>
+        <div class="col" *ngIf="sowjddetaildata?.isRepeatOutsourcing === 'Yes'">
+          <div class="detail">SoW JD Reference No.</div>
+          <div>{{ sowjddetaildata?.sowJdReferenceNumber }}</div>
+        </div>
+      </div>
+    </div>
+
+    <label class="pb-3">SoW JD Documents</label>
+    <div class="bgSJD">
+      <div style="padding: 15px; padding-right: 0px">
+        <div class="proposalDocuments">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">File</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <span
+                *ngIf="
+                  sowjdDocumentdata?.data?.length > 0;
+                  then dataExists1;
+                  else noDataExists1
+                "
+              ></span>
+              <ng-template #dataExists1>
+                <tr *ngFor="let doc of sowjdDocumentdata?.data; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    {{ doc.documentName }}
+                  </td>
+                  <td>
+                    <a
+                      href="{{ doc.documentUrl }}{{
+                        sowjdDocumentdata.sasToken
+                      }}"
+                    >
+                      <div class="cloud-download"></div>
+                    </a>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #noDataExists1>
+                <tr>
+                  No documents found.
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <label class="py-3">Department details</label>
+    <div class="bgSJD">
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Group</div>
+          <div>
+            {{ sowjddetaildata.group }}
+          </div>
+        </div>
+        <div class="col">
+          <div class="detail">Department</div>
+          <div>
+            {{ sowjddetaildata.department }}
+          </div>
+        </div>
+        <div class="col">
+          <div class="detail">Section</div>
+          <div>
+            {{ sowjddetaildata.section }}
+          </div>
+        </div>
+        <div class="col">
+          <div class="detail">BU</div>
+          <div>
+            {{ sowjddetaildata.bu }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="approval-section-heading">
+      <div class="approval-content-heading">User Department Details</div>
+      <div class="approval-section">
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          pagination
+          [paginationPageSize]="5"
+          [columnDefs]="columnDefs_UserDeptDetails"
+          [rowData]="rowData_DeptData"
+          [defaultColDef]="defaultColDef"
+          (gridReady)="onGridReadyDept($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [suppressMenuHide]="true"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (filterChanged)="onFilterChanged($event)"
+          (horizontalScroll)="onHorizontalScroll($event)"
+          (sortChanged)="onSortChanged($event)"
+        >
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <ng-template matStepLabel>PO</ng-template>
+    <label>Purchase Order Info</label>
+    <div class="bgSJD">
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Start date</div>
+          <div>
+            {{ sowjddetaildata?.startDate | date : dateFormat }}
+          </div>
+        </div>
+        <div class="col">
+          <div class="detail">End date</div>
+          <div>{{ sowjddetaildata?.endDate | date : dateFormat }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Budget Code</div>
+          <div>{{ sowjddetaildata?.budgetCode }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Cost Center</div>
+          <div>
+            {{ sowjddetaildata.costCenterName }}
+          </div>
+        </div>
+      </div>
+
+      <div class="vendor-details">
+        <div class="col">
+          <div class="detail">Material Group</div>
+          <div>{{ sowjddetaildata?.materialGroup }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Fund</div>
+          <div>{{ sowjddetaildata?.fundCode }}</div>
+        </div>
+        <div class="col">
+          <div class="detail">Fund Center Name</div>
+          <div>{{ sowjddetaildata?.fundCentername }}</div>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </div>
+  <label style="padding-bottom: 5px">Outsourcing Volume</label>
+  <div class="bgSJD">
+    <div class="vendor-details">
+      <div class="col">
+        <div class="detail">Internal Equivalent Capcity</div>
+        <div>
+          {{
+            sowjddetaildata?.internalEquivalentCapacity
+              | numberFormat : companyLocale : companyNumericFormat
+          }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="detail">Internal Equivalent PMO</div>
+        <div>
+          {{
+            sowjddetaildata?.internalEquivalentPMO
+              | numberFormat : companyLocale : companyNumericFormat
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <label style="padding-bottom: 5px">Guidance Cost</label>
+  <div class="bgSJD">
+    <div class="vendor-details">
+      <div class="col">
+        <div class="detail">Personal Cost</div>
+        <div>
+          {{
+            sowjddetaildata?.personalCost
+              | countryCurrency : companyCurrencyName : companyLocale
+          }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="detail">OH Cost</div>
+        <div>
+          {{
+            sowjddetaildata?.ohCost
+              | countryCurrency : companyCurrencyName : companyLocale
+          }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="detail">Total Cost</div>
+        <div>
+          {{
+            sowjddetaildata?.totalCost
+              | countryCurrency : companyCurrencyName : companyLocale
+          }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="detail">Target Savings</div>
+        <div>{{ sowjddetaildata?.targetSavings }}</div>
+      </div>
+      <div class="col">
+        <div class="detail">Guidance Cost</div>
+        <div>
+          {{
+            sowjddetaildata?.guidanceCost
+              | countryCurrency : companyCurrencyName : companyLocale
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="approval-section-heading">
+    <div class="approval-content-heading">SOW JD Demand</div>
+    <div class="approval-section">
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        pagination
+        [paginationPageSize]="5"
+        [rowData]="rowData"
+        [columnDefs]="columnDefsSkillsets"
+        [defaultColDef]="defaultColDef"
+        (gridReady)="onGridReadySkillset($event)"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        [suppressMenuHide]="true"
+        [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+        (filterChanged)="onFilterChanged($event)"
+        (horizontalScroll)="onHorizontalScroll($event)"
+        (sortChanged)="onSortChanged($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

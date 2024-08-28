@@ -1,0 +1,89 @@
+.Form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: space-between; 
+    gap: 15px;
+}
+
+.field{
+    /* width: 200px; */
+    min-width: 150px;
+    width: 400px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+ .mat-form-field {
+    display: inline-block;
+    text-align: left;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+.action-btn {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 0.55em;
+  }
+
+  .save-btn {
+    height: 2.5rem;
+    width: 5rem;
+    border-radius: 0;
+    background-color: #007bc0;
+    margin-left: 1rem;
+    color: #ffffff;
+    margin-right: 5rem;
+  }
+  .cancel-btn {
+    height: 2.5rem;
+    width: 5rem;
+    border-radius: 0;
+    background-color: #ffffff;
+    color: #007bc0;
+    border: 1px solid #007bc0;
+  }
+
+  .error {
+    color: red;
+    opacity: 0.5;
+
+  }
+
+  .spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -50vh;
+    margin-left: -20vw;
+  }
+  .radioField{
+    display:flex;
+    align-items:  center;
+    justify-content: space-between;
+  }
+
+  .radioField > mat-label {
+    font-weight : 700;
+    font-size: 12px;
+    margin-right: 10px;
+  }
+
+  :host ::ng-deep .mat-radio-label-content {
+    font-size: 10px !important;
+    font-weight: 300 !important;
+  }
+/* .delete {
+  position: absolute;
+  bottom: 10px;
+} */
+
+.title{
+    font-family: Bosch Sans;
+    margin-left: 12px;
+}
+.error{
+    font-family: Bosch Sans;
+    margin-left: 12px;   
+}

@@ -1,0 +1,25 @@
+.success {
+  padding: 10px;
+  .success-message {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .success-icon,
+    .success-mess,
+    .message {
+      display: flex;
+      justify-content: center;
+    }
+    img {
+      width: 48px;
+    }
+    .success-mess {
+      font-weight: bold;
+    }
+  }
+
+  .btn-align {
+    justify-content: center;
+    margin-top: 22px;
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "status": "success",
+  "actionDate": "2023-09-07T08:52:48.1050204Z",
+  "data": {
+    "resourceMaster": [    
+      {
+        "employeeNumber": 30471463,
+        "employeeName": "Rim John",
+        "ntid": "qq",
+        "emailID": "test",
+        "sowJdID": "SOW_JD_12_2023_34",
+        "skillset": "Python",
+        "grade": "Grade 3",
+        "level": "52",
+        "locationMode": "Bosch",
+        "gender": "M",
+        "purchaseOrder": "PO!2345",
+        "poLineItem": "25",
+        "vendorName": "UST",
+        "vendorID": "123",
+        "vendorEmail": "Test@mail.com",
+        "poEnddate": "2023-07-19T22:34:09",
+        "contractEnd": "2023-06-29T18:30:00",
+        "group": "50592126",
+        "department": "50902959",
+        "section": "765656",
+        "bu": "50836160",
+        "deliveryManagerName": "ALBERT ANAND",
+        "deliveryManagerEmail": "test_albert.anand@in.bosch.com",
+        "dateOfJoining": "2023-06-26T18:30:00",
+        "billingStartDate": "2023-07-19T22:34:09",
+        "billable": "False",
+        "availableCapacity": "1",
+        "employmentStatus": "Active",
+        "createdBy": "AAL3KOR"
+      }
+    ]
+  },
+  "requestToken": "PoCEOOuzRgC5Er0JOGxc8cQqohSA9LrW"
+}

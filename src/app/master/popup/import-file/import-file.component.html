@@ -1,0 +1,26 @@
+<div class="upload-file-header">
+    <span class="Upload__file__span">UPLOAD FILE</span>
+    <span class="close-small-icon icon"  mat-dialog-close >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  </div>
+  
+  <div class="image-container drop-zone" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
+    <img style="object-fit: contain; width: 350px" src="{{ imageUrl }}" (click)="handleButtonClick()" alt="Image"
+      (drop)="onDrop($event)" />
+  </div>
+  <div style="width: 100%">
+    <span style="font-weight: bold; width: 100%">{{filename}}</span>
+  </div>
+  <input (change)="onFileChange($event)" type="file" class="form-control" id="file-input" style="display: none"
+    accept=".xlsx, .xls, csv" />
+  
+  
+  <div class="button-container" >
+    <button   class="button-secondary" title="Download Template" style="background-color: white !important;padding: 5px 10px;width:150px;" (click)="downloadTemplate()">
+      <span class="downloadIcon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="action_text"> TEMPLATE</span>
+    </button>
+  
+    <button  *ngIf="fileSelected"  (click)="Onsave()" class="button-primary" style="padding: 5px 10px;">
+      Proceed
+    </button>
+  </div>

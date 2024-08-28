@@ -1,0 +1,67 @@
+<div class="add-resource-page">
+  <div class="header">
+    <div class="title">Add vendor</div>
+    <div class="close-btn">
+      <mat-icon matTooltip="Close" (click)="cancel()">close</mat-icon>
+    </div>
+  </div>
+  <form [formGroup]="addVendorForm" (ngSubmit)="onSave()">
+    <mat-error *ngIf="vendorList && vendorList.length === 0"
+      >No vendors found</mat-error
+    >
+    <mat-form-field>
+      <mat-label>Choose vendor</mat-label>
+      <mat-select formControlName="newVendor">
+        <mat-option
+          *ngFor="let vendor of vendorList"
+          [value]="vendor.vendorId"
+          >{{ vendor.vendorName }}</mat-option
+        >
+      </mat-select>
+      <mat-error
+        *ngIf="
+          addVendorForm.controls['newVendor'].invalid &&
+          addVendorForm.controls['newVendor'].touched
+        "
+      >
+        Please choose new vendor
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Suggestion</mat-label>
+      <input matInput placeholder="Suggestion" formControlName="suggestion" />
+      <mat-error
+        *ngIf="
+          addVendorForm.controls['suggestion'].invalid &&
+          addVendorForm.controls['suggestion'].touched
+        "
+      >
+        Please add suggestion
+      </mat-error>
+    </mat-form-field>
+
+    <div class="button-wrappper btn-align">
+      <button
+        mat-button
+        class="btn-hover arrow space"
+        type="button"
+        (click)="cancel()"
+      >
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="cancel-icon"></span>
+          </div>
+          <div class="btn-name">Cancel</div>
+        </div>
+      </button>
+      <button mat-button class="btn-hover-primary arrow space" type="submit">
+        <div class="btn-wrapper">
+          <div class="icon">
+            <span class="checkmark-icon"></span>
+          </div>
+          <div class="btn-name">Add</div>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

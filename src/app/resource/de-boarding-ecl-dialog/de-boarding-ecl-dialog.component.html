@@ -1,0 +1,88 @@
+<div>
+  <div *ngIf="showLoading" style="position: absolute;left: 15%;">
+    <app-resource-loader-ui></app-resource-loader-ui>
+   </div>
+    <div class="row">
+      <div class="col-md col-sm">
+        <h3 class="title-head">
+          {{ viewData.type }} 
+          <mat-icon style="float: right;" class="curp" (click)="closeBtn()">close</mat-icon>
+        </h3>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-12 col-sm mt-2" *ngIf="viewData.type == 'Complete ECL'" style="display: none;">
+   
+    <div class="containerUpload" appDnd (fileDropped)="onFileDropped($event)">
+      <input
+        type="file"
+        class="UpInput"
+        #fileDropRef
+        id="fileDropRef"
+        multiple
+        (change)="fileBrowseHandler($event)"
+      />
+      <h3 class="h-Up-Title">
+        Drops your file here. or <span><b>Browse</b></span> or
+        <span><b>URL</b></span>
+      </h3>
+      <p class="h-Up-subTitle">
+        Please upload the file with supported format such as xls, xlss, csv
+      </p>
+    </div>
+    <div class="files-list">
+      <div class="single-file" *ngFor="let file of files; let i = index">
+        <table class="tbl1">
+          <tr>
+            <td class="td1"><b>File Name </b></td>
+            <td class="td2">
+              <span
+                ><b>
+                  {{ file?.name }}
+                </b></span
+              >
+            
+              <app-progress
+                *ngIf="file?.progress != 100"
+                [progress]="file?.progress"
+              ></app-progress>
+            </td>
+            <td style="text-align:right">
+              <span (click)="deleteFile(i)">
+                <i class="fa fa-trash-o delicon" aria-hidden="true"></i
+              ></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    
+
+
+      </div>
+      <div class="col-md-12 col-sm mt-2">
+        <mat-form-field class="full-width gMFFInput" appearance="fill">
+          <mat-label>Remarks<span class="colorStart">*</span></mat-label>
+          <textarea matInput style="resize:none"  [(ngModel)]="remarksModel" (keydown)="restrictFirstSpace($event)"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="row mt-3">
+      <div class="col-md col-sm" style="text-align:right">
+        <button mat-stroked-button class="cancelBtn" (click)="cancleBtn()">
+          Cancel
+        </button>
+        <button 
+          mat-stroked-button
+          color="primary"
+          class="submitBtn"
+          (click)="submitBtn()" [disabled]="(remarksModel=='' || remarksModel==undefined || remarksModel==null )?true:false" [ngClass]="(remarksModel=='' || remarksModel==undefined || remarksModel==null )?'disableBtnClor':'submitBtn'"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+  

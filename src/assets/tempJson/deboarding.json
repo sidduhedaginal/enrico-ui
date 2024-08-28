@@ -1,0 +1,95 @@
+{
+    "status": "success",
+    "actionDate": "2023-08-08T06:09:38.1933444Z",
+    "data": {
+      "resourceDeboardDeatils": [
+       
+        {
+          "id": "c8eb5ae8-470f-434f-b3ad-7fa9b033787a",
+          "deboardingRequestID": "7676-001",
+          "employeeNumber": 7676,
+          "fullname": "vetri",
+          "vendorName": "Update manpower group",
+          "exitReason": "No show",
+          "isReplaceRequest": true,
+          "lastWorkingDay": "2023-09-03T00:00:00",
+          "deliveryManager": "xx",
+          "statusDescription": "Submitted"
+        },
+        {
+          "id": "ba4d2b38-e3e1-438c-bf54-69d415f84f8e",
+          "deboardingRequestID": "1111-001",
+          "employeeNumber": 765656,
+          "fullname": "Shrikant kanchi",
+          "vendorName": "SubsidiaryManpowerGroup Services India Pvt Lt",
+          "exitReason": "No show",
+          "isReplaceRequest": true,
+          "lastWorkingDay": "2023-08-29T00:00:00",
+          "deliveryManager": "xx",
+          "statusDescription": "Approved"
+        },
+        {
+          "id": "58a2a6ca-87f0-463f-84a1-a3de7137a873",
+          "deboardingRequestID": "765657-001",
+          "employeeNumber": 765657,
+          "fullname": "Guru N",
+          "vendorName": "Update manpower group",
+          "exitReason": "No show",
+          "isReplaceRequest": true,
+          "lastWorkingDay": "2023-09-03T00:00:00",
+          "deliveryManager": "xx",
+          "statusDescription": "ECL Initiated"
+        },
+        {
+          "id": "58a2a6ca-87f0-963f-84a1-a3de7137a873",
+          "deboardingRequestID": "765157-001",
+          "employeeNumber": 7654657,
+          "fullname": "Guru P",
+          "vendorName": "Update manpower group",
+          "exitReason": "No show",
+          "isReplaceRequest": true,
+          "lastWorkingDay": "2023-09-03T00:00:00",
+          "deliveryManager": "xxyyxx",
+          "statusDescription": "ECL Completed"
+        },
+         
+        {
+          "id": "58a2a6ca-87f0-963g-84a1-a3de7137a873",
+          "deboardingRequestID": "765157-001",
+          "employeeNumber": 7654657,
+          "fullname": "Guru S",
+          "vendorName": "Update manpower group",
+          "exitReason": "No show",
+          "isReplaceRequest": true,
+          "lastWorkingDay": "2023-09-03T00:00:00",
+          "deliveryManager": "xxyyxx",
+          "statusDescription": "Deactive Resource"
+        },
+        {
+          "id": "58a2a6ca-87f0-963g-84a1-a3de7137a873",
+          "deboardingRequestID": "765157-001",
+          "employeeNumber": 7654057,
+          "fullname": "Guru ji",
+          "vendorName": "Update manpower group",
+          "exitReason": "No show",
+          "isReplaceRequest": true,
+          "lastWorkingDay": "2023-09-03T00:00:00",
+          "deliveryManager": "xxyyxx",
+          "statusDescription": "Rejected"
+        },
+        {
+          "id": "58a2a6ca-87f0-963g-84a1-a3de7137a873",
+          "deboardingRequestID": "765157-001",
+          "employeeNumber": 7614057,
+          "fullname": "Vetri",
+          "vendorName": "Update manpower group",
+          "exitReason": "No show",
+          "isReplaceRequest": true,
+          "lastWorkingDay": "2023-09-30T00:00:00",
+          "deliveryManager": "xxyyxx",
+          "statusDescription": "Deboarding Completed"
+        }
+      ]
+    },
+    "requestToken": "0YT52qNMpncHyixbR21CiwfhtUq2xN4u"
+  }

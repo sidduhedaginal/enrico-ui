@@ -1,0 +1,157 @@
+<form  [formGroup]="myForm" (ngSubmit)="onSave()">
+  <mat-dialog-content class="scrollable-dialog">
+      <div class="main-form">
+        <div class="left-form">
+          <h2>Edit Resource</h2>
+        </div>
+        <div class="right-form1">
+          <mat-icon (click)="onClose($event)">close</mat-icon>
+        </div>
+      </div>
+      <div class="spinner_planning" *ngIf="showLoading">
+        <lib-spinner></lib-spinner>
+      </div>
+      <div class="erroMessageTag" *ngIf="showErroMessage">
+            <span>{{errorMessage}}</span>
+      </div>
+     
+      <div class="commonstyle">
+          <mat-form-field class="mat-formpaddingleft">
+              <mat-label>Skillset</mat-label>
+              <mat-select formControlName="skillsetId"
+              (selectionChange)="OnSkillchange($event)" required>
+                <mat-option *ngFor="let skill of skillSet" [value]="skill.id">
+                  {{skill.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+    
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>Grade</mat-label>
+          <mat-select formControlName="gradeId" 
+          (selectionChange)="OnGradechange($event)" required>
+            <mat-option *ngFor="let skill of grade" [value]="skill.id">
+              {{skill.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+   
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>Location</mat-label>
+          <mat-select formControlName="locationId"   required>
+            <mat-option *ngFor="let loc of location" [value]="loc.id">
+              {{loc.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>Location Mode</mat-label>
+          <mat-select formControlName="locationModeId" 
+          (selectionChange)="OnLocationmodechange($event)" required>
+            <mat-option *ngFor="let locmod of locationMode" [value]="locmod.id">
+              {{locmod.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+     
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>GB</mat-label>
+          <mat-select formControlName="gbId" 
+        required>
+            <mat-option *ngFor="let gb of gb" [value]="gb.id">
+              {{gb.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+     
+
+  
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>Vendor</mat-label>
+          <mat-select formControlName="vendorID" 
+          (selectionChange)="OnVendorchange($event)" required>
+            <mat-option *ngFor="let vendor of vendors" [value]="vendor.id">
+              {{vendor.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>VKM Price </mat-label>
+          <input
+          formControlName="vkmPrice"
+            matInput
+            min="0"
+            maxlength="14"
+            (keypress)="decimalFilter($event)"
+            (change)="OnVKMChange($event)"
+            placeholder="vkmPrice"
+            required
+          />
+        
+        </mat-form-field>
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>Skillset Type</mat-label>
+          <mat-select formControlName="skillSetType" >
+            <mat-option *ngFor="let skilltype of skillSetType" [value]="skilltype.name">
+              {{skilltype.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>Price</mat-label>
+          <input
+            [value]="receivedData.price" 
+            matInput
+            disabled
+          />
+        </mat-form-field>
+        <mat-form-field class="mat-formpaddingleft">
+          <mat-label>Initial Capacity</mat-label>
+          <input
+            [(ngModel)]="endingNumber" 
+            [value]="endingNumber"
+            matInput
+            readonly
+            (change)="OnEndingNumberChange($event)"
+            placeholder="Initial Capacity"
+          />
+        </mat-form-field>
+      </div>
+    
+      <label><b>Supply Planning</b></label>
+      <ag-grid-angular
+      class="ag-theme-alpine" 
+      rowAnimation 
+        [rowData]="rowData"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+        (gridReady)="onGridReady($event)"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        [suppressMenuHide]="true" 
+        [editType]="'fullRow'"
+        (input)="onInput($event)"
+        (filterChanged)="onFilterChanged($event)"
+        (horizontalScroll)="onHorizontalScroll($event)"
+        (sortChanged)="onSortChanged($event)"
+       
+      ></ag-grid-angular 
+      >
+    </mat-dialog-content>
+    <div mat-dialog-actions align="end">
+  
+      <!-- <button mat-button class="button-primary" (click)="onSave()" [mat-dialog-close]="true" [disabled]="!myForm.valid">
+        Save
+      </button> -->
+      <button mat-button class="cancel-btn" (click)="onClose($event)">
+        Cancel
+      </button>
+       <button [disabled]="myForm.invalid"
+       mat-button class="save-btn" type="submit">
+        Save
+      </button>
+    </div>
+</form>

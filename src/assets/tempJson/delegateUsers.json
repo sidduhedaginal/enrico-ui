@@ -1,0 +1,45 @@
+{
+    "status": "success",
+    "actionDate": "2023-08-16T11:30:34.5762503Z",
+    "data": {
+      "delegateUsers": [
+        {
+          "Ntid": "AAA3COB",
+          "Email": "test_anuradha.rajaram@in.bosch.com"
+        },
+        {
+          "Ntid": "AAA3KOR",
+          "Email": "test_rashmi.r@in.bosch.com"
+        },
+        {
+          "Ntid": "AAB1KOR",
+          "Email": "test_sahana.basappa@in.bosch.com"
+        },
+        {
+          "Ntid": "AAB1NA",
+          "Email": "test_amit.bhosle@in.bosch.com"
+        },
+        {
+          "Ntid": "AAB1PU",
+          "Email": "test_bhosale.aakanshasantosh@in.bosch.com"
+        },
+        {
+          "Ntid": "AAB5COB",
+          "Email": "test_abineshkannan.natarajan@in.bosch.com"
+        },
+        {
+          "Ntid": "AAB8KOR",
+          "Email": "test_abhishekh.ananth@in.bosch.com"
+        },
+        {
+          "Ntid": "AAB9COB",
+          "Email": "test_external.RamNishanth.M@in.bosch.com"
+        },
+        {
+          "Ntid": "AAC1KOR",
+          "Email": "test_vv.sruthi@in.bosch.com"
+        }
+      ]
+    },
+    "requestToken": "o4lztlvjUbyBdkNYRwIxSCofFWgdM6Ig"
+  }

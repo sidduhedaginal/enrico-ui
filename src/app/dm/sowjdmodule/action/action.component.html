@@ -1,0 +1,112 @@
+<div class="icon-class">
+  <div
+    *ngIf="
+      params.data.editAccess === 1 && permissionDetailsSoWJD?.editPermission
+    "
+  >
+    <div class="blue-edit icon m-right" title="Edit" (click)="doSubmit()"></div>
+  </div>
+  <div
+    *ngIf="
+      params.data.deleteAccess === 1 && permissionDetailsSoWJD?.deletePermission
+    "
+  >
+    <div class="deleteblue icon" title="Delete" (click)="doDelete()"></div>
+  </div>
+  <!-- <div
+    *ngIf="
+      params.data.withdrawAccess === 1 && permissionDetailsSoWJD?.withdrawPermission
+    "
+    class="subtract icon m-right"
+    title="Withdraw"
+    (click)="openWidthdrawDialog()"
+  ></div> -->
+
+  <!-- Enable clone option later -->
+  <!-- <div
+    *ngIf="
+      params.data.statusId &&
+      params.data.statusId !== 1 &&
+      permissionDetailsSoWJD?.createPermission
+    "
+    class="clone icon"
+    title="Clone"
+    (click)="doClone()"
+  ></div> -->
+</div>
+
+<div
+  *ngIf="
+    params.data.level1ApprovalAccess === 1 &&
+    permissionDetailsSoWJD?.approvePermission
+  "
+>
+  <div class="icon-class">
+    <div
+      class="information icon m-right"
+      title="DH Approve"
+      (click)="doDHApproveReject()"
+    ></div>
+  </div>
+</div>
+
+<div
+  *ngIf="
+    params.data.level2ApprovalAccess === 1 &&
+    permissionDetailsSoWJD?.approvePermission
+  "
+>
+  <div class="icon-class">
+    <div
+      class="information icon m-right"
+      title="SPOC Approve"
+      (click)="doSPOCApproveReject()"
+    ></div>
+  </div>
+</div>
+<div
+  *ngIf="
+    params.data.showFloatRFQ === 1 && permissionDetailsRFQ?.createPermission
+  "
+>
+  <a class="icon-class" title="Float RFQ" (click)="doFloatRFQ()">
+    <span class="rfq-float icon"></span>
+    <span>Float RFQ</span>
+  </a>
+</div>
+
+<div
+  *ngIf="
+    params.data.outSourcingCode === 'TAM' &&
+      params.data.showInitiateSignOffForTAM === 1 &&
+      permissionDetailsSignOff?.createPermission &&
+      params.data.isInitiateSignOffButtonEnable;
+    else otherWPBlock
+  "
+>
+  <a class="icon-class" title="Initiate Sign off" (click)="doInitiateSignOff()">
+    <span class="initiate-sign-off icon"></span>
+    <span>Initiate Sign off</span>
+  </a>
+</div>
+
+<ng-template #otherWPBlock>
+  <div
+    *ngIf="
+      (params.data.outSourcingCode === 'WP' ||
+        params.data.outSourcingCode === 'MS') &&
+      params.data.showInitiateSignOffForWP === 1 &&
+      permissionDetailsSignOff?.createPermission &&
+      params.data.isInitiateSignOffButtonEnable
+    "
+  >
+    <a
+      class="icon-class"
+      title="Initiate Sign off"
+      (click)="doInitiateSignOff()"
+    >
+      <span class="initiate-sign-off icon"></span>
+      <span>Initiate Sign off</span>
+    </a>
+  </div>
+</ng-template>

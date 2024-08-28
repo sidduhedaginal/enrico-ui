@@ -1,0 +1,201 @@
+.mat-form-field{
+    display:inline-block;
+    position:relative;
+    text-align:left;
+    padding:8px 0;
+    min-width:20%;
+  }
+  .plan{
+    display:flex;
+    align-items:center;
+   justify-content: space-between;
+  }
+  .main-form{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+  }
+  .left-form{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start; 
+  }
+  .right-form{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end; 
+  }
+  .component{
+    overflow-y: scroll;
+  }
+  .scrollable-dialog {
+    overflow-y: hidden;
+  }
+  
+  .sowjd__col{
+    display:flex;
+    align-items:flex-start;
+    flex-direction: column;
+    margin: 20px 18px 20px 14px;
+    font-size:12px;
+  }
+    .imgstyle2{
+      width: 50%;
+    }
+      .ImgContainer{
+        background-image: url("../../../../assets/images/Capture.JPG");
+       height:64px;
+        object-fit: fill;
+      }
+    .imgstyle{
+      text-align: center; 
+      border: 1px solid #ccc; 
+      padding: 10px;
+      margin-top:15px
+    }
+    .drag{
+      font-weight: bold; 
+      cursor: pointer; 
+      font-size: 12px
+    }
+      .download{
+            border: 1px solid #008ecf;
+              width: 100%;
+              text-align: center;
+              line-height: 30px;
+          }
+          .myForm {
+            margin-top: 4rem;
+          }
+          .save-btn {
+            height: 2.5rem;
+            width: 5rem;
+            border-radius: 0;
+            background-color: #008ecf;
+            margin-left: 1rem;
+          }
+          .cancel-btn {
+            align-items: center;
+            height: 2.5rem;
+            width: 6rem;
+            border-radius: 0;
+            background-color: #ffffff;
+            color: #008ecf;
+            border: 1px solid #008ecf;
+          }
+          .action-btn {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 8px;
+          }
+  .mat-dialog-content {
+  overflow: hidden;
+  }
+  .popup-lebel{
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+  .form-row{
+    display: flex;justify-content: flex-start;align-items: center;padding: 0 0.95em;margin: 0.75em 0;
+  }
+  .textBoxUnit{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ccc;
+    margin: -15px 5px 0 5px;
+    padding: 0.75em 0;
+  }
+  .textBoxUnit input
+  {
+    background: #fff;
+    height: 39px;
+    outline: none;
+    border: none;
+    padding: 5px 10px;
+    width: 200px;
+   
+  }
+  .inputsearch{
+    padding: 0.95em;
+  }
+      /* mat-form-field */
+::placeholder {
+  color: bold black;
+}
+.mat-form-field {
+  display: inline-block;
+  text-align: left;
+  min-width: 25%;
+  padding-right: 1rem;
+  width: auto;
+  height: 60px;
+}
+::ng-deep .mat-form-field-label-wrapper {
+  padding: 6px;
+  margin-left: 2px;
+}
+
+::ng-deep .mat-form-field-flex {
+  background: #e0e2e5 !important;
+}
+
+::ng-deep
+  .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label,
+.mat-form-field-appearance-legacy.mat-form-field-can-float
+  .mat-input-server:focus
+  + .mat-form-field-label-wrapper
+  .mat-form-field-label {
+  padding: 3px;
+}
+
+::ng-deep.mat-focused.mat-form-field-label {
+  color: #007bc0 !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  background-color: #007bc0;
+}
+
+::ng-deep.mat-form-field-ripple {
+  background-color: #007bc0 !important;
+}
+.mat-form-field-flex
+> .mat-form-field-infix
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
+.mat-form-field-label {
+transform: translateY(-1.1em) scale(0.75);
+width: 180px;
+}
+.mat-form-field-label-wrapper {
+top: -1.1em;
+}
+::ng-deep
+  .mat-form-field.mat-form-field:not(.mat-focused):not(.mat-form-field-disabled)
+  .mat-form-field-flex {
+  background-color: #e0e2e5;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 0px;
+  padding-top: 0px;
+
+}
+::ng-deep .mat-form-field-underline {
+  position: absolute;
+  width: 100%;
+  pointer-events: none;
+  transform: scale3d(1, 1.0001, 1);
+  display: none;
+}
+
+ 
+.title p {
+  margin: 0;
+}
+.header-items{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -1,0 +1,33 @@
+<div
+  class="icon-class"
+  *ngIf="
+    params.data.statusId !== 2 &&
+    params.data.statusId !== 3 &&
+    params.data.statusId !== 4
+  "
+>
+  <div
+    class="approve icon"
+    title="Approve"
+    *ngIf="permissionDetails?.approvePermission"
+    (click)="doApprove()"
+  ></div>
+  <div
+    *ngIf="permissionDetails?.rejectPermission"
+    class="sendback_planning icon"
+    title="Send Back"
+    (click)="doSendBack()"
+  ></div>
+  <div
+    *ngIf="permissionDetails?.withdrawPermission"
+    class="withdraw_planning icon"
+    title="Withdraw"
+    (click)="doWithdraw()"
+  ></div>
+  <div
+    *ngIf="permissionDetails?.delegatePermission"
+    class="planning_delegate icon"
+    title="Delegate"
+    (click)="doDelegate()"
+  ></div>
+</div>

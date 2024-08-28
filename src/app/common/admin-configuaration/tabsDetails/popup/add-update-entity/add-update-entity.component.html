@@ -1,0 +1,64 @@
+<div>
+    <ng-container *ngIf="receivedData.operation != 'delete'">
+        <div>
+            <h1 class="title" *ngIf="receivedData.operation == 'create'">Create Entity </h1>
+            <h1 class="title" *ngIf="receivedData.operation == 'update'"> Update Entity </h1>
+            <h3 class="error"> {{errorMsg}}</h3>
+        </div>
+      <form [formGroup]="myForm" class="Form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field class="field">
+            <input matInput placeholder="Entity Name" formControlName="entityName" />
+            <mat-error *ngIf="myForm?.get('entityName')?.hasError('required')">Entity Name is
+              required</mat-error>
+            <mat-error *ngIf="myForm.get('entityName').hasError('maxlength')">
+                Maximum length for Entity Name is 10 characters.
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="field">
+            <input matInput placeholder="Entity FullName" formControlName="entityFullName" />
+            <mat-error *ngIf="myForm?.get('entityFullName')?.hasError('required')">Entity FullName is
+              required</mat-error>
+            <mat-error *ngIf="myForm.get('entityFullName').hasError('maxlength')">
+                Maximum length for Entity Full Name is 255 characters.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <input matInput placeholder="Company Code" formControlName="companyCode" />
+          <mat-error *ngIf="myForm.get('companyCode').hasError('required')">
+            Company Code is required.
+          </mat-error>
+          <mat-error *ngIf="myForm.get('companyCode').hasError('maxlength')">
+            Maximum length for Company Code is 4 characters.
+          </mat-error>
+
+      </mat-form-field>
+      
+      </form>
+
+      <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+          Cancel
+        </button>
+        <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+          Save
+        </button>
+      </div>
+
+    </ng-container>
+  
+    <ng-container *ngIf="receivedData.operation == 'delete'" >
+      <h3 class="title">Are you sure want to delete</h3>
+      <div class="action-btn">
+        <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+          Cancel
+        </button>
+        <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+          Delete
+        </button>
+      </div>
+    </ng-container>
+  </div>

@@ -1,0 +1,27 @@
+<nav
+  mat-tab-nav-bar
+  class="tabs"
+  *ngIf="
+    url === '/vendor' ||
+    url === '/vendor/vendor-rfq' ||
+    url === '/vendor/vendor-signoff'
+  "
+>
+  <a
+    class="first-tab"
+    mat-tab-link
+    routerLink="./vendor-rfq"
+    routerLinkActive="active-link"
+    >RFQ Technical Evaluation</a
+  >
+  <a
+    class="first-tab"
+    mat-tab-link
+    routerLink="./vendor-signoff"
+    routerLinkActive="active-link"
+    >SOW JD Sign Off</a
+  >
+</nav>
+<div>
+  <router-outlet></router-outlet>
+</div>

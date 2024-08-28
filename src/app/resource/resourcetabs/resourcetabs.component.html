@@ -1,0 +1,81 @@
+<div class="containerContent">
+  <mat-tab-group class="mTabGp" [selectedIndex]="selected.value" (selectedTabChange)="changeResourceManagement1($event)">
+
+    <mat-tab label="Resource Plan (Open Order)" >
+      <div *ngIf="((userDetailsRoles == '/Vendors') && (_checkuser?.businessSupport !='BGV')) || (userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectResourcePlanOpenOrder?.readPermission)">
+        <div *ngIf="showHideRP">
+          <app-resource-plan></app-resource-plan>
+          </div>
+      </div>   
+<div class="CenterAlined" *ngIf="(userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectResourcePlanOpenOrder==undefined)  && loadVaiable">
+    <span class="error">Access Denied</span> <br>
+    <span class="error"> Sorry you Don't have Permission to view this page</span>  
+</div>
+
+    </mat-tab>
+
+    <mat-tab label="Onboarding">
+      <div *ngIf="(userDetailsRoles == '/Vendors' && _checkuser?.businessSupport =='BGV') || (userDetailsRoles == '/Vendors' && _checkuser?.businessSupport !='BGV') || (userDetailsRoles == '/EnricoUsers'  && permissionsBehaviorSubjectOnboarding?.readPermission)">
+           <div *ngIf="showHideOB">
+    <app-onboarding-page></app-onboarding-page>
+    </div>
+    </div>
+    <div class="CenterAlined" *ngIf="(userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectOnboarding==undefined)  && loadVaiable">
+      <span class="error">Access Denied</span> <br>
+      <span class="error"> Sorry you Don't have Permission to view this page</span>  
+  </div>
+    </mat-tab>
+
+    <mat-tab label="Resource Master">
+      <div *ngIf="((userDetailsRoles == '/Vendors') && (_checkuser?.businessSupport !='BGV')) || (userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectResourceMaster?.readPermission)">
+      <div *ngIf="showHideRM">
+        <!-- <app-resource-master-table></app-resource-master-table> -->
+        <app-resource-master-view-table-ag></app-resource-master-view-table-ag>
+      </div>
+      </div>
+      <div class="CenterAlined" *ngIf="(userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectResourceMaster==undefined) && loadVaiable">
+        <span class="error">Access Denied</span> <br>
+        <span class="error"> Sorry you Don't have Permission to view this page</span>  
+    </div>
+    </mat-tab>
+    <mat-tab label="De-boarding">
+      <div  *ngIf="((userDetailsRoles == '/Vendors') && (_checkuser?.businessSupport !='BGV')) || (userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectDeboarding?.readPermission)">
+      <div *ngIf="showHideDB">
+        <!-- <app-debording-table></app-debording-table> -->
+         <app-debording-view-table-ag></app-debording-view-table-ag> 
+      </div>
+      </div>
+      <div class="CenterAlined" *ngIf="(userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectDeboarding==undefined)  && loadVaiable">
+        <span class="error">Access Denied</span> <br>
+        <span class="error"> Sorry you Don't have Permission to view this page</span>  
+    </div>
+    </mat-tab>
+
+    <mat-tab label="Change Management">
+      <div *ngIf="((userDetailsRoles == '/Vendors') && (_checkuser?.businessSupport !='BGV')) || (userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectChangeManagement?.readPermission)">
+      <div *ngIf="showHideCM">        
+        <!-- <app-change-request-table></app-change-request-table> -->
+       
+        <app-change-request-view-table-ag ></app-change-request-view-table-ag>
+      </div>
+      </div>
+      <div class="CenterAlined" *ngIf="(userDetailsRoles == '/EnricoUsers' && permissionsBehaviorSubjectChangeManagement==undefined)  && loadVaiable">
+        <span class="error">Access Denied</span> <br>
+        <span class="error"> Sorry you Don't have Permission to view this page</span>  
+    </div>
+    </mat-tab>
+
+  </mat-tab-group>
+  <div class="row rowBg" style="display:none">
+    <div class="col-md-3 col-sm">
+     
+    </div>
+    <div class="col-md-4 col-sm">
+    
+    </div>
+    <div class="col-md col-sm">
+
+    </div>
+  </div>
+
+</div>

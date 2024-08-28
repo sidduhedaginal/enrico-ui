@@ -1,0 +1,84 @@
+<div>
+  <ng-container *ngIf="receivedData.operation != 'delete'">
+    
+    <div>
+      <h1 class="title" *ngIf="receivedData.operation == 'create'">Create Business Role</h1>
+      <h1 class="title" *ngIf="receivedData.operation == 'update'"> Update Business Role</h1>
+      <h3 class="error"> {{errorMsg}}</h3>
+    </div>
+
+    <form [formGroup]="myForm" class="Form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="field">
+        <mat-label>Entity ID</mat-label>
+        <mat-select placeholder="Select Entity ID" formControlName="entityId">
+          <mat-option *ngFor="let entity of entitiesDropdown" [value]="entity.id">{{ entity.entityName }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="myForm?.get('entityId')?.hasError('required')">Entity ID is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="field">
+        <input matInput placeholder="Entity Business Role Name" formControlName="entityBusinessRoleName" />
+        <mat-error *ngIf="myForm?.get('entityBusinessRoleName')?.hasError('required')">Entity Business Role Name is
+          required</mat-error>
+      </mat-form-field>
+
+      <ng-container>
+        <mat-radio-group class="field radioField" formControlName="firstApprover">
+          <mat-label>First Approver:</mat-label>
+          <div>
+            <mat-radio-button value="true">Approve</mat-radio-button>
+            <mat-radio-button value="false">Reject</mat-radio-button>
+          </div>
+        </mat-radio-group>
+        <mat-error *ngIf="myForm?.get('firstApprover')?.hasError('required')">First Approver is required
+        </mat-error>
+      </ng-container>
+
+      <ng-container>
+        <mat-radio-group class="field radioField" formControlName="entityBusinessRoleStatus">
+          <mat-label>Entity Business Role Status:</mat-label>
+          <div>          
+              <mat-radio-button value="true">Active</mat-radio-button>
+              <mat-radio-button value="false">Inactive</mat-radio-button>
+          </div>
+        </mat-radio-group>
+        <mat-error *ngIf="myForm?.get('entityBusinessRoleStatus')?.hasError('required')">Entity Business Role Status is
+          required
+        </mat-error>
+      </ng-container>
+
+      <ng-container>
+        <mat-radio-group class="field radioField" formControlName="secondApprover">
+          <mat-label>Second Approver:</mat-label>
+          <div>
+            <mat-radio-button value="true">Approve</mat-radio-button>
+            <mat-radio-button value="false">Reject</mat-radio-button>
+          </div>
+        </mat-radio-group>
+        <mat-error *ngIf="myForm?.get('secondApprover')?.hasError('required')">Second Approver is required
+        </mat-error>
+      </ng-container>
+    </form>
+    <div class="action-btn">
+      <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+        Cancel
+      </button>
+      <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+        Save
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="receivedData.operation == 'delete'" >
+    <h3>Are you sure want to delete</h3>
+    <div class="action-btn">
+      <button class="cancel-btn" mat-raised-button color="primary" (click)="onClose($event)">
+        Cancel
+      </button>
+      <button class="save-btn" mat-raised-button color="primary" (click)="onSubmit()" type="submit">
+        Delete
+      </button>
+    </div>
+  </ng-container>
+
+
+</div>

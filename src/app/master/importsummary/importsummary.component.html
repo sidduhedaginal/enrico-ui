@@ -1,0 +1,47 @@
+
+<h2 mat-dialog-title>Import Summary</h2>
+<mat-dialog-content>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Status</th>
+        <th scope="col">Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total No. of Total Records</td>
+        <td><b>{{data.Summary.TotalRecords}}</b></td>
+      </tr>
+        <tr>
+          <td>Total No. of records Inserted</td>
+          <td><b>{{data.Summary.InsertedRecords}}</b></td>
+        </tr>
+        <tr>
+          <td>Total No. of records Updated</td>
+          <td><b>{{data.Summary.updatedRecords}}</b></td>
+        </tr>
+        <tr>
+          <td>Total No. of Records with error</td>
+          <td><b> <span  [ngClass]="
+            data.Summary.errorRecords > 0
+              ? 'showred'
+              : ''
+          ">{{data.Summary.errorRecords}}</span></b></td>
+        </tr>
+    </tbody>
+  </table>
+ 
+</mat-dialog-content>
+<div mat-dialog-actions align="end" >
+    <button
+    mat-button
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    class="button-secondary"
+  >
+       <span class="export icon">&nbsp;&nbsp;&nbsp;&nbsp;</span> &nbsp;<span>Export</span>
+   </button>
+  <button mat-button class="button-secondary" [mat-dialog-close]="false" >Close</button>
+</div>
